@@ -187,6 +187,13 @@ export function Board() {
     setHydrated(true);
   }, []);
 
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(placed));
+    } catch {}
+  }, [placed, hydrated]);
+
   if (!hydrated) {
     return (
       <div className="flex h-[calc(100vh-64px)] min-h-[600px]">
@@ -195,13 +202,6 @@ export function Board() {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(placed));
-    } catch {}
-  }, [placed, hydrated]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(String(event.active.id));
