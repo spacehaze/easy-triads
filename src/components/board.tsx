@@ -260,6 +260,20 @@ export function Board() {
     if (confirm("Clear the board?")) setPlaced([]);
   };
 
+  const handlePresetMajor123 = () => {
+    const ids = ["major-123-root", "major-123-first", "major-123-second"];
+    const ts = Date.now();
+    setPlaced((prev) => [
+      ...prev,
+      ...ids.map((triadId, i) => ({
+        instanceId: `${triadId}-${ts}-${i}`,
+        triadId,
+        x: 20 + i * 240,
+        y: 20,
+      })),
+    ]);
+  };
+
   const activeTriad = (() => {
     if (!activeId) return null;
     if (activeId.startsWith("lib:")) return getTriad(activeId.slice(4)) ?? null;
@@ -285,14 +299,24 @@ export function Board() {
                 ? "Empty board"
                 : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
             </div>
-            <button
-              type="button"
-              onClick={handleClear}
-              disabled={placed.length === 0}
-              className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              Clear board
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                data-testid="preset-major-123"
+                onClick={handlePresetMajor123}
+                className="text-xs font-semibold text-[#2563a0] hover:text-[#1e3a5f] border border-[#2563a0]/40 hover:border-[#1e3a5f] rounded-md px-2.5 py-1"
+              >
+                + Major 1-2-3 inversions
+              </button>
+              <button
+                type="button"
+                onClick={handleClear}
+                disabled={placed.length === 0}
+                className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                Clear board
+              </button>
+            </div>
           </div>
           <BoardDropZone
             placed={placed}
