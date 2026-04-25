@@ -30,6 +30,12 @@ const LIB_CARD_WIDTH = 180;
 
 const TRIAD_BY_ID = new Map(TRIADS.map((t) => [t.id, t]));
 
+const PRESETS: { label: string; ids: string[] }[] = [
+  { label: "Major 1-2-3", ids: ["major-123-root", "major-123-first", "major-123-second"] },
+  { label: "Major 2-3-4", ids: ["major-234-root", "major-234-first", "major-234-second"] },
+  { label: "Minor 1-2-3", ids: ["minor-123-root", "minor-123-first", "minor-123-second"] },
+];
+
 function getTriad(id: string): Triad | undefined {
   return TRIAD_BY_ID.get(id);
 }
@@ -259,18 +265,20 @@ export function Board() {
     setPlaced([]);
   };
 
-  const handlePresetMajor123 = () => {
-    const ids = ["major-123-root", "major-123-first", "major-123-second"];
+  const handleAddPreset = (ids: string[]) => {
     const ts = Date.now();
-    setPlaced((prev) => [
-      ...prev,
-      ...ids.map((triadId, i) => ({
-        instanceId: `${triadId}-${ts}-${i}`,
-        triadId,
-        x: 20 + i * 240,
-        y: 20,
-      })),
-    ]);
+    setPlaced((prev) => {
+      const rowOffset = Math.floor(prev.length / 3) * 240;
+      return [
+        ...prev,
+        ...ids.map((triadId, i) => ({
+          instanceId: `${triadId}-${ts}-${i}`,
+          triadId,
+          x: 20 + i * 240,
+          y: 20 + rowOffset,
+        })),
+      ];
+    });
   };
 
   const activeTriad = (() => {
@@ -298,20 +306,23 @@ export function Board() {
                 ? "Empty board"
                 : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
             </div>
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                data-testid="preset-major-123"
-                onClick={handlePresetMajor123}
-                className="text-xs font-semibold text-[#2563a0] hover:text-[#1e3a5f] border border-[#2563a0]/40 hover:border-[#1e3a5f] rounded-md px-2.5 py-1"
-              >
-                + Major 1-2-3 inversions
-              </button>
+            <div className="flex items-center gap-2 flex-wrap justify-end">
+              {PRESETS.map((p) => (
+                <button
+                  key={p.label}
+                  type="button"
+                  data-testid={`preset-${p.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  onClick={() => handleAddPreset(p.ids)}
+                  className="text-xs font-semibold text-[#2563a0] hover:text-[#1e3a5f] border border-[#2563a0]/40 hover:border-[#1e3a5f] rounded-md px-2.5 py-1"
+                >
+                  + {p.label}
+                </button>
+              ))}
               <button
                 type="button"
                 onClick={handleClear}
                 disabled={placed.length === 0}
-                className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed ml-2"
               >
                 Clear board
               </button>
