@@ -2,24 +2,18 @@ import {
   type Triad,
   STRING_NAMES,
   QUALITY_LABEL,
+  QUALITY_COLOR,
+  QUALITY_COLOR_SOFT,
   INVERSION_LABEL,
 } from "@/lib/triads";
 
 const STRINGS: (1 | 2 | 3 | 4 | 5 | 6)[] = [1, 2, 3, 4, 5, 6];
 const FRET_COUNT = 5;
 
-const QUALITY_COLORS: Record<Triad["quality"], string> = {
-  major: "#1e3a5f",
-  minor: "#1e3a5f",
-  diminished: "#1e3a5f",
-};
-
 const ROOT_COLOR = "#dc2626";
 const NOTE_COLOR = "#18181b";
-const ACTIVE_STRING = "#1e3a5f";
 const INACTIVE_STRING = "#d4d4d8";
 const FRET_COLOR = "#e4e4e7";
-const FRET_LABEL_COLOR = "#2563a0";
 
 type Props = {
   triad: Triad;
@@ -38,25 +32,26 @@ export function TriadCard({ triad, compact }: Props) {
   const stringSet = triad.stringSet as readonly number[];
   const isActive = (s: number) => stringSet.includes(s);
 
-  const titleColor = QUALITY_COLORS[triad.quality];
+  const accent = QUALITY_COLOR[triad.quality];
+  const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
   const stringSetLabel = triad.stringSet.join(" ");
 
   return (
     <div
-      className="bg-white rounded-xl border border-zinc-200 shadow-sm select-none overflow-hidden"
-      style={{ width }}
+      className="rounded-xl border shadow-sm select-none overflow-hidden"
+      style={{ width, background: "#ffffff", borderColor: `${accent}40` }}
     >
       <div
         className="px-3 pt-2 pb-1 border-b"
-        style={{ borderColor: "#2563a033" }}
+        style={{ borderColor: `${accent}40`, background: accentSoft }}
       >
         <div
           className="text-sm font-bold leading-tight"
-          style={{ color: titleColor }}
+          style={{ color: accent }}
         >
           {QUALITY_LABEL[triad.quality]}
         </div>
-        <div className="text-[11px] font-semibold" style={{ color: FRET_LABEL_COLOR }}>
+        <div className="text-[11px] font-semibold" style={{ color: accent }}>
           Strings {stringSetLabel}
         </div>
       </div>
@@ -88,7 +83,7 @@ export function TriadCard({ triad, compact }: Props) {
                 y1={y}
                 x2={paddingLeft + boardWidth}
                 y2={y}
-                stroke={active ? ACTIVE_STRING : INACTIVE_STRING}
+                stroke={active ? accent : INACTIVE_STRING}
                 strokeWidth={active ? 1.5 : 1}
               />
             </g>
@@ -115,7 +110,7 @@ export function TriadCard({ triad, compact }: Props) {
           y={paddingTop + (STRINGS.length - 1) * stringSpacing + 16}
           fontSize={10}
           fontWeight={700}
-          fill={FRET_LABEL_COLOR}
+          fill={accent}
           fontFamily="ui-sans-serif, system-ui, sans-serif"
         >
           {triad.startFret}fr

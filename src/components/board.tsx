@@ -13,7 +13,14 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 
-import { TRIADS, type Triad, QUALITY_LABEL } from "@/lib/triads";
+import {
+  TRIADS,
+  type Triad,
+  type Quality,
+  QUALITY_LABEL,
+  QUALITY_COLOR,
+  QUALITY_COLOR_SOFT,
+} from "@/lib/triads";
 import { TriadCard } from "./triad-card";
 
 type PlacedCard = {
@@ -30,10 +37,10 @@ const LIB_CARD_WIDTH = 180;
 
 const TRIAD_BY_ID = new Map(TRIADS.map((t) => [t.id, t]));
 
-const PRESETS: { label: string; ids: string[] }[] = [
-  { label: "Major 1-2-3", ids: ["major-123-root", "major-123-first", "major-123-second"] },
-  { label: "Major 2-3-4", ids: ["major-234-root", "major-234-first", "major-234-second"] },
-  { label: "Minor 1-2-3", ids: ["minor-123-root", "minor-123-first", "minor-123-second"] },
+const PRESETS: { label: string; ids: string[]; quality: Quality }[] = [
+  { label: "Major 1-2-3", quality: "major", ids: ["major-123-root", "major-123-first", "major-123-second"] },
+  { label: "Major 2-3-4", quality: "major", ids: ["major-234-root", "major-234-first", "major-234-second"] },
+  { label: "Minor 1-2-3", quality: "minor", ids: ["minor-123-root", "minor-123-first", "minor-123-second"] },
 ];
 
 function getTriad(id: string): Triad | undefined {
@@ -144,32 +151,67 @@ function BoardDropZone({
   );
 }
 
+const STRING_SET_LABELS: { label: string; key: string }[] = [
+  { label: "1-2-3", key: "1,2,3" },
+  { label: "2-3-4", key: "2,3,4" },
+  { label: "3-4-5", key: "3,4,5" },
+  { label: "4-5-6", key: "4,5,6" },
+];
+
 function Library() {
-  const grouped = {
-    major: TRIADS.filter((t) => t.quality === "major"),
-    minor: TRIADS.filter((t) => t.quality === "minor"),
-    diminished: TRIADS.filter((t) => t.quality === "diminished"),
-  };
+  const [activeQuality, setActiveQuality] = useState<Quality>("major");
+  const accent = QUALITY_COLOR[activeQuality];
+  const accentSoft = QUALITY_COLOR_SOFT[activeQuality];
+
+  const triadsForQuality = TRIADS.filter((t) => t.quality === activeQuality);
 
   return (
     <aside className="w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto">
       <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
         <h2 className="font-bold text-sm text-zinc-900">Card Library</h2>
-        <p className="text-xs text-zinc-500 mt-0.5">Drag onto the board</p>
+        <p className="text-xs text-zinc-500 mt-0.5 mb-3">Drag onto the board</p>
+        <div className="flex gap-1">
+          {(["major", "minor", "diminished"] as const).map((q) => {
+            const active = activeQuality === q;
+            return (
+              <button
+                key={q}
+                type="button"
+                onClick={() => setActiveQuality(q)}
+                className="flex-1 text-[11px] font-bold uppercase tracking-wider py-1.5 rounded transition-colors"
+                style={
+                  active
+                    ? { background: QUALITY_COLOR[q], color: "#ffffff" }
+                    : { color: QUALITY_COLOR[q], background: QUALITY_COLOR_SOFT[q] }
+                }
+              >
+                {q === "diminished" ? "Dim" : QUALITY_LABEL[q]}
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className="p-3 space-y-6">
-        {(["major", "minor", "diminished"] as const).map((q) => (
-          <section key={q}>
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#2563a0] mb-2 px-1">
-              {QUALITY_LABEL[q]}
-            </h3>
-            <div className="flex flex-col gap-2 items-center">
-              {grouped[q].map((triad) => (
-                <DraggableLibraryCard key={triad.id} triad={triad} />
-              ))}
-            </div>
-          </section>
-        ))}
+      <div className="p-3 space-y-4">
+        {STRING_SET_LABELS.map((ss) => {
+          const triads = triadsForQuality.filter(
+            (t) => t.stringSet.join(",") === ss.key
+          );
+          return (
+            <section key={ss.key}>
+              <h3
+                className="text-[11px] font-bold uppercase tracking-wider mb-2 px-2 py-1 rounded"
+                style={{ color: accent, background: accentSoft }}
+              >
+                Strings {ss.label}
+              </h3>
+              <div className="flex flex-col gap-2 items-center">
+                {triads.map((triad) => (
+                  <DraggableLibraryCard key={triad.id} triad={triad} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </aside>
   );
@@ -313,7 +355,12 @@ export function Board() {
                   type="button"
                   data-testid={`preset-${p.label.toLowerCase().replace(/\s+/g, "-")}`}
                   onClick={() => handleAddPreset(p.ids)}
-                  className="text-xs font-semibold text-[#2563a0] hover:text-[#1e3a5f] border border-[#2563a0]/40 hover:border-[#1e3a5f] rounded-md px-2.5 py-1"
+                  className="text-xs font-semibold border rounded-md px-2.5 py-1 transition-colors hover:brightness-95"
+                  style={{
+                    color: QUALITY_COLOR[p.quality],
+                    borderColor: `${QUALITY_COLOR[p.quality]}66`,
+                    background: QUALITY_COLOR_SOFT[p.quality],
+                  }}
                 >
                   + {p.label}
                 </button>
