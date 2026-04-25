@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Easy Triads
 
-## Getting Started
+A drag-and-drop flashcard webapp for learning guitar triads. 36 movable triad shapes (Major / Minor / Diminished × 4 string sets × 3 inversions) rendered as interactive fretboard diagrams that users rearrange freely on a canvas.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, Turbopack)
+- **React 19**, **TypeScript**, **Tailwind v4**
+- **@dnd-kit/core** — drag-and-drop
+- **localStorage** — layout persists across reloads
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Deploy to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+The fastest path:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push this directory to a GitHub repo (`gh repo create easy-triads --public --source . --push`).
+2. Go to [vercel.com/new](https://vercel.com/new), import the repo — Vercel detects Next.js automatically.
+3. Deploy. Assign a custom domain later under **Settings → Domains**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Or deploy via CLI without GitHub:
 
-## Deploy on Vercel
+```bash
+npm i -g vercel
+vercel            # preview deploy
+vercel --prod     # production deploy
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+No environment variables or runtime config needed for this MVP — everything is static + client-side.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure
+
+```
+src/
+  app/
+    layout.tsx         # root layout + metadata
+    page.tsx           # landing page (hosts the Board)
+    globals.css
+  components/
+    board.tsx          # DndContext, library sidebar, droppable canvas, placed cards
+    triad-card.tsx     # SVG fretboard renderer
+  lib/
+    triads.ts          # 36-card data (shape, inversion, fret offsets)
+```
+
+## Roadmap — v1 adds the paywall
+
+v0 (this) is fully free and client-side. For v1:
+
+- **Accounts + saved boards** → Supabase (auth + Postgres). Replace `localStorage` with a `boards` table keyed by user.
+- **Checkout** → Stripe Checkout session; webhook flips a `paid` flag on the user row.
+- **Paywall** → gate the full deck in `src/lib/triads.ts`; expose 6 cards free on `/`, full 36 on `/app` once `paid` is true.
+- **Landing page** → add hero + pricing section above the board on `/`, keep the demo interactive.
