@@ -62,6 +62,23 @@ export function TriadCard({ triad, compact }: Props) {
         height={boardHeight + 56}
         className="block"
       >
+        <text
+          x={width - 8}
+          y={boardHeight + 50}
+          textAnchor="end"
+          fontSize={96}
+          fontWeight={900}
+          fill={accent}
+          fillOpacity={0.1}
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          style={{ pointerEvents: "none" }}
+        >
+          {triad.inversion === "root"
+            ? "R"
+            : triad.inversion === "first"
+            ? "1"
+            : "2"}
+        </text>
         {STRINGS.map((s, i) => {
           const y = paddingTop + i * stringSpacing;
           const active = isActive(s);
