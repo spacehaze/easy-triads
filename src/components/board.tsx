@@ -256,8 +256,7 @@ export function Board() {
   };
 
   const handleClear = () => {
-    if (placed.length === 0) return;
-    if (confirm("Clear the board?")) setPlaced([]);
+    setPlaced([]);
   };
 
   const handlePresetMajor123 = () => {
