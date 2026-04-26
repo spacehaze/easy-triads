@@ -4,7 +4,6 @@ import {
   QUALITY_LABEL,
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
-  INVERSION_LABEL,
 } from "@/lib/triads";
 
 const STRINGS: (1 | 2 | 3 | 4 | 5 | 6)[] = [1, 2, 3, 4, 5, 6];
@@ -122,17 +121,6 @@ export function TriadCard({ triad, compact }: Props) {
           );
         })}
 
-        <text
-          x={paddingLeft}
-          y={paddingTop + (STRINGS.length - 1) * stringSpacing + 16}
-          fontSize={10}
-          fontWeight={700}
-          fill={accent}
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-        >
-          {triad.startFret}fr
-        </text>
-
         {triad.notes.map((note, i) => {
           const stringIdx = STRINGS.indexOf(note.string);
           const cx =
@@ -164,17 +152,6 @@ export function TriadCard({ triad, compact }: Props) {
           );
         })}
 
-        <text
-          x={width / 2}
-          y={boardHeight + 44}
-          textAnchor="middle"
-          fontSize={11}
-          fontWeight={700}
-          fill={NOTE_COLOR}
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
-        >
-          {INVERSION_LABEL[triad.inversion]}
-        </text>
       </svg>
     </div>
   );
