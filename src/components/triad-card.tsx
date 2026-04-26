@@ -1,6 +1,5 @@
 import {
   type Triad,
-  STRING_NAMES,
   QUALITY_LABEL,
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
@@ -33,7 +32,6 @@ export function TriadCard({ triad, compact }: Props) {
 
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
-  const stringSetLabel = triad.stringSet.join(" ");
 
   return (
     <div
@@ -41,7 +39,7 @@ export function TriadCard({ triad, compact }: Props) {
       style={{ width, background: "#ffffff", borderColor: `${accent}40` }}
     >
       <div
-        className="px-3 pt-2 pb-1 border-b"
+        className="px-3 py-2 border-b"
         style={{ borderColor: `${accent}40`, background: accentSoft }}
       >
         <div
@@ -49,9 +47,6 @@ export function TriadCard({ triad, compact }: Props) {
           style={{ color: accent }}
         >
           {QUALITY_LABEL[triad.quality]}
-        </div>
-        <div className="text-[11px] font-semibold" style={{ color: accent }}>
-          Strings {stringSetLabel}
         </div>
       </div>
 
@@ -92,7 +87,7 @@ export function TriadCard({ triad, compact }: Props) {
                 fill={active ? NOTE_COLOR : "#a1a1aa"}
                 fontFamily="ui-sans-serif, system-ui, sans-serif"
               >
-                {STRING_NAMES[s]}
+                {s}
               </text>
               <line
                 x1={paddingLeft}
