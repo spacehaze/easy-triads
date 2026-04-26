@@ -60,6 +60,7 @@ function midiToNote(midi: number): string {
 
 let sampler: Tone.Sampler | null = null;
 let initPromise: Promise<Tone.Sampler> | null = null;
+let pendingTimeouts: number[] = [];
 
 function ensureSampler(): Promise<Tone.Sampler> {
   if (sampler) return Promise.resolve(sampler);
@@ -68,7 +69,7 @@ function ensureSampler(): Promise<Tone.Sampler> {
     const s = new Tone.Sampler({
       urls: SAMPLES,
       baseUrl: SAMPLE_BASE,
-      release: 1.2,
+      release: 0.3,
       onload: () => {
         sampler = s;
         resolve(s);
@@ -79,17 +80,31 @@ function ensureSampler(): Promise<Tone.Sampler> {
   return initPromise;
 }
 
+function stopActivePlayback() {
+  pendingTimeouts.forEach((id) => clearTimeout(id));
+  pendingTimeouts = [];
+  if (sampler) sampler.releaseAll();
+}
+
 export async function playTriad(triad: Triad): Promise<void> {
   try {
     if (Tone.getContext().state !== "running") {
       await Tone.start();
     }
+    stopActivePlayback();
     const s = await ensureSampler();
-    const now = Tone.now();
     triad.notes.forEach((note, i) => {
       const fret = triad.startFret + note.fretOffset;
       const midi = OPEN_STRING_MIDI[note.string] + fret;
-      s.triggerAttackRelease(midiToNote(midi), 1, now + i * 1);
+      const noteStr = midiToNote(midi);
+      if (i === 0) {
+        s.triggerAttackRelease(noteStr, 1);
+      } else {
+        const id = window.setTimeout(() => {
+          s.triggerAttackRelease(noteStr, 1);
+        }, i * 1000);
+        pendingTimeouts.push(id);
+      }
     });
   } catch (err) {
     // eslint-disable-next-line no-console
