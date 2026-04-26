@@ -89,7 +89,7 @@ export async function playTriad(triad: Triad): Promise<void> {
     triad.notes.forEach((note, i) => {
       const fret = triad.startFret + note.fretOffset;
       const midi = OPEN_STRING_MIDI[note.string] + fret;
-      s.triggerAttackRelease(midiToNote(midi), 2, now + i * 2);
+      s.triggerAttackRelease(midiToNote(midi), 1, now + i * 1);
     });
   } catch (err) {
     // eslint-disable-next-line no-console
