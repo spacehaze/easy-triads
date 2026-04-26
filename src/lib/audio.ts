@@ -1,0 +1,98 @@
+import * as Tone from "tone";
+import type { Triad } from "./triads";
+
+const OPEN_STRING_MIDI: Record<1 | 2 | 3 | 4 | 5 | 6, number> = {
+  1: 64,
+  2: 59,
+  3: 55,
+  4: 50,
+  5: 45,
+  6: 40,
+};
+
+const SAMPLE_BASE =
+  "https://nbrosowsky.github.io/tonejs-instruments/samples/guitar-nylon/";
+
+const SAMPLES: Record<string, string> = {
+  A2: "A2.mp3",
+  A3: "A3.mp3",
+  A4: "A4.mp3",
+  A5: "A5.mp3",
+  B2: "B2.mp3",
+  B3: "B3.mp3",
+  B4: "B4.mp3",
+  "C#3": "Cs3.mp3",
+  "C#4": "Cs4.mp3",
+  D2: "D2.mp3",
+  D3: "D3.mp3",
+  D5: "D5.mp3",
+  "D#4": "Ds4.mp3",
+  E2: "E2.mp3",
+  E3: "E3.mp3",
+  E4: "E4.mp3",
+  "F#2": "Fs2.mp3",
+  "F#3": "Fs3.mp3",
+  "F#4": "Fs4.mp3",
+  "F#5": "Fs5.mp3",
+  G3: "G3.mp3",
+};
+
+const NOTE_NAMES = [
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+];
+
+function midiToNote(midi: number): string {
+  const note = NOTE_NAMES[midi % 12];
+  const octave = Math.floor(midi / 12) - 1;
+  return `${note}${octave}`;
+}
+
+let sampler: Tone.Sampler | null = null;
+let initPromise: Promise<Tone.Sampler> | null = null;
+
+function ensureSampler(): Promise<Tone.Sampler> {
+  if (sampler) return Promise.resolve(sampler);
+  if (initPromise) return initPromise;
+  initPromise = new Promise((resolve, reject) => {
+    const s = new Tone.Sampler({
+      urls: SAMPLES,
+      baseUrl: SAMPLE_BASE,
+      release: 1.2,
+      onload: () => {
+        sampler = s;
+        resolve(s);
+      },
+      onerror: (err) => reject(err),
+    }).toDestination();
+  });
+  return initPromise;
+}
+
+export async function playTriad(triad: Triad): Promise<void> {
+  try {
+    if (Tone.getContext().state !== "running") {
+      await Tone.start();
+    }
+    const s = await ensureSampler();
+    const now = Tone.now();
+    triad.notes.forEach((note, i) => {
+      const fret = triad.startFret + note.fretOffset;
+      const midi = OPEN_STRING_MIDI[note.string] + fret;
+      s.triggerAttackRelease(midiToNote(midi), 1.5, now + i * 0.05);
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn("Audio playback failed:", err);
+  }
+}
