@@ -160,8 +160,13 @@ const STRING_SET_LABELS: { label: string; key: string }[] = [
 
 function Library() {
   const [activeQuality, setActiveQuality] = useState<Quality>("major");
+  const [openSet, setOpenSet] = useState<string | null>(null);
   const accent = QUALITY_COLOR[activeQuality];
   const accentSoft = QUALITY_COLOR_SOFT[activeQuality];
+
+  const toggleSet = (key: string) => {
+    setOpenSet((prev) => (prev === key ? null : key));
+  };
 
   const triadsForQuality = TRIADS.filter((t) => t.quality === activeQuality);
 
@@ -191,24 +196,36 @@ function Library() {
           })}
         </div>
       </div>
-      <div className="p-3 space-y-4">
+      <div className="p-3 space-y-2">
         {STRING_SET_LABELS.map((ss) => {
           const triads = triadsForQuality.filter(
             (t) => t.stringSet.join(",") === ss.key
           );
+          const isOpen = openSet === ss.key;
           return (
             <section key={ss.key}>
-              <h3
-                className="text-[11px] font-bold uppercase tracking-wider mb-2 px-2 py-1 rounded"
+              <button
+                type="button"
+                onClick={() => toggleSet(ss.key)}
+                className="w-full text-left text-[11px] font-bold uppercase tracking-wider px-2 py-1.5 rounded flex items-center justify-between cursor-pointer hover:brightness-95 transition"
                 style={{ color: accent, background: accentSoft }}
+                aria-expanded={isOpen}
               >
-                Strings {ss.label}
-              </h3>
-              <div className="flex flex-col gap-2 items-center">
-                {triads.map((triad) => (
-                  <DraggableLibraryCard key={triad.id} triad={triad} />
-                ))}
-              </div>
+                <span>Strings {ss.label}</span>
+                <span
+                  className="inline-block transition-transform"
+                  style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}
+                >
+                  ›
+                </span>
+              </button>
+              {isOpen && (
+                <div className="flex flex-col gap-2 items-center mt-2 mb-2">
+                  {triads.map((triad) => (
+                    <DraggableLibraryCard key={triad.id} triad={triad} />
+                  ))}
+                </div>
+              )}
             </section>
           );
         })}
