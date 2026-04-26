@@ -158,7 +158,13 @@ const STRING_SET_LABELS: { label: string; key: string }[] = [
   { label: "4-5-6", key: "4,5,6" },
 ];
 
-function Library() {
+function Library({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const [activeQuality, setActiveQuality] = useState<Quality>("major");
   const [openSet, setOpenSet] = useState<string | null>(null);
   const accent = QUALITY_COLOR[activeQuality];
@@ -171,10 +177,35 @@ function Library() {
   const triadsForQuality = TRIADS.filter((t) => t.quality === activeQuality);
 
   return (
-    <aside className="w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto">
+    <>
+      {open && (
+        <button
+          type="button"
+          aria-label="Close library"
+          onClick={onClose}
+          className="md:hidden fixed inset-0 bg-black/40 z-40 cursor-default"
+        />
+      )}
+      <aside
+        className={`w-[260px] md:w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
       <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
-        <h2 className="font-bold text-sm text-zinc-900">Card Library</h2>
-        <p className="text-xs text-zinc-500 mt-0.5 mb-3">Drag onto the board</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="font-bold text-sm text-zinc-900">Card Library</h2>
+            <p className="text-xs text-zinc-500 mt-0.5 mb-3">Drag onto the board</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-zinc-500 hover:bg-zinc-100 flex items-center justify-center"
+          >
+            ×
+          </button>
+        </div>
         <div className="flex gap-1">
           {(["major", "minor", "diminished"] as const).map((q) => {
             const active = activeQuality === q;
@@ -230,7 +261,8 @@ function Library() {
           );
         })}
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }
 
@@ -238,6 +270,7 @@ export function Board() {
   const [placed, setPlaced] = useState<PlacedCard[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [libraryOpen, setLibraryOpen] = useState(false);
   const boardRef = useRef<HTMLDivElement | null>(null);
 
   const sensors = useSensors(
@@ -261,8 +294,8 @@ export function Board() {
 
   if (!hydrated) {
     return (
-      <div className="flex h-[calc(100vh-64px)] min-h-[600px]">
-        <aside className="w-[220px] shrink-0 bg-white border-r border-zinc-200" />
+      <div className="flex h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
+        <aside className="hidden md:block w-[220px] shrink-0 bg-white border-r border-zinc-200" />
         <div className="flex-1 bg-zinc-50" />
       </div>
     );
@@ -270,6 +303,7 @@ export function Board() {
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(String(event.active.id));
+    setLibraryOpen(false);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -356,14 +390,24 @@ export function Board() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex h-[calc(100vh-64px)] min-h-[600px]">
-        <Library />
-        <div className="flex-1 flex flex-col p-4 gap-3 min-w-0">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-zinc-600">
-              {placed.length === 0
-                ? "Empty board"
-                : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
+      <div className="flex h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px] relative">
+        <Library open={libraryOpen} onClose={() => setLibraryOpen(false)} />
+        <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 min-w-0">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setLibraryOpen(true)}
+                className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-zinc-700 border border-zinc-300 rounded-md px-2.5 py-1 hover:bg-zinc-50"
+                aria-label="Open card library"
+              >
+                <span aria-hidden>☰</span> Cards
+              </button>
+              <div className="text-sm text-zinc-600">
+                {placed.length === 0
+                  ? "Empty board"
+                  : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
+              </div>
             </div>
             <div className="flex items-center gap-2 flex-wrap justify-end">
               {PRESETS.map((p) => (
