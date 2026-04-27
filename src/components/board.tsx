@@ -51,6 +51,7 @@ const PRESETS: { label: string; ids: string[]; quality: Quality }[] = [
       "major-234-root",
       "major-234-root",
       "minor-234-second",
+      "dim-234-root",
     ],
   },
 ];
