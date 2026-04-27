@@ -28,6 +28,7 @@ type PlacedCard = {
   triadId: string;
   x: number;
   y: number;
+  sequenceNumber?: number;
 };
 
 const STORAGE_KEY = "easy-triads.board.v1";
@@ -90,11 +91,9 @@ function DraggableLibraryCard({ triad }: { triad: Triad }) {
 function DraggablePlacedCard({
   placed,
   onRemove,
-  sequenceNumber,
 }: {
   placed: PlacedCard;
   onRemove: (id: string) => void;
-  sequenceNumber: number;
 }) {
   const triad = getTriad(placed.triadId);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -135,7 +134,7 @@ function DraggablePlacedCard({
         {...attributes}
         className="cursor-grab active:cursor-grabbing"
       >
-        <TriadCard triad={triad} sequenceNumber={sequenceNumber} />
+        <TriadCard triad={triad} sequenceNumber={placed.sequenceNumber} />
       </div>
     </div>
   );
@@ -167,12 +166,11 @@ function BoardDropZone({
           Drag cards from the library to build your study board
         </div>
       )}
-      {placed.map((p, i) => (
+      {placed.map((p) => (
         <DraggablePlacedCard
           key={p.instanceId}
           placed={p}
           onRemove={onRemove}
-          sequenceNumber={i + 1}
         />
       ))}
     </div>
@@ -478,6 +476,7 @@ export function Board() {
             triadId,
             x: 20 + col * 240,
             y: 20 + (startRow + row) * 240,
+            sequenceNumber: i + 1,
           };
         }),
       ];
