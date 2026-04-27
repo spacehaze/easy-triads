@@ -17,9 +17,10 @@ const FRET_COLOR = "#e4e4e7";
 type Props = {
   triad: Triad;
   compact?: boolean;
+  sequenceNumber?: number;
 };
 
-export function TriadCard({ triad, compact }: Props) {
+export function TriadCard({ triad, compact, sequenceNumber }: Props) {
   const width = compact ? 180 : 220;
   const boardWidth = width - 40;
   const boardHeight = 120;
@@ -89,6 +90,21 @@ export function TriadCard({ triad, compact }: Props) {
             ? "1"
             : "2"}
         </text>
+        {sequenceNumber !== undefined && (
+          <text
+            x={width / 2}
+            y={paddingTop + ((STRINGS.length - 1) * stringSpacing) / 2 + 14}
+            textAnchor="middle"
+            fontSize={120}
+            fontWeight={900}
+            fill={accent}
+            fillOpacity={0.22}
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            style={{ pointerEvents: "none" }}
+          >
+            {sequenceNumber}
+          </text>
+        )}
         {STRINGS.map((s, i) => {
           const y = paddingTop + i * stringSpacing;
           const active = isActive(s);

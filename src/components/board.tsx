@@ -81,9 +81,11 @@ function DraggableLibraryCard({ triad }: { triad: Triad }) {
 function DraggablePlacedCard({
   placed,
   onRemove,
+  sequenceNumber,
 }: {
   placed: PlacedCard;
   onRemove: (id: string) => void;
+  sequenceNumber: number;
 }) {
   const triad = getTriad(placed.triadId);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -124,7 +126,7 @@ function DraggablePlacedCard({
         {...attributes}
         className="cursor-grab active:cursor-grabbing"
       >
-        <TriadCard triad={triad} />
+        <TriadCard triad={triad} sequenceNumber={sequenceNumber} />
       </div>
     </div>
   );
@@ -156,8 +158,13 @@ function BoardDropZone({
           Drag cards from the library to build your study board
         </div>
       )}
-      {placed.map((p) => (
-        <DraggablePlacedCard key={p.instanceId} placed={p} onRemove={onRemove} />
+      {placed.map((p, i) => (
+        <DraggablePlacedCard
+          key={p.instanceId}
+          placed={p}
+          onRemove={onRemove}
+          sequenceNumber={i + 1}
+        />
       ))}
     </div>
   );
