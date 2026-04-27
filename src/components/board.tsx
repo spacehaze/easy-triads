@@ -40,9 +40,6 @@ const TRIAD_BY_ID = new Map(TRIADS.map((t) => [t.id, t]));
 type Sequence = { label: string; ids: string[]; quality: Quality };
 
 const SEQUENCES: Sequence[] = [
-  { label: "Major 1-2-3", quality: "major", ids: ["major-123-root", "major-123-first", "major-123-second"] },
-  { label: "Major 2-3-4", quality: "major", ids: ["major-234-root", "major-234-first", "major-234-second"] },
-  { label: "Minor 1-2-3", quality: "minor", ids: ["minor-123-root", "minor-123-first", "minor-123-second"] },
   {
     label: "D chords",
     quality: "major",
