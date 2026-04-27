@@ -41,6 +41,18 @@ const PRESETS: { label: string; ids: string[]; quality: Quality }[] = [
   { label: "Major 1-2-3", quality: "major", ids: ["major-123-root", "major-123-first", "major-123-second"] },
   { label: "Major 2-3-4", quality: "major", ids: ["major-234-root", "major-234-first", "major-234-second"] },
   { label: "Minor 1-2-3", quality: "minor", ids: ["minor-123-root", "minor-123-first", "minor-123-second"] },
+  {
+    label: "D chords",
+    quality: "major",
+    ids: [
+      "major-234-second",
+      "minor-234-first",
+      "minor-234-first",
+      "major-234-root",
+      "major-234-root",
+      "minor-234-second",
+    ],
+  },
 ];
 
 function getTriad(id: string): Triad | undefined {
@@ -361,15 +373,19 @@ export function Board() {
   const handleAddPreset = (ids: string[]) => {
     const ts = Date.now();
     setPlaced((prev) => {
-      const rowOffset = Math.floor(prev.length / 3) * 240;
+      const startRow = Math.floor(prev.length / 3);
       return [
         ...prev,
-        ...ids.map((triadId, i) => ({
-          instanceId: `${triadId}-${ts}-${i}`,
-          triadId,
-          x: 20 + i * 240,
-          y: 20 + rowOffset,
-        })),
+        ...ids.map((triadId, i) => {
+          const col = i % 3;
+          const row = Math.floor(i / 3);
+          return {
+            instanceId: `${triadId}-${ts}-${i}`,
+            triadId,
+            x: 20 + col * 240,
+            y: 20 + (startRow + row) * 240,
+          };
+        }),
       ];
     });
   };
