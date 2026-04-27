@@ -381,12 +381,13 @@ export function Board() {
   const handleAddPreset = (ids: string[]) => {
     const ts = Date.now();
     setPlaced((prev) => {
+      const cols = ids.length <= 3 ? ids.length : Math.ceil(ids.length / 2);
       const startRow = Math.floor(prev.length / 3);
       return [
         ...prev,
         ...ids.map((triadId, i) => {
-          const col = i % 3;
-          const row = Math.floor(i / 3);
+          const col = i % cols;
+          const row = Math.floor(i / cols);
           return {
             instanceId: `${triadId}-${ts}-${i}`,
             triadId,
