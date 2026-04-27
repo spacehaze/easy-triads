@@ -37,12 +37,20 @@ const LIB_CARD_WIDTH = 180;
 
 const TRIAD_BY_ID = new Map(TRIADS.map((t) => [t.id, t]));
 
-type Sequence = { label: string; ids: string[]; quality: Quality };
+type Sequence = {
+  label: string;
+  ids: string[];
+  quality: Quality;
+  color?: string;
+  colorSoft?: string;
+};
 
 const SEQUENCES: Sequence[] = [
   {
     label: "D chords",
     quality: "major",
+    color: "#16a34a",
+    colorSoft: "#f0fdf4",
     ids: [
       "major-234-second",
       "minor-234-first",
@@ -327,7 +335,10 @@ function SequencesList({
           </div>
         </div>
         <div className="p-3 flex flex-col gap-2">
-          {SEQUENCES.map((seq) => (
+          {SEQUENCES.map((seq) => {
+            const c = seq.color ?? QUALITY_COLOR[seq.quality];
+            const cs = seq.colorSoft ?? QUALITY_COLOR_SOFT[seq.quality];
+            return (
             <button
               key={seq.label}
               type="button"
@@ -338,9 +349,9 @@ function SequencesList({
               }}
               className="text-left rounded-lg border px-3 py-2.5 hover:brightness-95 transition"
               style={{
-                color: QUALITY_COLOR[seq.quality],
-                borderColor: `${QUALITY_COLOR[seq.quality]}66`,
-                background: QUALITY_COLOR_SOFT[seq.quality],
+                color: c,
+                borderColor: `${c}66`,
+                background: cs,
               }}
             >
               <div className="text-sm font-bold">{seq.label}</div>
@@ -348,7 +359,8 @@ function SequencesList({
                 {seq.ids.length} {seq.ids.length === 1 ? "card" : "cards"}
               </div>
             </button>
-          ))}
+            );
+          })}
         </div>
       </aside>
     </>
