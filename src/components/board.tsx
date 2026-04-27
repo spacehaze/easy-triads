@@ -37,7 +37,9 @@ const LIB_CARD_WIDTH = 180;
 
 const TRIAD_BY_ID = new Map(TRIADS.map((t) => [t.id, t]));
 
-const PRESETS: { label: string; ids: string[]; quality: Quality }[] = [
+type Sequence = { label: string; ids: string[]; quality: Quality };
+
+const SEQUENCES: Sequence[] = [
   { label: "Major 1-2-3", quality: "major", ids: ["major-123-root", "major-123-first", "major-123-second"] },
   { label: "Major 2-3-4", quality: "major", ids: ["major-234-root", "major-234-first", "major-234-second"] },
   { label: "Minor 1-2-3", quality: "minor", ids: ["minor-123-root", "minor-123-first", "minor-123-second"] },
@@ -287,11 +289,81 @@ function Library({
   );
 }
 
+function SequencesList({
+  open,
+  onClose,
+  onAdd,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onAdd: (ids: string[]) => void;
+}) {
+  return (
+    <>
+      {open && (
+        <button
+          type="button"
+          aria-label="Close sequences"
+          onClick={onClose}
+          className="md:hidden fixed inset-0 bg-black/40 z-40 cursor-default"
+        />
+      )}
+      <aside
+        className={`w-[260px] md:w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="font-bold text-sm text-zinc-900">Sequences</h2>
+              <p className="text-xs text-zinc-500 mt-0.5">Click to add to board</p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-zinc-500 hover:bg-zinc-100 flex items-center justify-center"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+        <div className="p-3 flex flex-col gap-2">
+          {SEQUENCES.map((seq) => (
+            <button
+              key={seq.label}
+              type="button"
+              data-testid={`seq-${seq.label.toLowerCase().replace(/\s+/g, "-")}`}
+              onClick={() => {
+                onAdd(seq.ids);
+                onClose();
+              }}
+              className="text-left rounded-lg border px-3 py-2.5 hover:brightness-95 transition"
+              style={{
+                color: QUALITY_COLOR[seq.quality],
+                borderColor: `${QUALITY_COLOR[seq.quality]}66`,
+                background: QUALITY_COLOR_SOFT[seq.quality],
+              }}
+            >
+              <div className="text-sm font-bold">{seq.label}</div>
+              <div className="text-[11px] opacity-80">
+                {seq.ids.length} {seq.ids.length === 1 ? "card" : "cards"}
+              </div>
+            </button>
+          ))}
+        </div>
+      </aside>
+    </>
+  );
+}
+
 export function Board() {
   const [placed, setPlaced] = useState<PlacedCard[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"triads" | "sequences">("triads");
   const boardRef = useRef<HTMLDivElement | null>(null);
 
   const sensors = useSensors(
@@ -315,9 +387,12 @@ export function Board() {
 
   if (!hydrated) {
     return (
-      <div className="flex h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
-        <aside className="hidden md:block w-[220px] shrink-0 bg-white border-r border-zinc-200" />
-        <div className="flex-1 bg-zinc-50" />
+      <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
+        <div className="h-10 border-b border-zinc-200 bg-white" />
+        <div className="flex flex-1">
+          <aside className="hidden md:block w-[220px] shrink-0 bg-white border-r border-zinc-200" />
+          <div className="flex-1 bg-zinc-50" />
+        </div>
       </div>
     );
   }
@@ -416,57 +491,70 @@ export function Board() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px] relative">
-        <Library open={libraryOpen} onClose={() => setLibraryOpen(false)} />
-        <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 min-w-0">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setLibraryOpen(true)}
-                className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-zinc-700 border border-zinc-300 rounded-md px-2.5 py-1 hover:bg-zinc-50"
-                aria-label="Open card library"
-              >
-                <span aria-hidden>☰</span> Cards
-              </button>
-              <div className="text-sm text-zinc-600">
-                {placed.length === 0
-                  ? "Empty board"
-                  : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 flex-wrap justify-end">
-              {PRESETS.map((p) => (
+      <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
+        <div className="flex border-b border-zinc-200 bg-white shrink-0">
+          {(["triads", "sequences"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              data-testid={`tab-${t}`}
+              onClick={() => {
+                setActiveTab(t);
+                setLibraryOpen(false);
+              }}
+              className={`px-5 py-2.5 text-sm font-semibold transition-colors border-b-2 ${
+                activeTab === t
+                  ? "text-[#1e3a5f] border-[#1e3a5f]"
+                  : "text-zinc-500 border-transparent hover:text-zinc-800"
+              }`}
+            >
+              {t === "triads" ? "Triads" : "Sequences"}
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-1 min-h-0 relative">
+          {activeTab === "triads" ? (
+            <Library open={libraryOpen} onClose={() => setLibraryOpen(false)} />
+          ) : (
+            <SequencesList
+              open={libraryOpen}
+              onClose={() => setLibraryOpen(false)}
+              onAdd={handleAddPreset}
+            />
+          )}
+          <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 min-w-0">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-3">
                 <button
-                  key={p.label}
                   type="button"
-                  data-testid={`preset-${p.label.toLowerCase().replace(/\s+/g, "-")}`}
-                  onClick={() => handleAddPreset(p.ids)}
-                  className="text-xs font-semibold border rounded-md px-2.5 py-1 transition-colors hover:brightness-95"
-                  style={{
-                    color: QUALITY_COLOR[p.quality],
-                    borderColor: `${QUALITY_COLOR[p.quality]}66`,
-                    background: QUALITY_COLOR_SOFT[p.quality],
-                  }}
+                  onClick={() => setLibraryOpen(true)}
+                  className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-zinc-700 border border-zinc-300 rounded-md px-2.5 py-1 hover:bg-zinc-50"
+                  aria-label={activeTab === "triads" ? "Open card library" : "Open sequences"}
                 >
-                  + {p.label}
+                  <span aria-hidden>☰</span>{" "}
+                  {activeTab === "triads" ? "Cards" : "Sequences"}
                 </button>
-              ))}
+                <div className="text-sm text-zinc-600">
+                  {placed.length === 0
+                    ? "Empty board"
+                    : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={handleClear}
                 disabled={placed.length === 0}
-                className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed ml-2"
+                className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 Clear board
               </button>
             </div>
-          </div>
           <BoardDropZone
             placed={placed}
             onRemove={handleRemove}
             boardRef={boardRef}
           />
+        </div>
         </div>
       </div>
       <DragOverlay dropAnimation={null}>
