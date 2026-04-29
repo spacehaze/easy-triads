@@ -397,12 +397,58 @@ function SequencesList({
   );
 }
 
+function TheoryPanel({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <>
+      {open && (
+        <button
+          type="button"
+          aria-label="Close theory"
+          onClick={onClose}
+          className="md:hidden fixed inset-0 bg-black/40 z-40 cursor-default"
+        />
+      )}
+      <aside
+        className={`w-[260px] md:w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="font-bold text-sm text-zinc-900">Theory</h2>
+              <p className="text-xs text-zinc-500 mt-0.5">Reference</p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-zinc-500 hover:bg-zinc-100 flex items-center justify-center"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+        <div className="p-4 text-xs text-zinc-500 leading-relaxed">
+          Coming soon.
+        </div>
+      </aside>
+    </>
+  );
+}
+
 export function Board() {
   const [placed, setPlaced] = useState<PlacedCard[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"triads" | "sequences">("triads");
+  const [activeTab, setActiveTab] = useState<"triads" | "sequences" | "theory">("triads");
   const boardRef = useRef<HTMLDivElement | null>(null);
 
   const sensors = useSensors(
@@ -533,7 +579,7 @@ export function Board() {
     >
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
         <div className="flex border-b border-zinc-200 bg-white shrink-0">
-          {(["triads", "sequences"] as const).map((t) => (
+          {(["triads", "sequences", "theory"] as const).map((t) => (
             <button
               key={t}
               type="button"
@@ -548,18 +594,27 @@ export function Board() {
                   : "text-zinc-500 border-transparent hover:text-zinc-800"
               }`}
             >
-              {t === "triads" ? "Triads" : "Sequences"}
+              {t === "triads"
+                ? "Triads"
+                : t === "sequences"
+                ? "Sequences"
+                : "Theory"}
             </button>
           ))}
         </div>
         <div className="flex flex-1 min-h-0 relative">
           {activeTab === "triads" ? (
             <Library open={libraryOpen} onClose={() => setLibraryOpen(false)} />
-          ) : (
+          ) : activeTab === "sequences" ? (
             <SequencesList
               open={libraryOpen}
               onClose={() => setLibraryOpen(false)}
               onAdd={handleAddPreset}
+            />
+          ) : (
+            <TheoryPanel
+              open={libraryOpen}
+              onClose={() => setLibraryOpen(false)}
             />
           )}
           <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 min-w-0">
@@ -569,10 +624,20 @@ export function Board() {
                   type="button"
                   onClick={() => setLibraryOpen(true)}
                   className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-zinc-700 border border-zinc-300 rounded-md px-2.5 py-1 hover:bg-zinc-50"
-                  aria-label={activeTab === "triads" ? "Open card library" : "Open sequences"}
+                  aria-label={
+                    activeTab === "triads"
+                      ? "Open card library"
+                      : activeTab === "sequences"
+                      ? "Open sequences"
+                      : "Open theory"
+                  }
                 >
                   <span aria-hidden>☰</span>{" "}
-                  {activeTab === "triads" ? "Cards" : "Sequences"}
+                  {activeTab === "triads"
+                    ? "Cards"
+                    : activeTab === "sequences"
+                    ? "Sequences"
+                    : "Theory"}
                 </button>
                 <div className="text-sm text-zinc-600">
                   {placed.length === 0
