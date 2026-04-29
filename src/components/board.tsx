@@ -369,12 +369,24 @@ function SequencesList({
                 }}
               >
                 {firstTriad && (
-                  <TriadCard
-                    triad={firstTriad}
-                    compact
-                    preview
-                    sequenceNumber={1}
-                  />
+                  <div
+                    className="overflow-hidden"
+                    style={{ width: 90, height: 100 }}
+                  >
+                    <div
+                      style={{
+                        transform: "scale(0.5)",
+                        transformOrigin: "top left",
+                      }}
+                    >
+                      <TriadCard
+                        triad={firstTriad}
+                        compact
+                        preview
+                        sequenceNumber={1}
+                      />
+                    </div>
+                  </div>
                 )}
               </button>
             );
