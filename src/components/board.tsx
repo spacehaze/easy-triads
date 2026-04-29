@@ -25,9 +25,10 @@ import { TriadCard } from "./triad-card";
 
 type PlacedCard = {
   instanceId: string;
-  triadId: string;
   x: number;
   y: number;
+  triadId?: string;
+  text?: string;
   sequenceNumber?: number;
 };
 
@@ -104,6 +105,28 @@ function DraggableLibraryCard({ triad }: { triad: Triad }) {
   );
 }
 
+function TheoryCard({ text }: { text: string }) {
+  return (
+    <div
+      className="rounded-xl border-2 shadow-sm select-none flex items-center justify-center text-center"
+      style={{
+        width: 220,
+        minHeight: 200,
+        background: "#fefce8",
+        borderColor: "#facc15",
+        padding: 20,
+      }}
+    >
+      <div
+        className="text-base font-semibold leading-snug italic"
+        style={{ color: "#713f12" }}
+      >
+        “{text}”
+      </div>
+    </div>
+  );
+}
+
 function DraggablePlacedCard({
   placed,
   onRemove,
@@ -111,14 +134,14 @@ function DraggablePlacedCard({
   placed: PlacedCard;
   onRemove: (id: string) => void;
 }) {
-  const triad = getTriad(placed.triadId);
+  const triad = placed.triadId ? getTriad(placed.triadId) : undefined;
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: `placed:${placed.instanceId}`,
       data: { source: "placed", instanceId: placed.instanceId },
     });
 
-  if (!triad) return null;
+  if (!triad && !placed.text) return null;
 
   const style: React.CSSProperties = {
     position: "absolute",
@@ -150,7 +173,11 @@ function DraggablePlacedCard({
         {...attributes}
         className="cursor-grab active:cursor-grabbing"
       >
-        <TriadCard triad={triad} sequenceNumber={placed.sequenceNumber} />
+        {triad ? (
+          <TriadCard triad={triad} sequenceNumber={placed.sequenceNumber} />
+        ) : (
+          <TheoryCard text={placed.text!} />
+        )}
       </div>
     </div>
   );
@@ -397,12 +424,24 @@ function SequencesList({
   );
 }
 
+type TheoryItem = { id: string; title: string; text: string };
+
+const THEORY_ITEMS: TheoryItem[] = [
+  {
+    id: "first-thing",
+    title: "1",
+    text: "We live on the bottom of air ocean",
+  },
+];
+
 function TheoryPanel({
   open,
   onClose,
+  onAddTheory,
 }: {
   open: boolean;
   onClose: () => void;
+  onAddTheory: (text: string) => void;
 }) {
   return (
     <>
@@ -423,7 +462,7 @@ function TheoryPanel({
           <div className="flex items-start justify-between">
             <div>
               <h2 className="font-bold text-sm text-zinc-900">Theory</h2>
-              <p className="text-xs text-zinc-500 mt-0.5">Reference</p>
+              <p className="text-xs text-zinc-500 mt-0.5">Click to add to board</p>
             </div>
             <button
               type="button"
@@ -435,8 +474,26 @@ function TheoryPanel({
             </button>
           </div>
         </div>
-        <div className="p-4 text-xs text-zinc-500 leading-relaxed">
-          Coming soon.
+        <div className="p-3 flex flex-col gap-2">
+          {THEORY_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              data-testid={`theory-${item.id}`}
+              onClick={() => {
+                onAddTheory(item.text);
+                onClose();
+              }}
+              className="w-full text-left text-sm font-bold px-3 py-2.5 rounded-lg border-2 hover:brightness-95 transition"
+              style={{
+                color: "#713f12",
+                borderColor: "#facc15",
+                background: "#fefce8",
+              }}
+            >
+              {item.title}
+            </button>
+          ))}
         </div>
       </aside>
     </>
@@ -539,6 +596,19 @@ export function Board() {
     setPlaced([]);
   };
 
+  const handleAddTheory = (text: string) => {
+    const ts = Date.now();
+    setPlaced((prev) => [
+      ...prev,
+      {
+        instanceId: `theory-${ts}`,
+        text,
+        x: 20,
+        y: 20 + Math.floor(prev.length / 3) * 240,
+      },
+    ]);
+  };
+
   const handleAddPreset = (ids: string[]) => {
     const ts = Date.now();
     setPlaced((prev) => {
@@ -566,7 +636,7 @@ export function Board() {
     if (activeId.startsWith("lib:")) return getTriad(activeId.slice(4)) ?? null;
     if (activeId.startsWith("placed:")) {
       const p = placed.find((p) => `placed:${p.instanceId}` === activeId);
-      return p ? getTriad(p.triadId) ?? null : null;
+      return p && p.triadId ? getTriad(p.triadId) ?? null : null;
     }
     return null;
   })();
@@ -615,6 +685,7 @@ export function Board() {
             <TheoryPanel
               open={libraryOpen}
               onClose={() => setLibraryOpen(false)}
+              onAddTheory={handleAddTheory}
             />
           )}
           <div className="flex-1 flex flex-col p-3 sm:p-4 gap-3 min-w-0">
