@@ -63,6 +63,22 @@ const SEQUENCES: Sequence[] = [
       "major-234-second",
     ],
   },
+  {
+    label: "Sequence 2",
+    quality: "major",
+    color: "#ca8a04",
+    colorSoft: "#fffbeb",
+    ids: [
+      "major-234-root",
+      "minor-234-second",
+      "minor-234-second",
+      "major-234-second",
+      "major-234-second",
+      "minor-234-second",
+      "dim-234-second",
+      "major-234-root",
+    ],
+  },
 ];
 
 function getTriad(id: string): Triad | undefined {
