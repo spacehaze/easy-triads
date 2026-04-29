@@ -352,7 +352,6 @@ function SequencesList({
                 background: cs,
               }}
             >
-              <div className="text-sm font-bold">{seq.label}</div>
               <div className="text-[11px] opacity-80">
                 {seq.ids.length} {seq.ids.length === 1 ? "card" : "cards"}
               </div>
