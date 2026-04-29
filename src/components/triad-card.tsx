@@ -18,9 +18,10 @@ type Props = {
   triad: Triad;
   compact?: boolean;
   sequenceNumber?: number;
+  preview?: boolean;
 };
 
-export function TriadCard({ triad, compact, sequenceNumber }: Props) {
+export function TriadCard({ triad, compact, sequenceNumber, preview }: Props) {
   const width = compact ? 180 : 220;
   const boardWidth = width - 40;
   const boardHeight = 120;
@@ -40,21 +41,23 @@ export function TriadCard({ triad, compact, sequenceNumber }: Props) {
       className="relative rounded-xl border shadow-sm select-none overflow-hidden"
       style={{ width, background: "#ffffff", borderColor: `${accent}40` }}
     >
-      <button
-        type="button"
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation();
-          void playTriad(triad);
-        }}
-        aria-label="Play chord"
-        className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-transform"
-        style={{ background: accent, color: "#ffffff" }}
-      >
-        <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden>
-          <polygon points="2,1 9,5 2,9" fill="currentColor" />
-        </svg>
-      </button>
+      {!preview && (
+        <button
+          type="button"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            void playTriad(triad);
+          }}
+          aria-label="Play chord"
+          className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-transform"
+          style={{ background: accent, color: "#ffffff" }}
+        >
+          <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden>
+            <polygon points="2,1 9,5 2,9" fill="currentColor" />
+          </svg>
+        </button>
+      )}
       <div
         className="px-3 py-2 border-b"
         style={{ borderColor: `${accent}40`, background: accentSoft }}

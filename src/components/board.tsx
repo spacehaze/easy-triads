@@ -352,26 +352,31 @@ function SequencesList({
           {SEQUENCES.map((seq) => {
             const c = seq.color ?? QUALITY_COLOR[seq.quality];
             const cs = seq.colorSoft ?? QUALITY_COLOR_SOFT[seq.quality];
+            const firstTriad = TRIAD_BY_ID.get(seq.ids[0]);
             return (
-            <button
-              key={seq.label}
-              type="button"
-              data-testid={`seq-${seq.label.toLowerCase().replace(/\s+/g, "-")}`}
-              onClick={() => {
-                onAdd(seq.ids);
-                onClose();
-              }}
-              className="text-left rounded-lg border px-3 py-2.5 hover:brightness-95 transition"
-              style={{
-                color: c,
-                borderColor: `${c}66`,
-                background: cs,
-              }}
-            >
-              <div className="text-[11px] opacity-80">
-                {seq.ids.length} {seq.ids.length === 1 ? "card" : "cards"}
-              </div>
-            </button>
+              <button
+                key={seq.label}
+                type="button"
+                data-testid={`seq-${seq.label.toLowerCase().replace(/\s+/g, "-")}`}
+                onClick={() => {
+                  onAdd(seq.ids);
+                  onClose();
+                }}
+                className="rounded-lg border-2 p-2 hover:brightness-95 transition flex justify-center"
+                style={{
+                  borderColor: c,
+                  background: cs,
+                }}
+              >
+                {firstTriad && (
+                  <TriadCard
+                    triad={firstTriad}
+                    compact
+                    preview
+                    sequenceNumber={1}
+                  />
+                )}
+              </button>
             );
           })}
         </div>
