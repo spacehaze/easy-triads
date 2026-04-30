@@ -493,3 +493,28 @@ export const STRING_NAMES: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
   5: "A",
   6: "E",
 };
+
+export type ChordLabel = { roman: string; chord: string; notes: string };
+
+export const KEY_PROGRESSIONS: Record<string, Record<number, ChordLabel>> = {
+  D: {
+    1: { roman: "I", chord: "D Major", notes: "D, F#, A" },
+    2: { roman: "ii", chord: "E minor", notes: "E, G, B" },
+    3: { roman: "iii", chord: "F# minor", notes: "F#, A, C#" },
+    4: { roman: "IV", chord: "G Major", notes: "G, B, D" },
+    5: { roman: "V", chord: "A Major", notes: "A, C#, E" },
+    6: { roman: "vi", chord: "B minor", notes: "B, D, F#" },
+    7: { roman: "vii°", chord: "C# diminished", notes: "C#, E, G" },
+    8: { roman: "I", chord: "D Major", notes: "D, F#, A" },
+  },
+  A: {
+    1: { roman: "I", chord: "A Major", notes: "A, C#, E" },
+    2: { roman: "ii", chord: "B minor", notes: "B, D, F#" },
+    3: { roman: "iii", chord: "C# minor", notes: "C#, E, G#" },
+    4: { roman: "IV", chord: "D Major", notes: "D, F#, A" },
+    5: { roman: "V", chord: "E Major", notes: "E, G#, B" },
+    6: { roman: "vi", chord: "F# minor", notes: "F#, A, C#" },
+    7: { roman: "vii°", chord: "G# diminished", notes: "G#, B, D" },
+    8: { roman: "I", chord: "A Major", notes: "A, C#, E" },
+  },
+};

@@ -31,6 +31,7 @@ type PlacedCard = {
   text?: string;
   sequenceNumber?: number;
   selectedKey?: string;
+  sequenceInstanceId?: string;
 };
 
 const STORAGE_KEY = "easy-triads.board.v1";
@@ -614,11 +615,20 @@ export function Board() {
   };
 
   const handleSetKey = (instanceId: string, key: string) => {
-    setPlaced((prev) =>
-      prev.map((p) =>
-        p.instanceId === instanceId ? { ...p, selectedKey: key } : p
-      )
-    );
+    setPlaced((prev) => {
+      const card = prev.find((p) => p.instanceId === instanceId);
+      if (!card) return prev;
+      const seqId = card.sequenceInstanceId;
+      return prev.map((p) => {
+        if (seqId && p.sequenceInstanceId === seqId) {
+          return { ...p, selectedKey: key };
+        }
+        if (p.instanceId === instanceId) {
+          return { ...p, selectedKey: key };
+        }
+        return p;
+      });
+    });
   };
 
   const handleClear = () => {
@@ -640,6 +650,7 @@ export function Board() {
 
   const handleAddPreset = (ids: string[]) => {
     const ts = Date.now();
+    const sequenceInstanceId = `seq-${ts}`;
     setPlaced((prev) => {
       const cols = ids.length <= 3 ? ids.length : Math.ceil(ids.length / 2);
       const startRow = Math.floor(prev.length / 3);
@@ -654,6 +665,7 @@ export function Board() {
             x: 20 + col * 240,
             y: 20 + (startRow + row) * 240,
             sequenceNumber: i + 1,
+            sequenceInstanceId,
           };
         }),
       ];

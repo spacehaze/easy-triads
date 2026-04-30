@@ -3,6 +3,7 @@ import {
   QUALITY_LABEL,
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
+  KEY_PROGRESSIONS,
 } from "@/lib/triads";
 import { playTriad } from "@/lib/audio";
 
@@ -44,6 +45,10 @@ export function TriadCard({
 
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
+  const chordLabel =
+    selectedKey && sequenceNumber
+      ? KEY_PROGRESSIONS[selectedKey]?.[sequenceNumber] ?? null
+      : null;
 
   return (
     <div
@@ -68,29 +73,68 @@ export function TriadCard({
         </button>
       )}
       <div
-        className="px-3 py-2 border-b flex items-center justify-between gap-2"
+        className="px-3 py-2 border-b"
         style={{ borderColor: `${accent}40`, background: accentSoft }}
       >
-        <div
-          className="text-sm font-bold leading-tight"
-          style={{ color: accent }}
-        >
-          {QUALITY_LABEL[triad.quality]}
-        </div>
-        {!preview && sequenceNumber === 1 && onKeyChange && (
-          <select
-            value={selectedKey ?? ""}
-            onChange={(e) => onKeyChange(e.target.value)}
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={(e) => e.stopPropagation()}
-            className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer bg-white"
-            style={{ color: accent, borderColor: `${accent}66` }}
-            aria-label="Sequence key"
-          >
-            <option value="">KEY</option>
-            <option value="D">D</option>
-            <option value="A">A</option>
-          </select>
+        {chordLabel ? (
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0">
+              <div
+                className="text-[11px] font-bold leading-tight"
+                style={{ color: accent }}
+              >
+                {chordLabel.roman}
+              </div>
+              <div
+                className="text-sm font-bold leading-tight truncate"
+                style={{ color: accent }}
+              >
+                {chordLabel.chord}
+              </div>
+              <div className="text-[10px] opacity-70 mt-0.5" style={{ color: accent }}>
+                {chordLabel.notes}
+              </div>
+            </div>
+            {!preview && sequenceNumber === 1 && onKeyChange && (
+              <select
+                value={selectedKey ?? ""}
+                onChange={(e) => onKeyChange(e.target.value)}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+                className="shrink-0 text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer bg-white"
+                style={{ color: accent, borderColor: `${accent}66` }}
+                aria-label="Sequence key"
+              >
+                <option value="">KEY</option>
+                <option value="D">D</option>
+                <option value="A">A</option>
+              </select>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-2">
+            <div
+              className="text-sm font-bold leading-tight"
+              style={{ color: accent }}
+            >
+              {QUALITY_LABEL[triad.quality]}
+            </div>
+            {!preview && sequenceNumber === 1 && onKeyChange && (
+              <select
+                value={selectedKey ?? ""}
+                onChange={(e) => onKeyChange(e.target.value)}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+                className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer bg-white"
+                style={{ color: accent, borderColor: `${accent}66` }}
+                aria-label="Sequence key"
+              >
+                <option value="">KEY</option>
+                <option value="D">D</option>
+                <option value="A">A</option>
+              </select>
+            )}
+          </div>
         )}
       </div>
 
