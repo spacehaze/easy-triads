@@ -10,10 +10,10 @@ import { playTriad } from "@/lib/audio";
 const STRINGS: (1 | 2 | 3 | 4 | 5 | 6)[] = [1, 2, 3, 4, 5, 6];
 const FRET_COUNT = 5;
 
-const ROOT_COLOR = "#dc2626";
-const NOTE_COLOR = "#18181b";
-const INACTIVE_STRING = "#d4d4d8";
-const FRET_COLOR = "#e4e4e7";
+const ROOT_COLOR = "#ffe400";
+const NOTE_COLOR = "#f5e8ff";
+const INACTIVE_STRING = "#3d2a55";
+const FRET_COLOR = "#2a1845";
 
 type Props = {
   triad: Triad;
@@ -52,8 +52,13 @@ export function TriadCard({
 
   return (
     <div
-      className="relative rounded-xl border shadow-sm select-none overflow-hidden"
-      style={{ width, background: "#ffffff", borderColor: `${accent}40` }}
+      className="relative rounded-xl border-2 select-none overflow-hidden"
+      style={{
+        width,
+        background: "#0d0322",
+        borderColor: accent,
+        boxShadow: `0 0 16px ${accent}66, 0 0 32px ${accent}33, inset 0 0 24px ${accent}11`,
+      }}
     >
       {!preview && (
         <button
@@ -64,8 +69,12 @@ export function TriadCard({
             void playTriad(triad);
           }}
           aria-label="Play chord"
-          className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-transform"
-          style={{ background: accent, color: "#ffffff" }}
+          className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+          style={{
+            background: accent,
+            color: "#0d0322",
+            boxShadow: `0 0 12px ${accent}, 0 0 24px ${accent}88`,
+          }}
         >
           <svg viewBox="0 0 10 10" width="9" height="9" aria-hidden>
             <polygon points="2,1 9,5 2,9" fill="currentColor" />
@@ -74,11 +83,11 @@ export function TriadCard({
       )}
       <div
         className="px-3 py-2 border-b flex items-center justify-between gap-2"
-        style={{ borderColor: `${accent}40`, background: accentSoft }}
+        style={{ borderColor: `${accent}66`, background: accentSoft }}
       >
         <div
-          className="text-sm font-bold leading-tight"
-          style={{ color: accent }}
+          className="text-sm font-bold leading-tight tracking-wider"
+          style={{ color: accent, textShadow: `0 0 8px ${accent}aa` }}
         >
           {QUALITY_LABEL[triad.quality]}
         </div>
@@ -88,8 +97,8 @@ export function TriadCard({
             onChange={(e) => onKeyChange(e.target.value)}
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
-            className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer bg-white"
-            style={{ color: accent, borderColor: `${accent}66` }}
+            className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer"
+            style={{ color: accent, borderColor: accent, background: "#0d0322" }}
             aria-label="Sequence key"
           >
             <option value="">KEY</option>
@@ -99,8 +108,8 @@ export function TriadCard({
         )}
         {!preview && sequenceNumber !== undefined && sequenceNumber !== 1 && chordRoot && (
           <div
-            className="text-[11px] font-bold rounded border px-1.5 py-0.5 bg-white"
-            style={{ color: accent, borderColor: `${accent}66` }}
+            className="text-[11px] font-bold rounded border px-1.5 py-0.5"
+            style={{ color: accent, borderColor: accent, background: "#0d0322" }}
           >
             {chordRoot}
           </div>
@@ -120,8 +129,8 @@ export function TriadCard({
           fontSize={96}
           fontWeight={900}
           fill={accent}
-          fillOpacity={0.1}
-          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fillOpacity={0.18}
+          fontFamily="var(--font-vt323), ui-monospace, monospace"
           style={{ pointerEvents: "none" }}
         >
           {triad.inversion === "root"
@@ -138,8 +147,8 @@ export function TriadCard({
             fontSize={120}
             fontWeight={900}
             fill={accent}
-            fillOpacity={0.22}
-            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fillOpacity={0.3}
+            fontFamily="var(--font-vt323), ui-monospace, monospace"
             style={{ pointerEvents: "none" }}
           >
             {sequenceNumber}
@@ -156,7 +165,7 @@ export function TriadCard({
                 textAnchor="end"
                 fontSize={10}
                 fontWeight={active ? 700 : 400}
-                fill={active ? NOTE_COLOR : "#a1a1aa"}
+                fill={active ? NOTE_COLOR : "#5a4070"}
                 fontFamily="ui-sans-serif, system-ui, sans-serif"
               >
                 {s}
@@ -167,7 +176,12 @@ export function TriadCard({
                 x2={paddingLeft + boardWidth}
                 y2={y}
                 stroke={active ? accent : INACTIVE_STRING}
-                strokeWidth={active ? 1.5 : 1}
+                strokeWidth={active ? 1.8 : 1}
+                style={
+                  active
+                    ? { filter: `drop-shadow(0 0 3px ${accent})` }
+                    : undefined
+                }
               />
             </g>
           );
@@ -200,9 +214,14 @@ export function TriadCard({
                 cx={cx}
                 cy={cy}
                 r={9}
-                fill={isRoot ? ROOT_COLOR : NOTE_COLOR}
-                stroke="#ffffff"
+                fill={isRoot ? ROOT_COLOR : "#0d0322"}
+                stroke={isRoot ? ROOT_COLOR : NOTE_COLOR}
                 strokeWidth={1.5}
+                style={{
+                  filter: isRoot
+                    ? `drop-shadow(0 0 5px ${ROOT_COLOR})`
+                    : `drop-shadow(0 0 3px ${NOTE_COLOR}aa)`,
+                }}
               />
               <text
                 x={cx}
@@ -210,7 +229,7 @@ export function TriadCard({
                 textAnchor="middle"
                 fontSize={10}
                 fontWeight={700}
-                fill="#ffffff"
+                fill={isRoot ? "#0d0322" : NOTE_COLOR}
                 fontFamily="ui-sans-serif, system-ui, sans-serif"
               >
                 {note.interval}

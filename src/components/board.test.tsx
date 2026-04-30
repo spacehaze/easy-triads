@@ -51,7 +51,7 @@ describe("Board", () => {
     await renderBoard();
     await user.click(screen.getByTestId("tab-sequences"));
     await user.click(screen.getByTestId("seq-d-chords"));
-    expect(screen.getByText("8 cards on board")).toBeInTheDocument();
+    expect(screen.getByText(/8 cards on board/i)).toBeInTheDocument();
   });
 
   it("clicking a theory item adds a quote card to the board", async () => {
@@ -59,7 +59,7 @@ describe("Board", () => {
     await renderBoard();
     await user.click(screen.getByTestId("tab-theory"));
     await user.click(screen.getByTestId("theory-first-thing"));
-    expect(screen.getByText("1 card on board")).toBeInTheDocument();
+    expect(screen.getByText(/1 card on board/i)).toBeInTheDocument();
     expect(
       screen.getByText(/We live on the bottom of air ocean/i)
     ).toBeInTheDocument();
@@ -70,8 +70,8 @@ describe("Board", () => {
     await renderBoard();
     await user.click(screen.getByTestId("tab-sequences"));
     await user.click(screen.getByTestId("seq-d-chords"));
-    await user.click(screen.getByText("Clear board"));
-    expect(screen.getByText("Empty board")).toBeInTheDocument();
+    await user.click(screen.getByText(/Clear board/i));
+    expect(screen.getByText(/empty board/i)).toBeInTheDocument();
   });
 
   it("rehydrates placed cards from localStorage", async () => {
@@ -82,7 +82,7 @@ describe("Board", () => {
       ])
     );
     await renderBoard();
-    expect(screen.getByText("1 card on board")).toBeInTheDocument();
+    expect(screen.getByText(/1 card on board/i)).toBeInTheDocument();
     expect(screen.getByText(/saved quote/)).toBeInTheDocument();
   });
 });

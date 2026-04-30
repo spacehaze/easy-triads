@@ -107,18 +107,23 @@ function DraggableLibraryCard({ triad }: { triad: Triad }) {
 function TheoryCard({ text }: { text: string }) {
   return (
     <div
-      className="rounded-xl border-2 shadow-sm select-none flex items-center justify-center text-center"
+      className="rounded-xl border-2 select-none flex items-center justify-center text-center"
       style={{
         width: 220,
         minHeight: 200,
-        background: "#fefce8",
-        borderColor: "#facc15",
+        background: "#0d0322",
+        borderColor: "#ffe400",
         padding: 20,
+        boxShadow:
+          "0 0 16px rgba(255,228,0,0.5), 0 0 32px rgba(255,228,0,0.25), inset 0 0 24px rgba(255,228,0,0.06)",
       }}
     >
       <div
-        className="text-base font-semibold leading-snug italic"
-        style={{ color: "#713f12" }}
+        className="font-display text-lg leading-snug uppercase tracking-wider"
+        style={{
+          color: "#ffe400",
+          textShadow: "0 0 8px rgba(255,228,0,0.7)",
+        }}
       >
         “{text}”
       </div>
@@ -164,7 +169,8 @@ function DraggablePlacedCard({
           onRemove(placed.instanceId);
         }}
         onPointerDown={(e) => e.stopPropagation()}
-        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-zinc-900 text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md hover:bg-red-600"
+        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#ff2a92]"
+        style={{ boxShadow: "0 0 8px rgba(255,42,146,0.7)" }}
         aria-label="Remove card"
       >
         ×
@@ -208,13 +214,17 @@ function BoardDropZone({
         setNodeRef(node);
         boardRef.current = node;
       }}
-      className={`relative flex-1 min-h-[600px] bg-zinc-50 rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
-        isOver ? "border-[#2563a0] bg-blue-50/40" : "border-zinc-200"
+      className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
+        isOver ? "border-[#00f0ff] bg-[#00f0ff]/5" : "border-[#3d2a55]"
       }`}
+      style={{ background: "rgba(13, 3, 34, 0.4)" }}
     >
       {placed.length === 0 && (
-        <div className="absolute inset-0 flex items-center justify-center text-zinc-400 text-sm pointer-events-none">
-          Drag cards from the library to build your study board
+        <div
+          className="absolute inset-0 flex items-center justify-center text-sm pointer-events-none font-display tracking-wider uppercase"
+          style={{ color: "#b066ff", textShadow: "0 0 8px #b066ff66" }}
+        >
+          // Drag cards from the library to build your study board
         </div>
       )}
       {placed.map((p) => (
@@ -265,21 +275,41 @@ function Library({
         />
       )}
       <aside
-        className={`w-[260px] md:w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto ${
+        className={`w-[260px] md:w-[220px] shrink-0 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto border-r-2 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{
+          background: "rgba(13, 3, 34, 0.92)",
+          borderColor: "#3d2a55",
+        }}
       >
-      <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
+        <div
+          className="p-4 border-b-2 sticky top-0 z-10"
+          style={{
+            background: "rgba(13, 3, 34, 0.95)",
+            borderColor: "#3d2a55",
+          }}
+        >
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="font-bold text-sm text-zinc-900">Card Library</h2>
-            <p className="text-xs text-zinc-500 mt-0.5 mb-3">Drag onto the board</p>
+            <h2
+              className="font-display text-base uppercase tracking-widest"
+              style={{ color: "#00f0ff", textShadow: "0 0 8px #00f0ff88" }}
+            >
+              Card Library
+            </h2>
+            <p
+              className="text-[10px] mt-0.5 mb-3 font-display tracking-wider"
+              style={{ color: "#b066ff" }}
+            >
+              // drag onto the board
+            </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-zinc-500 hover:bg-zinc-100 flex items-center justify-center"
+            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#b066ff] hover:bg-[#b066ff]/20 flex items-center justify-center"
           >
             ×
           </button>
@@ -316,8 +346,13 @@ function Library({
               <button
                 type="button"
                 onClick={() => toggleSet(ss.key)}
-                className="w-full text-left text-[11px] font-bold uppercase tracking-wider px-2 py-1.5 rounded flex items-center justify-between cursor-pointer hover:brightness-95 transition"
-                style={{ color: accent, background: accentSoft }}
+                className="w-full text-left text-[11px] font-display uppercase tracking-widest px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition border"
+                style={{
+                  color: accent,
+                  background: "rgba(13, 3, 34, 0.5)",
+                  borderColor: `${accent}55`,
+                  textShadow: `0 0 6px ${accent}66`,
+                }}
                 aria-expanded={isOpen}
               >
                 <span>Strings {ss.label}</span>
@@ -364,21 +399,41 @@ function SequencesList({
         />
       )}
       <aside
-        className={`w-[260px] md:w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto ${
+        className={`w-[260px] md:w-[220px] shrink-0 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto border-r-2 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{
+          background: "rgba(13, 3, 34, 0.92)",
+          borderColor: "#3d2a55",
+        }}
       >
-        <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
+        <div
+          className="p-4 border-b-2 sticky top-0 z-10"
+          style={{
+            background: "rgba(13, 3, 34, 0.95)",
+            borderColor: "#3d2a55",
+          }}
+        >
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="font-bold text-sm text-zinc-900">Sequences</h2>
-              <p className="text-xs text-zinc-500 mt-0.5">Click to add to board</p>
+              <h2
+                className="font-display text-base uppercase tracking-widest"
+                style={{ color: "#00f0ff", textShadow: "0 0 8px #00f0ff88" }}
+              >
+                Sequences
+              </h2>
+              <p
+                className="text-[10px] mt-0.5 font-display tracking-wider"
+                style={{ color: "#b066ff" }}
+              >
+                // click to add to board
+              </p>
             </div>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-zinc-500 hover:bg-zinc-100 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#b066ff] hover:bg-[#b066ff]/20 flex items-center justify-center"
             >
               ×
             </button>
@@ -398,10 +453,11 @@ function SequencesList({
                   onAdd(seq.ids);
                   onClose();
                 }}
-                className="rounded-lg border-2 p-2 hover:brightness-95 transition flex justify-center"
+                className="rounded-lg border-2 p-2 transition flex justify-center"
                 style={{
                   borderColor: c,
-                  background: cs,
+                  background: "rgba(13, 3, 34, 0.6)",
+                  boxShadow: `0 0 10px ${c}66`,
                 }}
               >
                 {firstTriad && (
@@ -473,21 +529,41 @@ function TheoryPanel({
         />
       )}
       <aside
-        className={`w-[260px] md:w-[220px] shrink-0 bg-white border-r border-zinc-200 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto ${
+        className={`w-[260px] md:w-[220px] shrink-0 overflow-y-auto fixed inset-y-0 left-0 z-50 transition-transform md:relative md:translate-x-0 md:z-auto border-r-2 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{
+          background: "rgba(13, 3, 34, 0.92)",
+          borderColor: "#3d2a55",
+        }}
       >
-        <div className="p-4 border-b border-zinc-200 sticky top-0 bg-white z-10">
+        <div
+          className="p-4 border-b-2 sticky top-0 z-10"
+          style={{
+            background: "rgba(13, 3, 34, 0.95)",
+            borderColor: "#3d2a55",
+          }}
+        >
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="font-bold text-sm text-zinc-900">Theory</h2>
-              <p className="text-xs text-zinc-500 mt-0.5">Click to add to board</p>
+              <h2
+                className="font-display text-base uppercase tracking-widest"
+                style={{ color: "#00f0ff", textShadow: "0 0 8px #00f0ff88" }}
+              >
+                Theory
+              </h2>
+              <p
+                className="text-[10px] mt-0.5 font-display tracking-wider"
+                style={{ color: "#b066ff" }}
+              >
+                // click to add to board
+              </p>
             </div>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-zinc-500 hover:bg-zinc-100 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#b066ff] hover:bg-[#b066ff]/20 flex items-center justify-center"
             >
               ×
             </button>
@@ -503,11 +579,13 @@ function TheoryPanel({
                 onAddTheory(item.text);
                 onClose();
               }}
-              className="w-full text-left text-sm font-bold px-3 py-2.5 rounded-lg border-2 hover:brightness-95 transition"
+              className="w-full text-left text-sm font-display uppercase tracking-widest px-3 py-2.5 rounded-lg border-2 transition"
               style={{
-                color: "#713f12",
-                borderColor: "#facc15",
-                background: "#fefce8",
+                color: "#ffe400",
+                borderColor: "#ffe400",
+                background: "rgba(13, 3, 34, 0.6)",
+                boxShadow: "0 0 10px rgba(255, 228, 0, 0.4)",
+                textShadow: "0 0 6px rgba(255, 228, 0, 0.6)",
               }}
             >
               {item.title}
@@ -549,10 +627,10 @@ export function Board() {
   if (!hydrated) {
     return (
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
-        <div className="h-10 border-b border-zinc-200 bg-white" />
+        <div className="h-10 border-b-2 border-[#3d2a55]" />
         <div className="flex flex-1">
-          <aside className="hidden md:block w-[220px] shrink-0 bg-white border-r border-zinc-200" />
-          <div className="flex-1 bg-zinc-50" />
+          <aside className="hidden md:block w-[220px] shrink-0 border-r-2 border-[#3d2a55]" />
+          <div className="flex-1" />
         </div>
       </div>
     );
@@ -638,29 +716,46 @@ export function Board() {
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
-        <div className="flex border-b border-zinc-200 bg-white shrink-0">
-          {(["triads", "sequences", "theory"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              data-testid={`tab-${t}`}
-              onClick={() => {
-                setActiveTab(t);
-                setLibraryOpen(false);
-              }}
-              className={`px-5 py-2.5 text-sm font-semibold transition-colors border-b-2 ${
-                activeTab === t
-                  ? "text-[#1e3a5f] border-[#1e3a5f]"
-                  : "text-zinc-500 border-transparent hover:text-zinc-800"
-              }`}
-            >
-              {t === "triads"
-                ? "Triads"
-                : t === "sequences"
-                ? "Sequences"
-                : "Theory"}
-            </button>
-          ))}
+        <div
+          className="flex border-b-2 shrink-0"
+          style={{
+            background: "rgba(13, 3, 34, 0.92)",
+            borderColor: "#3d2a55",
+          }}
+        >
+          {(["triads", "sequences", "theory"] as const).map((t) => {
+            const active = activeTab === t;
+            return (
+              <button
+                key={t}
+                type="button"
+                data-testid={`tab-${t}`}
+                onClick={() => {
+                  setActiveTab(t);
+                  setLibraryOpen(false);
+                }}
+                className="px-5 py-2.5 text-sm font-display uppercase tracking-widest transition-colors border-b-2"
+                style={
+                  active
+                    ? {
+                        color: "#ff2a92",
+                        borderColor: "#ff2a92",
+                        textShadow: "0 0 8px #ff2a92aa",
+                      }
+                    : {
+                        color: "#7c5e9c",
+                        borderColor: "transparent",
+                      }
+                }
+              >
+                {t === "triads"
+                  ? "Triads"
+                  : t === "sequences"
+                  ? "Sequences"
+                  : "Theory"}
+              </button>
+            );
+          })}
         </div>
         <div className="flex flex-1 min-h-0 relative">
           {activeTab === "triads" ? (
@@ -684,7 +779,12 @@ export function Board() {
                 <button
                   type="button"
                   onClick={() => setLibraryOpen(true)}
-                  className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-zinc-700 border border-zinc-300 rounded-md px-2.5 py-1 hover:bg-zinc-50"
+                  className="md:hidden flex items-center gap-1.5 text-xs font-display uppercase tracking-wider rounded-md px-2.5 py-1 border-2"
+                  style={{
+                    color: "#00f0ff",
+                    borderColor: "#00f0ff",
+                    background: "rgba(0, 240, 255, 0.06)",
+                  }}
                   aria-label={
                     activeTab === "triads"
                       ? "Open card library"
@@ -700,17 +800,21 @@ export function Board() {
                     ? "Sequences"
                     : "Theory"}
                 </button>
-                <div className="text-sm text-zinc-600">
+                <div
+                  className="text-xs font-display uppercase tracking-widest"
+                  style={{ color: "#b066ff" }}
+                >
                   {placed.length === 0
-                    ? "Empty board"
-                    : `${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
+                    ? "// empty board"
+                    : `// ${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
                 </div>
               </div>
               <button
                 type="button"
                 onClick={handleClear}
                 disabled={placed.length === 0}
-                className="text-xs font-semibold text-zinc-600 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="text-xs font-display uppercase tracking-wider disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                style={{ color: "#ff2a92" }}
               >
                 Clear board
               </button>
