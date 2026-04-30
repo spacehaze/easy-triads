@@ -448,6 +448,11 @@ const THEORY_ITEMS: TheoryItem[] = [
     title: "2",
     text: "Then we move we disturb the air, create invisible waves, something like ripples on the water",
   },
+  {
+    id: "third",
+    title: "3",
+    text: "and these changes in the air our ears sense, we call it sound",
+  },
 ];
 
 function TheoryPanel({
