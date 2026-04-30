@@ -80,12 +80,6 @@ export function TriadCard({
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <div
-                className="text-[11px] font-bold leading-tight"
-                style={{ color: accent }}
-              >
-                {chordLabel.roman}
-              </div>
-              <div
                 className="text-sm font-bold leading-tight truncate"
                 style={{ color: accent }}
               >
