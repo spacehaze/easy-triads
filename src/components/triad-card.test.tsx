@@ -1,0 +1,95 @@
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { TriadCard } from "./triad-card";
+import { TRIADS } from "@/lib/triads";
+
+vi.mock("@/lib/audio", () => ({
+  playTriad: vi.fn(),
+}));
+
+const major123Root = TRIADS.find((t) => t.id === "major-123-root")!;
+const minor234Second = TRIADS.find((t) => t.id === "minor-234-second")!;
+const dim123Root = TRIADS.find((t) => t.id === "dim-123-root")!;
+
+describe("TriadCard", () => {
+  it("renders the quality label in the header", () => {
+    render(<TriadCard triad={major123Root} />);
+    expect(screen.getByText("Major")).toBeInTheDocument();
+  });
+
+  it("renders 'minor' (lowercase) for minor triads", () => {
+    render(<TriadCard triad={minor234Second} />);
+    expect(screen.getByText("minor")).toBeInTheDocument();
+  });
+
+  it("renders 'deminished' for diminished triads", () => {
+    render(<TriadCard triad={dim123Root} />);
+    expect(screen.getByText("deminished")).toBeInTheDocument();
+  });
+
+  it("renders a play button by default", () => {
+    render(<TriadCard triad={major123Root} />);
+    expect(screen.getByLabelText("Play chord")).toBeInTheDocument();
+  });
+
+  it("hides the play button in preview mode", () => {
+    render(<TriadCard triad={major123Root} preview />);
+    expect(screen.queryByLabelText("Play chord")).not.toBeInTheDocument();
+  });
+
+  it("shows the KEY dropdown only on the first sequence card with onKeyChange", () => {
+    const onKeyChange = vi.fn();
+    render(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        onKeyChange={onKeyChange}
+      />
+    );
+    expect(screen.getByLabelText("Sequence key")).toBeInTheDocument();
+  });
+
+  it("does not render KEY dropdown without sequenceNumber", () => {
+    render(<TriadCard triad={major123Root} onKeyChange={vi.fn()} />);
+    expect(screen.queryByLabelText("Sequence key")).not.toBeInTheDocument();
+  });
+
+  it("does not render KEY dropdown on cards 2-N", () => {
+    render(
+      <TriadCard
+        triad={minor234Second}
+        sequenceNumber={2}
+        onKeyChange={vi.fn()}
+      />
+    );
+    expect(screen.queryByLabelText("Sequence key")).not.toBeInTheDocument();
+  });
+
+  it("renders chord root for cards 2-N when key is selected", () => {
+    render(
+      <TriadCard triad={minor234Second} sequenceNumber={2} selectedKey="D" />
+    );
+    // Card 2 in D is "E minor" → root is "E"
+    expect(screen.getByText("E")).toBeInTheDocument();
+  });
+
+  it("renders C# for diminished card 7 in D key", () => {
+    render(<TriadCard triad={dim123Root} sequenceNumber={7} selectedKey="D" />);
+    expect(screen.getByText("C#")).toBeInTheDocument();
+  });
+
+  it("invokes onKeyChange when KEY dropdown changes", async () => {
+    const user = userEvent.setup();
+    const onKeyChange = vi.fn();
+    render(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        onKeyChange={onKeyChange}
+      />
+    );
+    await user.selectOptions(screen.getByLabelText("Sequence key"), "D");
+    expect(onKeyChange).toHaveBeenCalledWith("D");
+  });
+});

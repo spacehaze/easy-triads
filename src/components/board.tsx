@@ -21,22 +21,19 @@ import {
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
 } from "@/lib/triads";
+import {
+  addSequence,
+  addTheory,
+  setKey,
+  removeCard,
+  moveCard,
+  CARD_WIDTH,
+  CARD_HEIGHT,
+  type PlacedCard,
+} from "@/lib/board-state";
 import { TriadCard } from "./triad-card";
 
-type PlacedCard = {
-  instanceId: string;
-  x: number;
-  y: number;
-  triadId?: string;
-  text?: string;
-  sequenceNumber?: number;
-  selectedKey?: string;
-  sequenceInstanceId?: string;
-};
-
 const STORAGE_KEY = "easy-triads.board.v1";
-const CARD_WIDTH = 220;
-const CARD_HEIGHT = 210;
 const LIB_CARD_WIDTH = 180;
 
 const TRIAD_BY_ID = new Map(TRIADS.map((t) => [t.id, t]));
@@ -595,40 +592,21 @@ export function Board() {
     if (active.data.current?.source === "placed") {
       const instanceId = active.data.current.instanceId as string;
       const boardRect = boardRef.current?.getBoundingClientRect();
+      const bounds = boardRect
+        ? { width: boardRect.width, height: boardRect.height }
+        : undefined;
       setPlaced((prev) =>
-        prev.map((p) => {
-          if (p.instanceId !== instanceId) return p;
-          let nx = p.x + delta.x;
-          let ny = p.y + delta.y;
-          if (boardRect) {
-            nx = Math.max(0, Math.min(boardRect.width - CARD_WIDTH, nx));
-            ny = Math.max(0, Math.min(boardRect.height - CARD_HEIGHT, ny));
-          }
-          return { ...p, x: nx, y: ny };
-        })
+        moveCard(prev, instanceId, delta.x, delta.y, bounds)
       );
     }
   };
 
   const handleRemove = (instanceId: string) => {
-    setPlaced((prev) => prev.filter((p) => p.instanceId !== instanceId));
+    setPlaced((prev) => removeCard(prev, instanceId));
   };
 
   const handleSetKey = (instanceId: string, key: string) => {
-    setPlaced((prev) => {
-      const card = prev.find((p) => p.instanceId === instanceId);
-      if (!card) return prev;
-      const seqId = card.sequenceInstanceId;
-      return prev.map((p) => {
-        if (seqId && p.sequenceInstanceId === seqId) {
-          return { ...p, selectedKey: key };
-        }
-        if (p.instanceId === instanceId) {
-          return { ...p, selectedKey: key };
-        }
-        return p;
-      });
-    });
+    setPlaced((prev) => setKey(prev, instanceId, key));
   };
 
   const handleClear = () => {
@@ -636,40 +614,11 @@ export function Board() {
   };
 
   const handleAddTheory = (text: string) => {
-    const ts = Date.now();
-    setPlaced((prev) => [
-      ...prev,
-      {
-        instanceId: `theory-${ts}`,
-        text,
-        x: 20,
-        y: 20 + Math.floor(prev.length / 3) * 240,
-      },
-    ]);
+    setPlaced((prev) => addTheory(prev, text));
   };
 
   const handleAddPreset = (ids: string[]) => {
-    const ts = Date.now();
-    const sequenceInstanceId = `seq-${ts}`;
-    setPlaced((prev) => {
-      const cols = ids.length <= 3 ? ids.length : Math.ceil(ids.length / 2);
-      const startRow = Math.floor(prev.length / 3);
-      return [
-        ...prev,
-        ...ids.map((triadId, i) => {
-          const col = i % cols;
-          const row = Math.floor(i / cols);
-          return {
-            instanceId: `${triadId}-${ts}-${i}`,
-            triadId,
-            x: 20 + col * 240,
-            y: 20 + (startRow + row) * 240,
-            sequenceNumber: i + 1,
-            sequenceInstanceId,
-          };
-        }),
-      ];
-    });
+    setPlaced((prev) => addSequence(prev, ids));
   };
 
   const activeTriad = (() => {
