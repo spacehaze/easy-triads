@@ -3,6 +3,7 @@ import {
   QUALITY_LABEL,
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
+  KEY_PROGRESSIONS,
 } from "@/lib/triads";
 import { playTriad } from "@/lib/audio";
 
@@ -44,6 +45,10 @@ export function TriadCard({
 
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
+  const chordRoot =
+    selectedKey && sequenceNumber
+      ? KEY_PROGRESSIONS[selectedKey]?.[sequenceNumber]?.chord.split(" ")[0]
+      : null;
 
   return (
     <div
@@ -91,6 +96,14 @@ export function TriadCard({
             <option value="D">D</option>
             <option value="A">A</option>
           </select>
+        )}
+        {!preview && sequenceNumber !== undefined && sequenceNumber !== 1 && chordRoot && (
+          <div
+            className="text-[11px] font-bold rounded border px-1.5 py-0.5 bg-white"
+            style={{ color: accent, borderColor: `${accent}66` }}
+          >
+            {chordRoot}
+          </div>
         )}
       </div>
 
