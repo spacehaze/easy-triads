@@ -30,6 +30,7 @@ type PlacedCard = {
   triadId?: string;
   text?: string;
   sequenceNumber?: number;
+  selectedKey?: string;
 };
 
 const STORAGE_KEY = "easy-triads.board.v1";
@@ -130,9 +131,11 @@ function TheoryCard({ text }: { text: string }) {
 function DraggablePlacedCard({
   placed,
   onRemove,
+  onSetKey,
 }: {
   placed: PlacedCard;
   onRemove: (id: string) => void;
+  onSetKey: (instanceId: string, key: string) => void;
 }) {
   const triad = placed.triadId ? getTriad(placed.triadId) : undefined;
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -174,7 +177,12 @@ function DraggablePlacedCard({
         className="cursor-grab active:cursor-grabbing"
       >
         {triad ? (
-          <TriadCard triad={triad} sequenceNumber={placed.sequenceNumber} />
+          <TriadCard
+            triad={triad}
+            sequenceNumber={placed.sequenceNumber}
+            selectedKey={placed.selectedKey}
+            onKeyChange={(key) => onSetKey(placed.instanceId, key)}
+          />
         ) : (
           <TheoryCard text={placed.text!} />
         )}
@@ -186,10 +194,12 @@ function DraggablePlacedCard({
 function BoardDropZone({
   placed,
   onRemove,
+  onSetKey,
   boardRef,
 }: {
   placed: PlacedCard[];
   onRemove: (id: string) => void;
+  onSetKey: (instanceId: string, key: string) => void;
   boardRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: "board" });
@@ -214,6 +224,7 @@ function BoardDropZone({
           key={p.instanceId}
           placed={p}
           onRemove={onRemove}
+          onSetKey={onSetKey}
         />
       ))}
     </div>
@@ -592,6 +603,14 @@ export function Board() {
     setPlaced((prev) => prev.filter((p) => p.instanceId !== instanceId));
   };
 
+  const handleSetKey = (instanceId: string, key: string) => {
+    setPlaced((prev) =>
+      prev.map((p) =>
+        p.instanceId === instanceId ? { ...p, selectedKey: key } : p
+      )
+    );
+  };
+
   const handleClear = () => {
     setPlaced([]);
   };
@@ -728,6 +747,7 @@ export function Board() {
           <BoardDropZone
             placed={placed}
             onRemove={handleRemove}
+            onSetKey={handleSetKey}
             boardRef={boardRef}
           />
         </div>

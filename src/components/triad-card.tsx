@@ -19,9 +19,18 @@ type Props = {
   compact?: boolean;
   sequenceNumber?: number;
   preview?: boolean;
+  selectedKey?: string;
+  onKeyChange?: (key: string) => void;
 };
 
-export function TriadCard({ triad, compact, sequenceNumber, preview }: Props) {
+export function TriadCard({
+  triad,
+  compact,
+  sequenceNumber,
+  preview,
+  selectedKey,
+  onKeyChange,
+}: Props) {
   const width = compact ? 180 : 220;
   const boardWidth = width - 40;
   const boardHeight = 120;
@@ -59,7 +68,7 @@ export function TriadCard({ triad, compact, sequenceNumber, preview }: Props) {
         </button>
       )}
       <div
-        className="px-3 py-2 border-b"
+        className="px-3 py-2 border-b flex items-center justify-between gap-2"
         style={{ borderColor: `${accent}40`, background: accentSoft }}
       >
         <div
@@ -68,6 +77,21 @@ export function TriadCard({ triad, compact, sequenceNumber, preview }: Props) {
         >
           {QUALITY_LABEL[triad.quality]}
         </div>
+        {!preview && sequenceNumber === 1 && onKeyChange && (
+          <select
+            value={selectedKey ?? ""}
+            onChange={(e) => onKeyChange(e.target.value)}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
+            className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer bg-white"
+            style={{ color: accent, borderColor: `${accent}66` }}
+            aria-label="Sequence key"
+          >
+            <option value="">KEY</option>
+            <option value="D">D</option>
+            <option value="A">A</option>
+          </select>
+        )}
       </div>
 
       <svg
