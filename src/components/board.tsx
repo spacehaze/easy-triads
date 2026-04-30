@@ -443,6 +443,11 @@ const THEORY_ITEMS: TheoryItem[] = [
     title: "1",
     text: "We live on the bottom of air ocean",
   },
+  {
+    id: "second",
+    title: "2",
+    text: "Then we move we disturb the air, create invisible waves, something like ripples on the water",
+  },
 ];
 
 function TheoryPanel({
