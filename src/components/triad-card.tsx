@@ -54,6 +54,10 @@ export function TriadCard({
   const stringSet = triad.stringSet as readonly number[];
   const isActive = (s: number) => stringSet.includes(s);
 
+  const maxFretOffset = Math.max(...triad.notes.map((n) => n.fretOffset));
+  const visibleFretCount = maxFretOffset + 1;
+  const visibleBoardWidth = visibleFretCount * fretSpacing;
+
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
   const chordRoot =
@@ -184,7 +188,7 @@ export function TriadCard({
               <line
                 x1={paddingLeft}
                 y1={y}
-                x2={paddingLeft + boardWidth}
+                x2={paddingLeft + visibleBoardWidth}
                 y2={y}
                 stroke={active ? accent : INACTIVE_STRING}
                 strokeWidth={active ? 1.8 : 1}
@@ -198,7 +202,7 @@ export function TriadCard({
           );
         })}
 
-        {Array.from({ length: FRET_COUNT + 1 }).map((_, i) => {
+        {Array.from({ length: visibleFretCount + 1 }).map((_, i) => {
           const x = paddingLeft + i * fretSpacing;
           return (
             <line
