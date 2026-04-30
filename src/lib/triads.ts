@@ -463,8 +463,8 @@ export const TRIADS: Triad[] = [...MAJOR, ...MINOR, ...DIMINISHED];
 
 export const QUALITY_LABEL: Record<Quality, string> = {
   major: "Major",
-  minor: "Minor",
-  diminished: "Diminished",
+  minor: "minor",
+  diminished: "deminished",
 };
 
 export const QUALITY_COLOR: Record<Quality, string> = {
