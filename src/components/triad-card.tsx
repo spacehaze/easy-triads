@@ -54,9 +54,12 @@ export function TriadCard({
   const stringSet = triad.stringSet as readonly number[];
   const isActive = (s: number) => stringSet.includes(s);
 
-  const maxFretOffset = Math.max(...triad.notes.map((n) => n.fretOffset));
-  const visibleFretCount = Math.max(maxFretOffset + 1, 4);
+  const uniqueFretOffsets = Array.from(
+    new Set(triad.notes.map((n) => n.fretOffset))
+  ).sort((a, b) => a - b);
+  const visibleFretCount = uniqueFretOffsets.length;
   const visibleBoardWidth = visibleFretCount * fretSpacing;
+  const offsetColumn = (offset: number) => uniqueFretOffsets.indexOf(offset);
 
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
@@ -220,7 +223,7 @@ export function TriadCard({
         {triad.notes.map((note, i) => {
           const stringIdx = STRINGS.indexOf(note.string);
           const cx =
-            paddingLeft + note.fretOffset * fretSpacing + fretSpacing / 2;
+            paddingLeft + offsetColumn(note.fretOffset) * fretSpacing + fretSpacing / 2;
           const cy = paddingTop + stringIdx * stringSpacing;
           const isRoot = note.interval === 1;
           return (
