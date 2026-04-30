@@ -55,7 +55,7 @@ export function TriadCard({
   const isActive = (s: number) => stringSet.includes(s);
 
   const maxFretOffset = Math.max(...triad.notes.map((n) => n.fretOffset));
-  const visibleFretCount = maxFretOffset + 1;
+  const visibleFretCount = Math.max(maxFretOffset + 1, 4);
   const visibleBoardWidth = visibleFretCount * fretSpacing;
 
   const accent = QUALITY_COLOR[triad.quality];
