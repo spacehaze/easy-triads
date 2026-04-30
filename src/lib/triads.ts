@@ -474,9 +474,9 @@ export const QUALITY_COLOR: Record<Quality, string> = {
 };
 
 export const QUALITY_COLOR_SOFT: Record<Quality, string> = {
-  major: "#1a0a18",
-  minor: "#0a1a1c",
-  diminished: "#150a1f",
+  major: "#3a1840",
+  minor: "#142e3a",
+  diminished: "#2c1a46",
 };
 
 export const INVERSION_LABEL: Record<Inversion, string> = {

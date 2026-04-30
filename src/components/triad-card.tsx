@@ -15,6 +15,17 @@ const NOTE_COLOR = "#f5e8ff";
 const INACTIVE_STRING = "#3d2a55";
 const FRET_COLOR = "#2a1845";
 
+const SEQUENCE_ROMAN: Record<number, string> = {
+  1: "I",
+  2: "ii",
+  3: "iii",
+  4: "IV",
+  5: "V",
+  6: "vi",
+  7: "vii",
+  8: "I",
+};
+
 type Props = {
   triad: Triad;
   compact?: boolean;
@@ -55,7 +66,7 @@ export function TriadCard({
       className="relative rounded-xl border-2 select-none overflow-hidden"
       style={{
         width,
-        background: "#0d0322",
+        background: "#1c0c38",
         borderColor: accent,
         boxShadow: `0 0 16px ${accent}66, 0 0 32px ${accent}33, inset 0 0 24px ${accent}11`,
       }}
@@ -72,7 +83,7 @@ export function TriadCard({
           className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
           style={{
             background: accent,
-            color: "#0d0322",
+            color: "#1c0c38",
             boxShadow: `0 0 12px ${accent}, 0 0 24px ${accent}88`,
           }}
         >
@@ -98,7 +109,7 @@ export function TriadCard({
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer"
-            style={{ color: accent, borderColor: accent, background: "#0d0322" }}
+            style={{ color: accent, borderColor: accent, background: "#1c0c38" }}
             aria-label="Sequence key"
           >
             <option value="">KEY</option>
@@ -109,7 +120,7 @@ export function TriadCard({
         {!preview && sequenceNumber !== undefined && sequenceNumber !== 1 && chordRoot && (
           <div
             className="text-[11px] font-bold rounded border px-1.5 py-0.5"
-            style={{ color: accent, borderColor: accent, background: "#0d0322" }}
+            style={{ color: accent, borderColor: accent, background: "#1c0c38" }}
           >
             {chordRoot}
           </div>
@@ -144,14 +155,14 @@ export function TriadCard({
             x={width / 2}
             y={paddingTop + ((STRINGS.length - 1) * stringSpacing) / 2 + 14}
             textAnchor="middle"
-            fontSize={120}
+            fontSize={SEQUENCE_ROMAN[sequenceNumber]?.length > 2 ? 90 : 120}
             fontWeight={900}
             fill={accent}
             fillOpacity={0.3}
             fontFamily="var(--font-vt323), ui-monospace, monospace"
             style={{ pointerEvents: "none" }}
           >
-            {sequenceNumber}
+            {SEQUENCE_ROMAN[sequenceNumber] ?? sequenceNumber}
           </text>
         )}
         {STRINGS.map((s, i) => {
@@ -214,7 +225,7 @@ export function TriadCard({
                 cx={cx}
                 cy={cy}
                 r={9}
-                fill={isRoot ? ROOT_COLOR : "#0d0322"}
+                fill={isRoot ? ROOT_COLOR : "#1c0c38"}
                 stroke={isRoot ? ROOT_COLOR : NOTE_COLOR}
                 strokeWidth={1.5}
                 style={{
@@ -229,7 +240,7 @@ export function TriadCard({
                 textAnchor="middle"
                 fontSize={10}
                 fontWeight={700}
-                fill={isRoot ? "#0d0322" : NOTE_COLOR}
+                fill={isRoot ? "#1c0c38" : NOTE_COLOR}
                 fontFamily="ui-sans-serif, system-ui, sans-serif"
               >
                 {note.interval}

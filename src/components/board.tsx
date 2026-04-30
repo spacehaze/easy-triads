@@ -111,7 +111,7 @@ function TheoryCard({ text }: { text: string }) {
       style={{
         width: 220,
         minHeight: 200,
-        background: "#0d0322",
+        background: "#1c0c38",
         borderColor: "#ffe400",
         padding: 20,
         boxShadow:
@@ -217,7 +217,7 @@ function BoardDropZone({
       className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
         isOver ? "border-[#00f0ff] bg-[#00f0ff]/5" : "border-[#3d2a55]"
       }`}
-      style={{ background: "rgba(13, 3, 34, 0.4)" }}
+      style={{ background: "rgba(28, 12, 56, 0.4)" }}
     >
       {placed.length === 0 && (
         <div
@@ -279,14 +279,14 @@ function Library({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(13, 3, 34, 0.92)",
+          background: "rgba(28, 12, 56, 0.92)",
           borderColor: "#3d2a55",
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(13, 3, 34, 0.95)",
+            background: "rgba(28, 12, 56, 0.95)",
             borderColor: "#3d2a55",
           }}
         >
@@ -349,7 +349,7 @@ function Library({
                 className="w-full text-left text-[11px] font-display uppercase tracking-widest px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition border"
                 style={{
                   color: accent,
-                  background: "rgba(13, 3, 34, 0.5)",
+                  background: "rgba(28, 12, 56, 0.5)",
                   borderColor: `${accent}55`,
                   textShadow: `0 0 6px ${accent}66`,
                 }}
@@ -403,14 +403,14 @@ function SequencesList({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(13, 3, 34, 0.92)",
+          background: "rgba(28, 12, 56, 0.92)",
           borderColor: "#3d2a55",
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(13, 3, 34, 0.95)",
+            background: "rgba(28, 12, 56, 0.95)",
             borderColor: "#3d2a55",
           }}
         >
@@ -456,7 +456,7 @@ function SequencesList({
                 className="rounded-lg border-2 p-2 transition flex justify-center"
                 style={{
                   borderColor: c,
-                  background: "rgba(13, 3, 34, 0.6)",
+                  background: "rgba(28, 12, 56, 0.6)",
                   boxShadow: `0 0 10px ${c}66`,
                 }}
               >
@@ -533,14 +533,14 @@ function TheoryPanel({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(13, 3, 34, 0.92)",
+          background: "rgba(28, 12, 56, 0.92)",
           borderColor: "#3d2a55",
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(13, 3, 34, 0.95)",
+            background: "rgba(28, 12, 56, 0.95)",
             borderColor: "#3d2a55",
           }}
         >
@@ -583,7 +583,7 @@ function TheoryPanel({
               style={{
                 color: "#ffe400",
                 borderColor: "#ffe400",
-                background: "rgba(13, 3, 34, 0.6)",
+                background: "rgba(28, 12, 56, 0.6)",
                 boxShadow: "0 0 10px rgba(255, 228, 0, 0.4)",
                 textShadow: "0 0 6px rgba(255, 228, 0, 0.6)",
               }}
@@ -719,7 +719,7 @@ export function Board() {
         <div
           className="flex border-b-2 shrink-0"
           style={{
-            background: "rgba(13, 3, 34, 0.92)",
+            background: "rgba(28, 12, 56, 0.92)",
             borderColor: "#3d2a55",
           }}
         >

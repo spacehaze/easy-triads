@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  /* Synthwave palette */
-  --bg-deep: #0a0118;
-  --bg-mid: #1a0033;
-  --grid: rgba(255, 0, 255, 0.08);
-  --grid-strong: rgba(255, 0, 255, 0.18);
+  /* Synthwave palette — lighter background */
+  --bg-deep: #2a1654;
+  --bg-mid: #3d2173;
+  --grid: rgba(255, 0, 255, 0.12);
+  --grid-strong: rgba(255, 0, 255, 0.22);
   --neon-pink: #ff2a92;
   --neon-cyan: #00f0ff;
   --neon-purple: #b066ff;
@@ -23,7 +23,7 @@
 
 html {
   background:
-    radial-gradient(ellipse at top, #2d0a4a 0%, var(--bg-deep) 60%),
+    radial-gradient(ellipse at top, #5e2a9a 0%, var(--bg-deep) 60%),
     var(--bg-deep);
   color: var(--foreground);
 }
