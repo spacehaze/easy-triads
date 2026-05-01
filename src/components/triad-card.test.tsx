@@ -90,6 +90,79 @@ describe("TriadCard", () => {
     expect(playTriad).toHaveBeenCalledWith(dim123Root, { startFret: 8 });
   });
 
+  it("shows the play-sequence button only on card 1 with a key selected", () => {
+    const onPlaySequence = vi.fn();
+    const { rerender } = render(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        onPlaySequence={onPlaySequence}
+      />
+    );
+    // No key → no button
+    expect(screen.queryByLabelText(/play sequence|stop sequence/i)).toBeNull();
+
+    rerender(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        selectedKey="D"
+        onPlaySequence={onPlaySequence}
+      />
+    );
+    expect(screen.getByLabelText("Play sequence")).toBeInTheDocument();
+
+    // Not on card 2
+    rerender(
+      <TriadCard
+        triad={minor234Second}
+        sequenceNumber={2}
+        selectedKey="D"
+        onPlaySequence={onPlaySequence}
+      />
+    );
+    expect(screen.queryByLabelText(/play sequence|stop sequence/i)).toBeNull();
+  });
+
+  it("toggles label between Play and Stop based on isSequencePlaying", () => {
+    const { rerender } = render(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        selectedKey="D"
+        onPlaySequence={vi.fn()}
+        isSequencePlaying={false}
+      />
+    );
+    expect(screen.getByLabelText("Play sequence")).toBeInTheDocument();
+
+    rerender(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        selectedKey="D"
+        onPlaySequence={vi.fn()}
+        isSequencePlaying={true}
+      />
+    );
+    expect(screen.getByLabelText("Stop sequence")).toBeInTheDocument();
+  });
+
+  it("invokes onPlaySequence when the button is clicked", async () => {
+    const user = userEvent.setup();
+    const onPlaySequence = vi.fn();
+    render(
+      <TriadCard
+        triad={major123Root}
+        sequenceNumber={1}
+        selectedKey="D"
+        onPlaySequence={onPlaySequence}
+      />
+    );
+    await user.click(screen.getByLabelText("Play sequence"));
+    expect(onPlaySequence).toHaveBeenCalledTimes(1);
+  });
+
   it("plays the original startFret when no key is selected", async () => {
     const user = userEvent.setup();
     vi.mocked(playTriad).mockClear();

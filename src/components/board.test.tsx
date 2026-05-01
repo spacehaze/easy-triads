@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 
 vi.mock("@/lib/audio", () => ({
   playTriad: vi.fn(),
+  playSequence: vi.fn(),
+  stopSequence: vi.fn(),
 }));
 
 import { Board } from "./board";

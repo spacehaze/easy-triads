@@ -61,6 +61,10 @@ function midiToNote(midi: number): string {
 let sampler: Tone.Sampler | null = null;
 let initPromise: Promise<Tone.Sampler> | null = null;
 let pendingTimeouts: number[] = [];
+let sequenceTimer: number | null = null;
+let sequenceToken = 0;
+
+const SEQUENCE_CHORD_INTERVAL_MS = 3000;
 
 function ensureSampler(): Promise<Tone.Sampler> {
   if (sampler) return Promise.resolve(sampler);
@@ -84,6 +88,38 @@ function stopActivePlayback() {
   pendingTimeouts.forEach((id) => clearTimeout(id));
   pendingTimeouts = [];
   if (sampler) sampler.releaseAll();
+}
+
+export type SequenceItem = { triad: Triad; startFret?: number };
+
+export function stopSequence(): void {
+  sequenceToken++;
+  if (sequenceTimer !== null) {
+    clearTimeout(sequenceTimer);
+    sequenceTimer = null;
+  }
+  stopActivePlayback();
+}
+
+export async function playSequence(items: SequenceItem[]): Promise<void> {
+  stopSequence();
+  if (items.length === 0) return;
+  const myToken = ++sequenceToken;
+
+  const playAt = async (i: number) => {
+    if (myToken !== sequenceToken) return;
+    const item = items[i];
+    await playTriad(
+      item.triad,
+      item.startFret !== undefined ? { startFret: item.startFret } : undefined
+    );
+    if (myToken !== sequenceToken) return;
+    sequenceTimer = window.setTimeout(() => {
+      playAt((i + 1) % items.length);
+    }, SEQUENCE_CHORD_INTERVAL_MS);
+  };
+
+  await playAt(0);
 }
 
 export async function playTriad(

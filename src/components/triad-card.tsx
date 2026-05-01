@@ -34,6 +34,8 @@ type Props = {
   preview?: boolean;
   selectedKey?: string;
   onKeyChange?: (key: string) => void;
+  onPlaySequence?: () => void;
+  isSequencePlaying?: boolean;
 };
 
 export function TriadCard({
@@ -43,6 +45,8 @@ export function TriadCard({
   preview,
   selectedKey,
   onKeyChange,
+  onPlaySequence,
+  isSequencePlaying,
 }: Props) {
   const width = compact ? 180 : 220;
   const boardWidth = width - 40;
@@ -115,6 +119,39 @@ export function TriadCard({
         >
           {QUALITY_LABEL[triad.quality]}
         </div>
+        {!preview &&
+          sequenceNumber === 1 &&
+          selectedKey &&
+          onPlaySequence && (
+            <button
+              type="button"
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPlaySequence();
+              }}
+              aria-label={
+                isSequencePlaying ? "Stop sequence" : "Play sequence"
+              }
+              aria-pressed={isSequencePlaying ?? false}
+              className="w-6 h-6 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+              style={{
+                background: accent,
+                color: "#0f0a05",
+                boxShadow: `0 0 8px ${accent}, 0 0 16px ${accent}88`,
+              }}
+            >
+              {isSequencePlaying ? (
+                <svg viewBox="0 0 10 10" width="8" height="8" aria-hidden>
+                  <rect x="2" y="2" width="6" height="6" fill="currentColor" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 10 10" width="8" height="8" aria-hidden>
+                  <polygon points="2,1 9,5 2,9" fill="currentColor" />
+                </svg>
+              )}
+            </button>
+          )}
         {!preview && sequenceNumber === 1 && onKeyChange && (
           <select
             value={selectedKey ?? ""}

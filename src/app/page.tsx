@@ -78,7 +78,7 @@ export default function Home() {
             className="text-xs hidden md:inline font-display tracking-wider"
             style={{ color: "#ffa500", textShadow: "0 0 6px #ffa50066" }}
           >
-            // drag-and-drop triad flashcards for guitar
+            // They are all wrong, forget about them, dedicate 10 mins a day to this site, trust the process
           </span>
         </div>
         <div className="flex items-center gap-4">
