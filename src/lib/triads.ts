@@ -512,15 +512,15 @@ export const KEY_FRETS: Record<string, Record<number, number[]>> = {
     7: [8, 9, 10, 11],
     8: [7],
   },
-  A: {
-    1: [2],
-    2: [11, 12],
-    3: [1, 2],
-    4: [10, 11, 12],
-    5: [12, 13, 14],
-    6: [10, 11],
-    7: [3, 4, 5, 6],
-    8: [2],
+  C: {
+    1: [5],
+    2: [2, 3],
+    3: [4, 5],
+    4: [1, 2, 3],
+    5: [3, 4, 5],
+    6: [1, 2],
+    7: [6, 7, 8, 9],
+    8: [5],
   },
 };
 
@@ -535,14 +535,14 @@ export const KEY_PROGRESSIONS: Record<string, Record<number, ChordLabel>> = {
     7: { roman: "vii°", chord: "C# diminished", notes: "C#, E, G" },
     8: { roman: "I", chord: "D Major", notes: "D, F#, A" },
   },
-  A: {
-    1: { roman: "I", chord: "A Major", notes: "A, C#, E" },
-    2: { roman: "ii", chord: "B minor", notes: "B, D, F#" },
-    3: { roman: "iii", chord: "C# minor", notes: "C#, E, G#" },
-    4: { roman: "IV", chord: "D Major", notes: "D, F#, A" },
-    5: { roman: "V", chord: "E Major", notes: "E, G#, B" },
-    6: { roman: "vi", chord: "F# minor", notes: "F#, A, C#" },
-    7: { roman: "vii°", chord: "G# diminished", notes: "G#, B, D" },
-    8: { roman: "I", chord: "A Major", notes: "A, C#, E" },
+  C: {
+    1: { roman: "I", chord: "C Major", notes: "C, E, G" },
+    2: { roman: "ii", chord: "D minor", notes: "D, F, A" },
+    3: { roman: "iii", chord: "E minor", notes: "E, G, B" },
+    4: { roman: "IV", chord: "F Major", notes: "F, A, C" },
+    5: { roman: "V", chord: "G Major", notes: "G, B, D" },
+    6: { roman: "vi", chord: "A minor", notes: "A, C, E" },
+    7: { roman: "vii°", chord: "B diminished", notes: "B, D, F" },
+    8: { roman: "I", chord: "C Major", notes: "C, E, G" },
   },
 };

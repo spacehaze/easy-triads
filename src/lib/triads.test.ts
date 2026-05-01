@@ -101,13 +101,13 @@ describe("constants", () => {
 });
 
 describe("KEY_PROGRESSIONS", () => {
-  it("has D and A keys", () => {
+  it("has D and C keys", () => {
     expect(KEY_PROGRESSIONS.D).toBeDefined();
-    expect(KEY_PROGRESSIONS.A).toBeDefined();
+    expect(KEY_PROGRESSIONS.C).toBeDefined();
   });
 
   it("each key has 8 positions (1..8)", () => {
-    for (const key of ["D", "A"]) {
+    for (const key of ["D", "C"]) {
       const prog = KEY_PROGRESSIONS[key];
       for (let i = 1; i <= 8; i++) {
         expect(prog[i]).toBeDefined();
@@ -120,7 +120,7 @@ describe("KEY_PROGRESSIONS", () => {
 
   it("position 1 and 8 are the same chord (cadence back to I)", () => {
     expect(KEY_PROGRESSIONS.D[1]).toEqual(KEY_PROGRESSIONS.D[8]);
-    expect(KEY_PROGRESSIONS.A[1]).toEqual(KEY_PROGRESSIONS.A[8]);
+    expect(KEY_PROGRESSIONS.C[1]).toEqual(KEY_PROGRESSIONS.C[8]);
   });
 
   it("D key has the expected I-vii° progression", () => {
@@ -133,13 +133,13 @@ describe("KEY_PROGRESSIONS", () => {
     expect(KEY_PROGRESSIONS.D[7].chord).toBe("C# diminished");
   });
 
-  it("A key has the expected I-vii° progression", () => {
-    expect(KEY_PROGRESSIONS.A[1].chord).toBe("A Major");
-    expect(KEY_PROGRESSIONS.A[2].chord).toBe("B minor");
-    expect(KEY_PROGRESSIONS.A[3].chord).toBe("C# minor");
-    expect(KEY_PROGRESSIONS.A[4].chord).toBe("D Major");
-    expect(KEY_PROGRESSIONS.A[5].chord).toBe("E Major");
-    expect(KEY_PROGRESSIONS.A[6].chord).toBe("F# minor");
-    expect(KEY_PROGRESSIONS.A[7].chord).toBe("G# diminished");
+  it("C key has the expected I-vii° progression", () => {
+    expect(KEY_PROGRESSIONS.C[1].chord).toBe("C Major");
+    expect(KEY_PROGRESSIONS.C[2].chord).toBe("D minor");
+    expect(KEY_PROGRESSIONS.C[3].chord).toBe("E minor");
+    expect(KEY_PROGRESSIONS.C[4].chord).toBe("F Major");
+    expect(KEY_PROGRESSIONS.C[5].chord).toBe("G Major");
+    expect(KEY_PROGRESSIONS.C[6].chord).toBe("A minor");
+    expect(KEY_PROGRESSIONS.C[7].chord).toBe("B diminished");
   });
 });

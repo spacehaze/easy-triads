@@ -124,7 +124,7 @@ export function TriadCard({
           >
             <option value="">KEY</option>
             <option value="D">D</option>
-            <option value="A">A</option>
+            <option value="C">C</option>
           </select>
         )}
         {!preview && sequenceNumber !== undefined && sequenceNumber !== 1 && chordRoot && (
