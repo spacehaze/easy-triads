@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TriadCard } from "./triad-card";
 import { TRIADS } from "@/lib/triads";
+import { playTriad } from "@/lib/audio";
 
 vi.mock("@/lib/audio", () => ({
   playTriad: vi.fn(),
@@ -77,6 +78,24 @@ describe("TriadCard", () => {
   it("renders C# for diminished card 7 in D key", () => {
     render(<TriadCard triad={dim123Root} sequenceNumber={7} selectedKey="D" />);
     expect(screen.getByText("C#")).toBeInTheDocument();
+  });
+
+  it("passes the transposed startFret to playTriad when key is selected", async () => {
+    const user = userEvent.setup();
+    vi.mocked(playTriad).mockClear();
+    // Position 7 (vii°) in key D maps to frets [8, 9, 10, 11] —
+    // the play button must override startFret to 8 so audio matches the displayed frets.
+    render(<TriadCard triad={dim123Root} sequenceNumber={7} selectedKey="D" />);
+    await user.click(screen.getByLabelText("Play chord"));
+    expect(playTriad).toHaveBeenCalledWith(dim123Root, { startFret: 8 });
+  });
+
+  it("plays the original startFret when no key is selected", async () => {
+    const user = userEvent.setup();
+    vi.mocked(playTriad).mockClear();
+    render(<TriadCard triad={major123Root} />);
+    await user.click(screen.getByLabelText("Play chord"));
+    expect(playTriad).toHaveBeenCalledWith(major123Root, undefined);
   });
 
   it("invokes onKeyChange when KEY dropdown changes", async () => {

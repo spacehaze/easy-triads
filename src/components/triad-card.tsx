@@ -87,7 +87,10 @@ export function TriadCard({
           onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => {
             e.stopPropagation();
-            void playTriad(triad);
+            void playTriad(
+              triad,
+              fretNumbers ? { startFret: fretNumbers[0] } : undefined
+            );
           }}
           aria-label="Play chord"
           className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"

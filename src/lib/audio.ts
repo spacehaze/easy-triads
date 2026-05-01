@@ -86,15 +86,19 @@ function stopActivePlayback() {
   if (sampler) sampler.releaseAll();
 }
 
-export async function playTriad(triad: Triad): Promise<void> {
+export async function playTriad(
+  triad: Triad,
+  options?: { startFret?: number }
+): Promise<void> {
   try {
     if (Tone.getContext().state !== "running") {
       await Tone.start();
     }
     stopActivePlayback();
     const s = await ensureSampler();
+    const startFret = options?.startFret ?? triad.startFret;
     triad.notes.forEach((note, i) => {
-      const fret = triad.startFret + note.fretOffset;
+      const fret = startFret + note.fretOffset;
       const midi = OPEN_STRING_MIDI[note.string] + fret;
       const noteStr = midiToNote(midi);
       if (i === 0) {

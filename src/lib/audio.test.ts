@@ -80,4 +80,14 @@ describe("playTriad", () => {
     const called = triggerAttackRelease.mock.calls.map((c) => c[0]);
     expect(called[0]).toBe("C4");
   });
+
+  it("respects the startFret override (key transposition)", async () => {
+    triggerAttackRelease.mockClear();
+    const { playTriad } = await import("./audio");
+    // Same shape as `triad` (major-234-root) but transposed up two semitones
+    // (C major shape → D major chord). string 4 fret 10+2=12 → MIDI 62 → D4.
+    await playTriad(triad, { startFret: 10 });
+    const called = triggerAttackRelease.mock.calls.map((c) => c[0]);
+    expect(called[0]).toBe("D4");
+  });
 });
