@@ -24,9 +24,9 @@ describe("TriadCard", () => {
     expect(screen.getByText("minor")).toBeInTheDocument();
   });
 
-  it("renders 'deminished' for diminished triads", () => {
+  it("renders 'diminished' for diminished triads", () => {
     render(<TriadCard triad={dim123Root} />);
-    expect(screen.getByText("deminished")).toBeInTheDocument();
+    expect(screen.getByText("diminished")).toBeInTheDocument();
   });
 
   it("renders a play button by default", () => {
