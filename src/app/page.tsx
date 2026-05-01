@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Board } from "@/components/board";
 
 const SITE_URL = "https://easy-triads.vercel.app";
@@ -80,11 +81,20 @@ export default function Home() {
             // drag-and-drop triad flashcards for guitar
           </span>
         </div>
-        <div
-          className="text-[10px] hidden md:block font-display uppercase tracking-widest"
-          style={{ color: "#d4a574" }}
-        >
-          36 shapes · 3 qualities · 4 string sets
+        <div className="flex items-center gap-4">
+          <div
+            className="text-[10px] hidden md:block font-display uppercase tracking-widest"
+            style={{ color: "#d4a574" }}
+          >
+            36 shapes · 3 qualities · 4 string sets
+          </div>
+          <Link
+            href="/about"
+            className="text-[11px] font-display uppercase tracking-widest hover:brightness-125"
+            style={{ color: "#ffa500", textShadow: "0 0 6px #ffa50066" }}
+          >
+            About
+          </Link>
         </div>
       </header>
       <Board />
