@@ -50,8 +50,8 @@ const SEQUENCES: Sequence[] = [
   {
     label: "D chords",
     quality: "major",
-    color: "#16a34a",
-    colorSoft: "#f0fdf4",
+    color: "#ff6b1a",
+    colorSoft: "#2a1305",
     ids: [
       "major-234-second",
       "minor-234-first",
@@ -66,8 +66,8 @@ const SEQUENCES: Sequence[] = [
   {
     label: "Sequence 2",
     quality: "major",
-    color: "#ca8a04",
-    colorSoft: "#fffbeb",
+    color: "#ffa500",
+    colorSoft: "#2e1d0a",
     ids: [
       "major-234-root",
       "minor-234-second",
@@ -111,18 +111,18 @@ function TheoryCard({ text }: { text: string }) {
       style={{
         width: 220,
         minHeight: 200,
-        background: "#1c0c38",
-        borderColor: "#ffe400",
+        background: "#0f0a05",
+        borderColor: "#ffd700",
         padding: 20,
         boxShadow:
-          "0 0 16px rgba(255,228,0,0.5), 0 0 32px rgba(255,228,0,0.25), inset 0 0 24px rgba(255,228,0,0.06)",
+          "0 0 16px rgba(255,215,0,0.5), 0 0 32px rgba(255,215,0,0.25), inset 0 0 24px rgba(255,215,0,0.06)",
       }}
     >
       <div
         className="font-display text-lg leading-snug uppercase tracking-wider"
         style={{
-          color: "#ffe400",
-          textShadow: "0 0 8px rgba(255,228,0,0.7)",
+          color: "#ffd700",
+          textShadow: "0 0 8px rgba(255,215,0,0.7)",
         }}
       >
         “{text}”
@@ -169,8 +169,8 @@ function DraggablePlacedCard({
           onRemove(placed.instanceId);
         }}
         onPointerDown={(e) => e.stopPropagation()}
-        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#ff2a92]"
-        style={{ boxShadow: "0 0 8px rgba(255,42,146,0.7)" }}
+        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#ff6b1a]"
+        style={{ boxShadow: "0 0 8px rgba(255,107,26,0.7)" }}
         aria-label="Remove card"
       >
         ×
@@ -215,14 +215,14 @@ function BoardDropZone({
         boardRef.current = node;
       }}
       className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
-        isOver ? "border-[#00f0ff] bg-[#00f0ff]/5" : "border-[#3d2a55]"
+        isOver ? "border-[#ffa500] bg-[#ffa500]/5" : "border-[#3a2a1a]"
       }`}
-      style={{ background: "rgba(28, 12, 56, 0.4)" }}
+      style={{ background: "rgba(15, 10, 5, 0.4)" }}
     >
       {placed.length === 0 && (
         <div
           className="absolute inset-0 flex items-center justify-center text-sm pointer-events-none font-display tracking-wider uppercase"
-          style={{ color: "#b066ff", textShadow: "0 0 8px #b066ff66" }}
+          style={{ color: "#d4a574", textShadow: "0 0 8px #d4a57466" }}
         >
           // Drag cards from the library to build your study board
         </div>
@@ -279,28 +279,28 @@ function Library({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(28, 12, 56, 0.92)",
-          borderColor: "#3d2a55",
+          background: "rgba(15, 10, 5, 0.92)",
+          borderColor: "#3a2a1a",
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(28, 12, 56, 0.95)",
-            borderColor: "#3d2a55",
+            background: "rgba(15, 10, 5, 0.95)",
+            borderColor: "#3a2a1a",
           }}
         >
         <div className="flex items-start justify-between">
           <div>
             <h2
               className="font-display text-base uppercase tracking-widest"
-              style={{ color: "#00f0ff", textShadow: "0 0 8px #00f0ff88" }}
+              style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50088" }}
             >
               Card Library
             </h2>
             <p
               className="text-[10px] mt-0.5 mb-3 font-display tracking-wider"
-              style={{ color: "#b066ff" }}
+              style={{ color: "#d4a574" }}
             >
               // drag onto the board
             </p>
@@ -309,7 +309,7 @@ function Library({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#b066ff] hover:bg-[#b066ff]/20 flex items-center justify-center"
+            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#d4a574] hover:bg-[#d4a574]/20 flex items-center justify-center"
           >
             ×
           </button>
@@ -349,7 +349,7 @@ function Library({
                 className="w-full text-left text-[11px] font-display uppercase tracking-widest px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition border"
                 style={{
                   color: accent,
-                  background: "rgba(28, 12, 56, 0.5)",
+                  background: "rgba(15, 10, 5, 0.5)",
                   borderColor: `${accent}55`,
                   textShadow: `0 0 6px ${accent}66`,
                 }}
@@ -403,28 +403,28 @@ function SequencesList({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(28, 12, 56, 0.92)",
-          borderColor: "#3d2a55",
+          background: "rgba(15, 10, 5, 0.92)",
+          borderColor: "#3a2a1a",
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(28, 12, 56, 0.95)",
-            borderColor: "#3d2a55",
+            background: "rgba(15, 10, 5, 0.95)",
+            borderColor: "#3a2a1a",
           }}
         >
           <div className="flex items-start justify-between">
             <div>
               <h2
                 className="font-display text-base uppercase tracking-widest"
-                style={{ color: "#00f0ff", textShadow: "0 0 8px #00f0ff88" }}
+                style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50088" }}
               >
                 Sequences
               </h2>
               <p
                 className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "#b066ff" }}
+                style={{ color: "#d4a574" }}
               >
                 // click to add to board
               </p>
@@ -433,7 +433,7 @@ function SequencesList({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#b066ff] hover:bg-[#b066ff]/20 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#d4a574] hover:bg-[#d4a574]/20 flex items-center justify-center"
             >
               ×
             </button>
@@ -456,7 +456,7 @@ function SequencesList({
                 className="rounded-lg border-2 p-2 transition flex justify-center"
                 style={{
                   borderColor: c,
-                  background: "rgba(28, 12, 56, 0.6)",
+                  background: "rgba(15, 10, 5, 0.6)",
                   boxShadow: `0 0 10px ${c}66`,
                 }}
               >
@@ -533,28 +533,28 @@ function TheoryPanel({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(28, 12, 56, 0.92)",
-          borderColor: "#3d2a55",
+          background: "rgba(15, 10, 5, 0.92)",
+          borderColor: "#3a2a1a",
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(28, 12, 56, 0.95)",
-            borderColor: "#3d2a55",
+            background: "rgba(15, 10, 5, 0.95)",
+            borderColor: "#3a2a1a",
           }}
         >
           <div className="flex items-start justify-between">
             <div>
               <h2
                 className="font-display text-base uppercase tracking-widest"
-                style={{ color: "#00f0ff", textShadow: "0 0 8px #00f0ff88" }}
+                style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50088" }}
               >
                 Theory
               </h2>
               <p
                 className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "#b066ff" }}
+                style={{ color: "#d4a574" }}
               >
                 // click to add to board
               </p>
@@ -563,7 +563,7 @@ function TheoryPanel({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#b066ff] hover:bg-[#b066ff]/20 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#d4a574] hover:bg-[#d4a574]/20 flex items-center justify-center"
             >
               ×
             </button>
@@ -581,9 +581,9 @@ function TheoryPanel({
               }}
               className="w-full text-left text-sm font-display uppercase tracking-widest px-3 py-2.5 rounded-lg border-2 transition"
               style={{
-                color: "#ffe400",
-                borderColor: "#ffe400",
-                background: "rgba(28, 12, 56, 0.6)",
+                color: "#ffd700",
+                borderColor: "#ffd700",
+                background: "rgba(15, 10, 5, 0.6)",
                 boxShadow: "0 0 10px rgba(255, 228, 0, 0.4)",
                 textShadow: "0 0 6px rgba(255, 228, 0, 0.6)",
               }}
@@ -627,9 +627,9 @@ export function Board() {
   if (!hydrated) {
     return (
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
-        <div className="h-10 border-b-2 border-[#3d2a55]" />
+        <div className="h-10 border-b-2 border-[#3a2a1a]" />
         <div className="flex flex-1">
-          <aside className="hidden md:block w-[220px] shrink-0 border-r-2 border-[#3d2a55]" />
+          <aside className="hidden md:block w-[220px] shrink-0 border-r-2 border-[#3a2a1a]" />
           <div className="flex-1" />
         </div>
       </div>
@@ -719,8 +719,8 @@ export function Board() {
         <div
           className="flex border-b-2 shrink-0"
           style={{
-            background: "rgba(28, 12, 56, 0.92)",
-            borderColor: "#3d2a55",
+            background: "rgba(15, 10, 5, 0.92)",
+            borderColor: "#3a2a1a",
           }}
         >
           {(["triads", "sequences", "theory"] as const).map((t) => {
@@ -738,12 +738,12 @@ export function Board() {
                 style={
                   active
                     ? {
-                        color: "#ff2a92",
-                        borderColor: "#ff2a92",
-                        textShadow: "0 0 8px #ff2a92aa",
+                        color: "#ff6b1a",
+                        borderColor: "#ff6b1a",
+                        textShadow: "0 0 8px #ff6b1aaa",
                       }
                     : {
-                        color: "#7c5e9c",
+                        color: "#6b4a30",
                         borderColor: "transparent",
                       }
                 }
@@ -781,9 +781,9 @@ export function Board() {
                   onClick={() => setLibraryOpen(true)}
                   className="md:hidden flex items-center gap-1.5 text-xs font-display uppercase tracking-wider rounded-md px-2.5 py-1 border-2"
                   style={{
-                    color: "#00f0ff",
-                    borderColor: "#00f0ff",
-                    background: "rgba(0, 240, 255, 0.06)",
+                    color: "#ffa500",
+                    borderColor: "#ffa500",
+                    background: "rgba(255, 165, 0, 0.06)",
                   }}
                   aria-label={
                     activeTab === "triads"
@@ -802,7 +802,7 @@ export function Board() {
                 </button>
                 <div
                   className="text-xs font-display uppercase tracking-widest"
-                  style={{ color: "#b066ff" }}
+                  style={{ color: "#d4a574" }}
                 >
                   {placed.length === 0
                     ? "// empty board"
@@ -814,7 +814,7 @@ export function Board() {
                 onClick={handleClear}
                 disabled={placed.length === 0}
                 className="text-xs font-display uppercase tracking-wider disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                style={{ color: "#ff2a92" }}
+                style={{ color: "#ff6b1a" }}
               >
                 Clear board
               </button>
