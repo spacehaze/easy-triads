@@ -64,7 +64,7 @@ let pendingTimeouts: number[] = [];
 let sequenceTimer: number | null = null;
 let sequenceToken = 0;
 
-const SEQUENCE_CHORD_INTERVAL_MS = 3000;
+const SEQUENCE_CHORD_INTERVAL_MS = 4000;
 
 function ensureSampler(): Promise<Tone.Sampler> {
   if (sampler) return Promise.resolve(sampler);
