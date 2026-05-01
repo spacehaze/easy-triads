@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Orbitron, VT323 } from "next/font/google";
 import "./globals.css";
 
@@ -19,10 +19,75 @@ const vt323 = VT323({
   weight: ["400"],
 });
 
+const SITE_URL = "https://easy-triads.vercel.app";
+const SITE_NAME = "Easy Triads";
+const TITLE = "Easy Triads — Learn Guitar Triads with Drag-and-Drop Flashcards";
+const DESCRIPTION =
+  "Learn guitar triads visually with 36 movable flashcards across major, minor, and diminished qualities. Drag, drop, and play any chord shape on every string set — free, no signup.";
+
 export const metadata: Metadata = {
-  title: "Easy Triads — Guitar triad flashcards",
-  description:
-    "Learn guitar triads with drag-and-drop flashcards. 36 movable shapes across major, minor, and diminished qualities on every string set.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: TITLE,
+    template: "%s · Easy Triads",
+  },
+  description: DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    "guitar triads",
+    "guitar chord flashcards",
+    "guitar theory",
+    "music theory app",
+    "learn guitar chords",
+    "triad shapes",
+    "major minor diminished",
+    "string sets",
+    "chord inversions",
+    "guitar practice tool",
+    "interactive guitar lesson",
+  ],
+  authors: [{ name: "Easy Triads" }],
+  creator: "Easy Triads",
+  publisher: "Easy Triads",
+  category: "education",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    creator: "@easytriads",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ff6b1a",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
