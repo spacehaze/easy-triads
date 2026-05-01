@@ -496,6 +496,34 @@ export const STRING_NAMES: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
 
 export type ChordLabel = { roman: string; chord: string; notes: string };
 
+/**
+ * Absolute fret numbers per visible column for each (key, sequence position)
+ * in the D-chords sequence. Order matches the unique sorted fret offsets of
+ * the underlying triad shape (left → right).
+ */
+export const KEY_FRETS: Record<string, Record<number, number[]>> = {
+  D: {
+    1: [7],
+    2: [4, 5],
+    3: [6, 7],
+    4: [3, 4, 5],
+    5: [5, 6, 7],
+    6: [3, 4],
+    7: [8, 9, 10, 11],
+    8: [7],
+  },
+  A: {
+    1: [2],
+    2: [11, 12],
+    3: [1, 2],
+    4: [10, 11, 12],
+    5: [12, 13, 14],
+    6: [10, 11],
+    7: [3, 4, 5, 6],
+    8: [2],
+  },
+};
+
 export const KEY_PROGRESSIONS: Record<string, Record<number, ChordLabel>> = {
   D: {
     1: { roman: "I", chord: "D Major", notes: "D, F#, A" },

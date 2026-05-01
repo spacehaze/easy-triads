@@ -4,6 +4,7 @@ import {
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
   KEY_PROGRESSIONS,
+  KEY_FRETS,
 } from "@/lib/triads";
 import { playTriad } from "@/lib/audio";
 
@@ -54,18 +55,20 @@ export function TriadCard({
   const stringSet = triad.stringSet as readonly number[];
   const isActive = (s: number) => stringSet.includes(s);
 
-  const uniqueFretOffsets = Array.from(
-    new Set(triad.notes.map((n) => n.fretOffset))
-  ).sort((a, b) => a - b);
-  const visibleFretCount = uniqueFretOffsets.length;
+  const maxFretOffset = Math.max(...triad.notes.map((n) => n.fretOffset));
+  const visibleFretCount = maxFretOffset + 1;
   const visibleBoardWidth = visibleFretCount * fretSpacing;
-  const offsetColumn = (offset: number) => uniqueFretOffsets.indexOf(offset);
+  const offsetColumn = (offset: number) => offset;
 
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
   const chordRoot =
     selectedKey && sequenceNumber
       ? KEY_PROGRESSIONS[selectedKey]?.[sequenceNumber]?.chord.split(" ")[0]
+      : null;
+  const fretNumbers =
+    selectedKey && sequenceNumber
+      ? KEY_FRETS[selectedKey]?.[sequenceNumber] ?? null
       : null;
 
   return (
@@ -219,6 +222,23 @@ export function TriadCard({
             />
           );
         })}
+
+        {fretNumbers &&
+          fretNumbers.map((fret, i) => (
+            <text
+              key={`fret-num-${i}`}
+              x={paddingLeft + i * fretSpacing + fretSpacing / 2}
+              y={paddingTop + (STRINGS.length - 1) * stringSpacing + 14}
+              textAnchor="middle"
+              fontSize={10}
+              fontWeight={700}
+              fill={accent}
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              style={{ textShadow: `0 0 4px ${accent}aa` }}
+            >
+              {fret}
+            </text>
+          ))}
 
         {triad.notes.map((note, i) => {
           const stringIdx = STRINGS.indexOf(note.string);
