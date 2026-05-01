@@ -468,15 +468,15 @@ export const QUALITY_LABEL: Record<Quality, string> = {
 };
 
 export const QUALITY_COLOR: Record<Quality, string> = {
-  major: "#ff6b1a",
-  minor: "#ffa500",
-  diminished: "#9b59b6",
+  major: "#c98152",
+  minor: "#d9c4a0",
+  diminished: "#b3582e",
 };
 
 export const QUALITY_COLOR_SOFT: Record<Quality, string> = {
-  major: "#2a1305",
-  minor: "#2e1d0a",
-  diminished: "#1a0a25",
+  major: "#2a1a0d",
+  minor: "#2a2418",
+  diminished: "#2a160d",
 };
 
 export const INVERSION_LABEL: Record<Inversion, string> = {
@@ -496,53 +496,115 @@ export const STRING_NAMES: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
 
 export type ChordLabel = { roman: string; chord: string; notes: string };
 
+export type SequenceVariant = "second-inv" | "root";
+
 /**
- * Absolute fret numbers per visible column for each (key, sequence position)
- * in the D-chords sequence. Order matches the unique sorted fret offsets of
- * the underlying triad shape (left → right).
+ * Absolute fret numbers per visible column for each (variant, key, sequence
+ * position). Order matches the unique sorted fret offsets of the underlying
+ * triad shape (left → right). Each variant uses different shapes, so the
+ * fret tables are keyed separately.
  */
-export const KEY_FRETS: Record<string, Record<number, number[]>> = {
-  D: {
-    1: [7],
-    2: [4, 5],
-    3: [6, 7],
-    4: [3, 4, 5],
-    5: [5, 6, 7],
-    6: [3, 4],
-    7: [8, 9, 10, 11],
-    8: [7],
+export const KEY_FRETS_BY_VARIANT: Record<
+  SequenceVariant,
+  Record<string, Record<number, number[]>>
+> = {
+  "second-inv": {
+    D: {
+      1: [7],
+      2: [4, 5],
+      3: [6, 7],
+      4: [3, 4, 5],
+      5: [5, 6, 7],
+      6: [3, 4],
+      7: [8, 9, 10, 11],
+      8: [7],
+    },
+    C: {
+      1: [5],
+      2: [2, 3],
+      3: [4, 5],
+      4: [1, 2, 3],
+      5: [3, 4, 5],
+      6: [1, 2],
+      7: [6, 7, 8, 9],
+      8: [5],
+    },
   },
-  C: {
-    1: [5],
-    2: [2, 3],
-    3: [4, 5],
-    4: [1, 2, 3],
-    5: [3, 4, 5],
-    6: [1, 2],
-    7: [6, 7, 8, 9],
-    8: [5],
+  root: {
+    A: {
+      1: [5, 6, 7],
+      2: [3, 4],
+      3: [5, 6],
+      4: [7],
+      5: [9],
+      6: [10, 11],
+      7: [0, 1],
+      8: [5, 6, 7],
+    },
+    G: {
+      1: [3, 4, 5],
+      2: [1, 2],
+      3: [3, 4],
+      4: [5],
+      5: [7],
+      6: [8, 9],
+      7: [10, 11],
+      8: [3, 4, 5],
+    },
   },
 };
 
-export const KEY_PROGRESSIONS: Record<string, Record<number, ChordLabel>> = {
-  D: {
-    1: { roman: "I", chord: "D Major", notes: "D, F#, A" },
-    2: { roman: "ii", chord: "E minor", notes: "E, G, B" },
-    3: { roman: "iii", chord: "F# minor", notes: "F#, A, C#" },
-    4: { roman: "IV", chord: "G Major", notes: "G, B, D" },
-    5: { roman: "V", chord: "A Major", notes: "A, C#, E" },
-    6: { roman: "vi", chord: "B minor", notes: "B, D, F#" },
-    7: { roman: "vii°", chord: "C# diminished", notes: "C#, E, G" },
-    8: { roman: "I", chord: "D Major", notes: "D, F#, A" },
+export const KEY_PROGRESSIONS_BY_VARIANT: Record<
+  SequenceVariant,
+  Record<string, Record<number, ChordLabel>>
+> = {
+  "second-inv": {
+    D: {
+      1: { roman: "I", chord: "D Major", notes: "D, F#, A" },
+      2: { roman: "ii", chord: "E minor", notes: "E, G, B" },
+      3: { roman: "iii", chord: "F# minor", notes: "F#, A, C#" },
+      4: { roman: "IV", chord: "G Major", notes: "G, B, D" },
+      5: { roman: "V", chord: "A Major", notes: "A, C#, E" },
+      6: { roman: "vi", chord: "B minor", notes: "B, D, F#" },
+      7: { roman: "vii°", chord: "C# diminished", notes: "C#, E, G" },
+      8: { roman: "I", chord: "D Major", notes: "D, F#, A" },
+    },
+    C: {
+      1: { roman: "I", chord: "C Major", notes: "C, E, G" },
+      2: { roman: "ii", chord: "D minor", notes: "D, F, A" },
+      3: { roman: "iii", chord: "E minor", notes: "E, G, B" },
+      4: { roman: "IV", chord: "F Major", notes: "F, A, C" },
+      5: { roman: "V", chord: "G Major", notes: "G, B, D" },
+      6: { roman: "vi", chord: "A minor", notes: "A, C, E" },
+      7: { roman: "vii°", chord: "B diminished", notes: "B, D, F" },
+      8: { roman: "I", chord: "C Major", notes: "C, E, G" },
+    },
   },
-  C: {
-    1: { roman: "I", chord: "C Major", notes: "C, E, G" },
-    2: { roman: "ii", chord: "D minor", notes: "D, F, A" },
-    3: { roman: "iii", chord: "E minor", notes: "E, G, B" },
-    4: { roman: "IV", chord: "F Major", notes: "F, A, C" },
-    5: { roman: "V", chord: "G Major", notes: "G, B, D" },
-    6: { roman: "vi", chord: "A minor", notes: "A, C, E" },
-    7: { roman: "vii°", chord: "B diminished", notes: "B, D, F" },
-    8: { roman: "I", chord: "C Major", notes: "C, E, G" },
+  root: {
+    A: {
+      1: { roman: "I", chord: "A Major", notes: "A, C#, E" },
+      2: { roman: "ii", chord: "B minor", notes: "B, D, F#" },
+      3: { roman: "iii", chord: "C# minor", notes: "C#, E, G#" },
+      4: { roman: "IV", chord: "D Major", notes: "D, F#, A" },
+      5: { roman: "V", chord: "E Major", notes: "E, G#, B" },
+      6: { roman: "vi", chord: "F# minor", notes: "F#, A, C#" },
+      7: { roman: "vii°", chord: "G# diminished", notes: "G#, B, D" },
+      8: { roman: "I", chord: "A Major", notes: "A, C#, E" },
+    },
+    G: {
+      1: { roman: "I", chord: "G Major", notes: "G, B, D" },
+      2: { roman: "ii", chord: "A minor", notes: "A, C, E" },
+      3: { roman: "iii", chord: "B minor", notes: "B, D, F#" },
+      4: { roman: "IV", chord: "C Major", notes: "C, E, G" },
+      5: { roman: "V", chord: "D Major", notes: "D, F#, A" },
+      6: { roman: "vi", chord: "E minor", notes: "E, G, B" },
+      7: { roman: "vii°", chord: "F# diminished", notes: "F#, A, C" },
+      8: { roman: "I", chord: "G Major", notes: "G, B, D" },
+    },
   },
+};
+
+export const SEQUENCE_KEYS_BY_VARIANT: Record<SequenceVariant, string[]> = {
+  "second-inv": ["D", "C"],
+  root: ["A", "G"],
 };

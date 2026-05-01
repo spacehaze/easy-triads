@@ -20,7 +20,8 @@ import {
   QUALITY_LABEL,
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
-  KEY_FRETS,
+  KEY_FRETS_BY_VARIANT,
+  type SequenceVariant,
 } from "@/lib/triads";
 import { playSequence, stopSequence } from "@/lib/audio";
 import {
@@ -44,6 +45,7 @@ type Sequence = {
   label: string;
   ids: string[];
   quality: Quality;
+  variant: SequenceVariant;
   color?: string;
   colorSoft?: string;
 };
@@ -52,6 +54,7 @@ const SEQUENCES: Sequence[] = [
   {
     label: "D chords",
     quality: "major",
+    variant: "second-inv",
     color: "#ff6b1a",
     colorSoft: "#2a1305",
     ids: [
@@ -66,8 +69,9 @@ const SEQUENCES: Sequence[] = [
     ],
   },
   {
-    label: "Sequence 2",
+    label: "A chords",
     quality: "major",
+    variant: "root",
     color: "#ffa500",
     colorSoft: "#2e1d0a",
     ids: [
@@ -193,6 +197,7 @@ function DraggablePlacedCard({
             triad={triad}
             sequenceNumber={placed.sequenceNumber}
             selectedKey={placed.selectedKey}
+            sequenceVariant={placed.sequenceVariant}
             onKeyChange={(key) => onSetKey(placed.instanceId, key)}
             onPlaySequence={onPlaySequence}
             isSequencePlaying={isSequencePlaying}
@@ -422,7 +427,7 @@ function SequencesList({
 }: {
   open: boolean;
   onClose: () => void;
-  onAdd: (ids: string[]) => void;
+  onAdd: (ids: string[], variant: SequenceVariant) => void;
 }) {
   return (
     <>
@@ -486,7 +491,7 @@ function SequencesList({
                 type="button"
                 data-testid={`seq-${seq.label.toLowerCase().replace(/\s+/g, "-")}`}
                 onClick={() => {
-                  onAdd(seq.ids);
+                  onAdd(seq.ids, seq.variant);
                   onClose();
                 }}
                 className="rounded-lg border-2 p-2 transition flex justify-center"
@@ -742,8 +747,8 @@ export function Board() {
     setPlaced((prev) => addTheory(prev, text));
   };
 
-  const handleAddPreset = (ids: string[]) => {
-    setPlaced((prev) => addSequence(prev, ids));
+  const handleAddPreset = (ids: string[], variant: SequenceVariant) => {
+    setPlaced((prev) => addSequence(prev, ids, Date.now(), variant));
   };
 
   const handleTogglePlaySequence = (sequenceInstanceId: string) => {
@@ -759,9 +764,10 @@ export function Board() {
     const items = siblings.flatMap((p) => {
       const triad = p.triadId ? getTriad(p.triadId) : undefined;
       if (!triad) return [];
+      const variant = p.sequenceVariant ?? "second-inv";
       const frets =
         p.selectedKey && p.sequenceNumber !== undefined
-          ? KEY_FRETS[p.selectedKey]?.[p.sequenceNumber]
+          ? KEY_FRETS_BY_VARIANT[variant]?.[p.selectedKey]?.[p.sequenceNumber]
           : undefined;
       return [{ triad, startFret: frets ? frets[0] : undefined }];
     });

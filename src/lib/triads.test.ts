@@ -6,7 +6,7 @@ import {
   QUALITY_COLOR_SOFT,
   INVERSION_LABEL,
   STRING_NAMES,
-  KEY_PROGRESSIONS,
+  KEY_PROGRESSIONS_BY_VARIANT,
   type Quality,
   type Inversion,
 } from "./triads";
@@ -100,15 +100,25 @@ describe("constants", () => {
   });
 });
 
-describe("KEY_PROGRESSIONS", () => {
-  it("has D and C keys", () => {
-    expect(KEY_PROGRESSIONS.D).toBeDefined();
-    expect(KEY_PROGRESSIONS.C).toBeDefined();
+describe("KEY_PROGRESSIONS_BY_VARIANT", () => {
+  it("second-inv variant has D and C keys", () => {
+    expect(KEY_PROGRESSIONS_BY_VARIANT["second-inv"].D).toBeDefined();
+    expect(KEY_PROGRESSIONS_BY_VARIANT["second-inv"].C).toBeDefined();
+  });
+
+  it("root variant has A and G keys", () => {
+    expect(KEY_PROGRESSIONS_BY_VARIANT.root.A).toBeDefined();
+    expect(KEY_PROGRESSIONS_BY_VARIANT.root.G).toBeDefined();
   });
 
   it("each key has 8 positions (1..8)", () => {
-    for (const key of ["D", "C"]) {
-      const prog = KEY_PROGRESSIONS[key];
+    const all = [
+      KEY_PROGRESSIONS_BY_VARIANT["second-inv"].D,
+      KEY_PROGRESSIONS_BY_VARIANT["second-inv"].C,
+      KEY_PROGRESSIONS_BY_VARIANT.root.A,
+      KEY_PROGRESSIONS_BY_VARIANT.root.G,
+    ];
+    for (const prog of all) {
       for (let i = 1; i <= 8; i++) {
         expect(prog[i]).toBeDefined();
         expect(prog[i].roman).toBeTruthy();
@@ -119,27 +129,35 @@ describe("KEY_PROGRESSIONS", () => {
   });
 
   it("position 1 and 8 are the same chord (cadence back to I)", () => {
-    expect(KEY_PROGRESSIONS.D[1]).toEqual(KEY_PROGRESSIONS.D[8]);
-    expect(KEY_PROGRESSIONS.C[1]).toEqual(KEY_PROGRESSIONS.C[8]);
+    const D = KEY_PROGRESSIONS_BY_VARIANT["second-inv"].D;
+    const C = KEY_PROGRESSIONS_BY_VARIANT["second-inv"].C;
+    const A = KEY_PROGRESSIONS_BY_VARIANT.root.A;
+    const G = KEY_PROGRESSIONS_BY_VARIANT.root.G;
+    expect(D[1]).toEqual(D[8]);
+    expect(C[1]).toEqual(C[8]);
+    expect(A[1]).toEqual(A[8]);
+    expect(G[1]).toEqual(G[8]);
   });
 
   it("D key has the expected I-vii° progression", () => {
-    expect(KEY_PROGRESSIONS.D[1].chord).toBe("D Major");
-    expect(KEY_PROGRESSIONS.D[2].chord).toBe("E minor");
-    expect(KEY_PROGRESSIONS.D[3].chord).toBe("F# minor");
-    expect(KEY_PROGRESSIONS.D[4].chord).toBe("G Major");
-    expect(KEY_PROGRESSIONS.D[5].chord).toBe("A Major");
-    expect(KEY_PROGRESSIONS.D[6].chord).toBe("B minor");
-    expect(KEY_PROGRESSIONS.D[7].chord).toBe("C# diminished");
+    const D = KEY_PROGRESSIONS_BY_VARIANT["second-inv"].D;
+    expect(D[1].chord).toBe("D Major");
+    expect(D[2].chord).toBe("E minor");
+    expect(D[3].chord).toBe("F# minor");
+    expect(D[4].chord).toBe("G Major");
+    expect(D[5].chord).toBe("A Major");
+    expect(D[6].chord).toBe("B minor");
+    expect(D[7].chord).toBe("C# diminished");
   });
 
-  it("C key has the expected I-vii° progression", () => {
-    expect(KEY_PROGRESSIONS.C[1].chord).toBe("C Major");
-    expect(KEY_PROGRESSIONS.C[2].chord).toBe("D minor");
-    expect(KEY_PROGRESSIONS.C[3].chord).toBe("E minor");
-    expect(KEY_PROGRESSIONS.C[4].chord).toBe("F Major");
-    expect(KEY_PROGRESSIONS.C[5].chord).toBe("G Major");
-    expect(KEY_PROGRESSIONS.C[6].chord).toBe("A minor");
-    expect(KEY_PROGRESSIONS.C[7].chord).toBe("B diminished");
+  it("A key (root variant) has the expected I-vii° progression", () => {
+    const A = KEY_PROGRESSIONS_BY_VARIANT.root.A;
+    expect(A[1].chord).toBe("A Major");
+    expect(A[2].chord).toBe("B minor");
+    expect(A[3].chord).toBe("C# minor");
+    expect(A[4].chord).toBe("D Major");
+    expect(A[5].chord).toBe("E Major");
+    expect(A[6].chord).toBe("F# minor");
+    expect(A[7].chord).toBe("G# diminished");
   });
 });

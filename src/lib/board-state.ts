@@ -7,6 +7,7 @@ export type PlacedCard = {
   sequenceNumber?: number;
   selectedKey?: string;
   sequenceInstanceId?: string;
+  sequenceVariant?: "second-inv" | "root";
 };
 
 export const CARD_WIDTH = 220;
@@ -20,7 +21,8 @@ export const CARD_HEIGHT = 210;
 export function addSequence(
   prev: PlacedCard[],
   ids: string[],
-  ts: number = Date.now()
+  ts: number = Date.now(),
+  variant: "second-inv" | "root" = "second-inv"
 ): PlacedCard[] {
   const sequenceInstanceId = `seq-${ts}`;
   const cols = ids.length <= 3 ? ids.length : Math.ceil(ids.length / 2);
@@ -34,6 +36,7 @@ export function addSequence(
       y: 20 + (startRow + Math.floor(i / cols)) * 240,
       sequenceNumber: i + 1,
       sequenceInstanceId,
+      sequenceVariant: variant,
     })),
   ];
 }

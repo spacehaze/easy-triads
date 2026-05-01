@@ -3,8 +3,10 @@ import {
   QUALITY_LABEL,
   QUALITY_COLOR,
   QUALITY_COLOR_SOFT,
-  KEY_PROGRESSIONS,
-  KEY_FRETS,
+  KEY_PROGRESSIONS_BY_VARIANT,
+  KEY_FRETS_BY_VARIANT,
+  SEQUENCE_KEYS_BY_VARIANT,
+  type SequenceVariant,
 } from "@/lib/triads";
 import { playTriad } from "@/lib/audio";
 
@@ -37,6 +39,7 @@ type Props = {
   onPlaySequence?: () => void;
   isSequencePlaying?: boolean;
   isPlayingNow?: boolean;
+  sequenceVariant?: SequenceVariant;
 };
 
 export function TriadCard({
@@ -49,6 +52,7 @@ export function TriadCard({
   onPlaySequence,
   isSequencePlaying,
   isPlayingNow,
+  sequenceVariant = "second-inv",
 }: Props) {
   const width = compact ? 180 : 220;
   const boardWidth = width - 40;
@@ -68,13 +72,17 @@ export function TriadCard({
 
   const accent = QUALITY_COLOR[triad.quality];
   const accentSoft = QUALITY_COLOR_SOFT[triad.quality];
+  const availableKeys = SEQUENCE_KEYS_BY_VARIANT[sequenceVariant];
   const chordRoot =
     selectedKey && sequenceNumber
-      ? KEY_PROGRESSIONS[selectedKey]?.[sequenceNumber]?.chord.split(" ")[0]
+      ? KEY_PROGRESSIONS_BY_VARIANT[sequenceVariant]?.[selectedKey]?.[
+          sequenceNumber
+        ]?.chord.split(" ")[0]
       : null;
   const fretNumbers =
     selectedKey && sequenceNumber
-      ? KEY_FRETS[selectedKey]?.[sequenceNumber] ?? null
+      ? KEY_FRETS_BY_VARIANT[sequenceVariant]?.[selectedKey]?.[sequenceNumber] ??
+        null
       : null;
 
   return (
@@ -168,8 +176,11 @@ export function TriadCard({
             aria-label="Sequence key"
           >
             <option value="">KEY</option>
-            <option value="D">D</option>
-            <option value="C">C</option>
+            {availableKeys.map((k) => (
+              <option key={k} value={k}>
+                {k}
+              </option>
+            ))}
           </select>
         )}
         {!preview && sequenceNumber !== undefined && sequenceNumber !== 1 && chordRoot && (
