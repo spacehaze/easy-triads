@@ -73,7 +73,7 @@ export default function AboutPage() {
   return (
     <article
       className="flex flex-col flex-1 overflow-y-auto"
-      style={{ color: "#fff2e0" }}
+      style={{ color: "#f5e8d4" }}
     >
       <script
         type="application/ld+json"
@@ -83,18 +83,18 @@ export default function AboutPage() {
         className="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between shrink-0 border-b-2"
         style={{
           background:
-            "linear-gradient(180deg, rgba(255,107,26,0.08) 0%, rgba(10,10,10,0.95) 100%)",
-          borderColor: "#ff6b1a",
-          boxShadow: "0 0 24px rgba(255,107,26,0.4)",
+            "linear-gradient(180deg, rgba(201,129,82,0.08) 0%, rgba(26,14,7,0.95) 100%)",
+          borderColor: "#c98152",
+          boxShadow: "0 0 24px rgba(201,129,82,0.4)",
         }}
       >
         <Link
           href="/"
           className="font-display text-2xl sm:text-3xl font-bold tracking-widest uppercase"
           style={{
-            color: "#ff6b1a",
+            color: "#c98152",
             textShadow:
-              "0 0 8px #ff6b1a, 0 0 18px rgba(255,107,26,0.6), 0 0 32px rgba(255,107,26,0.3)",
+              "0 0 8px #c98152, 0 0 18px rgba(201,129,82,0.6), 0 0 32px rgba(201,129,82,0.3)",
             letterSpacing: "0.15em",
           }}
         >
@@ -104,8 +104,8 @@ export default function AboutPage() {
           href="/"
           className="text-xs font-display uppercase tracking-wider rounded-md px-2.5 py-1 border-2 hover:brightness-110"
           style={{
-            color: "#ffa500",
-            borderColor: "#ffa500",
+            color: "#d9c4a0",
+            borderColor: "#d9c4a0",
             background: "rgba(255, 165, 0, 0.06)",
           }}
         >
@@ -118,8 +118,8 @@ export default function AboutPage() {
           <h1
             className="font-display text-4xl sm:text-5xl font-bold uppercase tracking-widest mb-4"
             style={{
-              color: "#ff6b1a",
-              textShadow: "0 0 10px rgba(255,107,26,0.6)",
+              color: "#c98152",
+              textShadow: "0 0 10px rgba(201,129,82,0.6)",
             }}
           >
             About Easy Triads
@@ -137,7 +137,7 @@ export default function AboutPage() {
         <section>
           <h2
             className="font-display text-2xl uppercase tracking-widest mb-3"
-            style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a066" }}
           >
             What you get
           </h2>
@@ -173,7 +173,7 @@ export default function AboutPage() {
         <section>
           <h2
             className="font-display text-2xl uppercase tracking-widest mb-3"
-            style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a066" }}
           >
             Why triads matter
           </h2>
@@ -204,7 +204,7 @@ export default function AboutPage() {
         <section>
           <h2
             className="font-display text-2xl uppercase tracking-widest mb-3"
-            style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a066" }}
           >
             How to use it
           </h2>
@@ -238,13 +238,13 @@ export default function AboutPage() {
         <section>
           <h2
             className="font-display text-2xl uppercase tracking-widest mb-3"
-            style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a066" }}
           >
             FAQ
           </h2>
           <div className="space-y-5">
             <div>
-              <h3 className="font-bold text-base mb-1" style={{ color: "#ffd1a3" }}>
+              <h3 className="font-bold text-base mb-1" style={{ color: "#e0d0a8" }}>
                 What is a guitar triad?
               </h3>
               <p className="leading-relaxed">
@@ -256,7 +256,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div>
-              <h3 className="font-bold text-base mb-1" style={{ color: "#ffd1a3" }}>
+              <h3 className="font-bold text-base mb-1" style={{ color: "#e0d0a8" }}>
                 Why learn triads instead of full barre chords?
               </h3>
               <p className="leading-relaxed">
@@ -267,7 +267,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div>
-              <h3 className="font-bold text-base mb-1" style={{ color: "#ffd1a3" }}>
+              <h3 className="font-bold text-base mb-1" style={{ color: "#e0d0a8" }}>
                 Is Easy Triads free?
               </h3>
               <p className="leading-relaxed">
@@ -276,7 +276,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div>
-              <h3 className="font-bold text-base mb-1" style={{ color: "#ffd1a3" }}>
+              <h3 className="font-bold text-base mb-1" style={{ color: "#e0d0a8" }}>
                 Can I hear the chords?
               </h3>
               <p className="leading-relaxed">
@@ -291,7 +291,7 @@ export default function AboutPage() {
         <section>
           <h2
             className="font-display text-2xl uppercase tracking-widest mb-3"
-            style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a066" }}
           >
             Start playing
           </h2>
@@ -299,7 +299,7 @@ export default function AboutPage() {
             <Link
               href="/"
               className="font-bold underline"
-              style={{ color: "#ff6b1a" }}
+              style={{ color: "#c98152" }}
             >
               Open the board
             </Link>{" "}

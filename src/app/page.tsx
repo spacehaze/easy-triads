@@ -57,18 +57,18 @@ export default function Home() {
         className="h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between shrink-0 border-b-2"
         style={{
           background:
-            "linear-gradient(180deg, rgba(255,107,26,0.08) 0%, rgba(10,10,10,0.95) 100%)",
-          borderColor: "#ff6b1a",
-          boxShadow: "0 0 24px rgba(255,107,26,0.4)",
+            "linear-gradient(180deg, rgba(201,129,82,0.08) 0%, rgba(26,14,7,0.95) 100%)",
+          borderColor: "#c98152",
+          boxShadow: "0 0 24px rgba(201,129,82,0.4)",
         }}
       >
         <div className="flex items-baseline gap-3 min-w-0">
           <h1
             className="font-display text-2xl sm:text-3xl font-bold tracking-widest uppercase truncate"
             style={{
-              color: "#ff6b1a",
+              color: "#c98152",
               textShadow:
-                "0 0 8px #ff6b1a, 0 0 18px rgba(255,107,26,0.6), 0 0 32px rgba(255,107,26,0.3)",
+                "0 0 8px #c98152, 0 0 18px rgba(201,129,82,0.6), 0 0 32px rgba(201,129,82,0.3)",
               letterSpacing: "0.15em",
             }}
           >
@@ -76,22 +76,22 @@ export default function Home() {
           </h1>
           <span
             className="text-xs hidden md:inline font-display tracking-wider"
-            style={{ color: "#ffa500", textShadow: "0 0 6px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 6px #d9c4a066" }}
           >
-            // They are all wrong, forget about them, dedicate 10 mins a day to this site, trust the process
+            {"// They are all wrong, forget about them, dedicate 10 mins a day to this site, trust the process"}
           </span>
         </div>
         <div className="flex items-center gap-4">
           <div
             className="text-[10px] hidden md:block font-display uppercase tracking-widest"
-            style={{ color: "#d4a574" }}
+            style={{ color: "#a8936d" }}
           >
             36 shapes · 3 qualities · 4 string sets
           </div>
           <Link
             href="/about"
             className="text-[11px] font-display uppercase tracking-widest hover:brightness-125"
-            style={{ color: "#ffa500", textShadow: "0 0 6px #ffa50066" }}
+            style={{ color: "#d9c4a0", textShadow: "0 0 6px #d9c4a066" }}
           >
             About
           </Link>

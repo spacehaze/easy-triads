@@ -14,19 +14,19 @@ export default function OGImage() {
           display: "flex",
           flexDirection: "column",
           background:
-            "radial-gradient(ellipse at top, #2a1305 0%, #0a0a0a 60%), #0a0a0a",
-          color: "#fff2e0",
+            "radial-gradient(ellipse at top, #3a1f0a 0%, #1a0e07 60%), #1a0e07",
+          color: "#f5e8d4",
           padding: "80px 96px",
           position: "relative",
         }}
       >
-        {/* Faint orange grid overlay */}
+        {/* Faint mahogany grid overlay */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "linear-gradient(rgba(255,140,0,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,140,0,0.10) 1px, transparent 1px)",
+              "linear-gradient(rgba(201,129,82,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(201,129,82,0.10) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
             display: "flex",
           }}
@@ -39,13 +39,13 @@ export default function OGImage() {
             display: "flex",
             alignItems: "center",
             gap: 16,
-            color: "#ffa500",
+            color: "#d9c4a0",
             fontSize: 28,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
           }}
         >
-          // guitar triads · drag-and-drop flashcards
+          {"// guitar triads · drag-and-drop flashcards"}
         </div>
 
         {/* Wordmark */}
@@ -53,14 +53,14 @@ export default function OGImage() {
           style={{
             position: "relative",
             display: "flex",
-            color: "#ff6b1a",
+            color: "#c98152",
             fontSize: 192,
             fontWeight: 900,
             letterSpacing: "0.10em",
             lineHeight: 1,
             marginTop: 80,
             textShadow:
-              "0 0 18px rgba(255,107,26,0.7), 0 0 48px rgba(255,107,26,0.45)",
+              "0 0 18px rgba(201,129,82,0.7), 0 0 48px rgba(201,129,82,0.45)",
           }}
         >
           EASY TRIADS
@@ -71,7 +71,7 @@ export default function OGImage() {
           style={{
             position: "relative",
             display: "flex",
-            color: "#fff2e0",
+            color: "#f5e8d4",
             fontSize: 40,
             marginTop: 36,
             letterSpacing: "0.02em",
@@ -89,7 +89,7 @@ export default function OGImage() {
             left: 96,
             bottom: 56,
             display: "flex",
-            color: "#d4a574",
+            color: "#a8936d",
             fontSize: 26,
             letterSpacing: "0.20em",
             textTransform: "uppercase",
@@ -109,9 +109,9 @@ export default function OGImage() {
           }}
         >
           {[
-            { color: "#ff6b1a", label: "Major" },
-            { color: "#ffa500", label: "minor" },
-            { color: "#d35400", label: "dim" },
+            { color: "#c98152", label: "Major" },
+            { color: "#d9c4a0", label: "minor" },
+            { color: "#b3582e", label: "dim" },
           ].map((d) => (
             <div
               key={d.label}

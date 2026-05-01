@@ -90,7 +90,7 @@ export function TriadCard({
       className="relative rounded-xl border-2 select-none overflow-hidden transition-all duration-200"
       style={{
         width,
-        background: "#0f0a05",
+        background: "#1f1107",
         borderColor: accent,
         boxShadow: isPlayingNow
           ? `0 0 28px ${accent}, 0 0 56px ${accent}aa, inset 0 0 36px ${accent}44`
@@ -113,7 +113,7 @@ export function TriadCard({
           className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
           style={{
             background: accent,
-            color: "#0f0a05",
+            color: "#1f1107",
             boxShadow: `0 0 12px ${accent}, 0 0 24px ${accent}88`,
           }}
         >
@@ -150,7 +150,7 @@ export function TriadCard({
               className="w-6 h-6 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
               style={{
                 background: accent,
-                color: "#0f0a05",
+                color: "#1f1107",
                 boxShadow: `0 0 8px ${accent}, 0 0 16px ${accent}88`,
               }}
             >
@@ -172,7 +172,7 @@ export function TriadCard({
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             className="text-[11px] font-bold rounded border px-1.5 py-0.5 cursor-pointer"
-            style={{ color: accent, borderColor: accent, background: "#0f0a05" }}
+            style={{ color: accent, borderColor: accent, background: "#1f1107" }}
             aria-label="Sequence key"
           >
             <option value="">KEY</option>
@@ -186,7 +186,7 @@ export function TriadCard({
         {!preview && sequenceNumber !== undefined && sequenceNumber !== 1 && chordRoot && (
           <div
             className="text-[11px] font-bold rounded border px-1.5 py-0.5"
-            style={{ color: accent, borderColor: accent, background: "#0f0a05" }}
+            style={{ color: accent, borderColor: accent, background: "#1f1107" }}
           >
             {chordRoot}
           </div>
@@ -308,7 +308,7 @@ export function TriadCard({
                 cx={cx}
                 cy={cy}
                 r={9}
-                fill={isRoot ? ROOT_COLOR : "#0f0a05"}
+                fill={isRoot ? ROOT_COLOR : "#1f1107"}
                 stroke={isRoot ? ROOT_COLOR : NOTE_COLOR}
                 strokeWidth={1.5}
                 style={{
@@ -323,7 +323,7 @@ export function TriadCard({
                 textAnchor="middle"
                 fontSize={10}
                 fontWeight={700}
-                fill={isRoot ? "#0f0a05" : NOTE_COLOR}
+                fill={isRoot ? "#1f1107" : NOTE_COLOR}
                 fontFamily="ui-sans-serif, system-ui, sans-serif"
               >
                 {note.interval}
