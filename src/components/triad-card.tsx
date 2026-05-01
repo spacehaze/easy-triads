@@ -13,10 +13,10 @@ import { playTriad } from "@/lib/audio";
 const STRINGS: (1 | 2 | 3 | 4 | 5 | 6)[] = [1, 2, 3, 4, 5, 6];
 const FRET_COUNT = 5;
 
-const ROOT_COLOR = "#ffd700";
-const NOTE_COLOR = "#fff2e0";
-const INACTIVE_STRING = "#3a2a1a";
-const FRET_COLOR = "#2a1f10";
+const ROOT_COLOR = "#ecd29a";
+const NOTE_COLOR = "#f5e8d4";
+const INACTIVE_STRING = "#4a2e1a";
+const FRET_COLOR = "#2e1a0d";
 
 const SEQUENCE_ROMAN: Record<number, string> = {
   1: "I",

@@ -55,7 +55,7 @@ const SEQUENCES: Sequence[] = [
     label: "D chords",
     quality: "major",
     variant: "second-inv",
-    color: "#ff6b1a",
+    color: "#c98152",
     colorSoft: "#2a1305",
     ids: [
       "major-234-second",
@@ -72,7 +72,7 @@ const SEQUENCES: Sequence[] = [
     label: "A chords",
     quality: "major",
     variant: "root",
-    color: "#ffa500",
+    color: "#d9c4a0",
     colorSoft: "#2e1d0a",
     ids: [
       "major-234-root",
@@ -117,7 +117,7 @@ function TheoryCard({ text }: { text: string }) {
       style={{
         width: 220,
         minHeight: 200,
-        background: "#0f0a05",
+        background: "#1f1107",
         borderColor: "#ffd700",
         padding: 20,
         boxShadow:
@@ -181,7 +181,7 @@ function DraggablePlacedCard({
           onRemove(placed.instanceId);
         }}
         onPointerDown={(e) => e.stopPropagation()}
-        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#ff6b1a]"
+        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#c98152]"
         style={{ boxShadow: "0 0 8px rgba(255,107,26,0.7)" }}
         aria-label="Remove card"
       >
@@ -237,14 +237,14 @@ function BoardDropZone({
         boardRef.current = node;
       }}
       className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
-        isOver ? "border-[#ffa500] bg-[#ffa500]/5" : "border-[#3a2a1a]"
+        isOver ? "border-[#d9c4a0] bg-[#d9c4a0]/5" : "border-[#3a2a1a]"
       }`}
       style={{ background: "rgba(15, 10, 5, 0.4)" }}
     >
       {placed.length === 0 && (
         <div
           className="absolute inset-0 flex items-center justify-center text-sm pointer-events-none font-display tracking-wider uppercase"
-          style={{ color: "#d4a574", textShadow: "0 0 8px #d4a57466" }}
+          style={{ color: "#a8936d", textShadow: "0 0 8px #a8936d66" }}
         >
           // Drag cards from the library to build your study board
         </div>
@@ -335,13 +335,13 @@ function Library({
           <div>
             <h2
               className="font-display text-base uppercase tracking-widest"
-              style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50088" }}
+              style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a088" }}
             >
               Card Library
             </h2>
             <p
               className="text-[10px] mt-0.5 mb-3 font-display tracking-wider"
-              style={{ color: "#d4a574" }}
+              style={{ color: "#a8936d" }}
             >
               // drag onto the board
             </p>
@@ -350,7 +350,7 @@ function Library({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#d4a574] hover:bg-[#d4a574]/20 flex items-center justify-center"
+            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#a8936d] hover:bg-[#a8936d]/20 flex items-center justify-center"
           >
             ×
           </button>
@@ -459,13 +459,13 @@ function SequencesList({
             <div>
               <h2
                 className="font-display text-base uppercase tracking-widest"
-                style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50088" }}
+                style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a088" }}
               >
                 Sequences
               </h2>
               <p
                 className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "#d4a574" }}
+                style={{ color: "#a8936d" }}
               >
                 // click to add to board
               </p>
@@ -474,7 +474,7 @@ function SequencesList({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#d4a574] hover:bg-[#d4a574]/20 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#a8936d] hover:bg-[#a8936d]/20 flex items-center justify-center"
             >
               ×
             </button>
@@ -589,13 +589,13 @@ function TheoryPanel({
             <div>
               <h2
                 className="font-display text-base uppercase tracking-widest"
-                style={{ color: "#ffa500", textShadow: "0 0 8px #ffa50088" }}
+                style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a088" }}
               >
                 Theory
               </h2>
               <p
                 className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "#d4a574" }}
+                style={{ color: "#a8936d" }}
               >
                 // click to add to board
               </p>
@@ -604,7 +604,7 @@ function TheoryPanel({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#d4a574] hover:bg-[#d4a574]/20 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#a8936d] hover:bg-[#a8936d]/20 flex items-center justify-center"
             >
               ×
             </button>
@@ -816,9 +816,9 @@ export function Board() {
                 style={
                   active
                     ? {
-                        color: "#ff6b1a",
-                        borderColor: "#ff6b1a",
-                        textShadow: "0 0 8px #ff6b1aaa",
+                        color: "#c98152",
+                        borderColor: "#c98152",
+                        textShadow: "0 0 8px #c98152aa",
                       }
                     : {
                         color: "#6b4a30",
@@ -859,8 +859,8 @@ export function Board() {
                   onClick={() => setLibraryOpen(true)}
                   className="md:hidden flex items-center gap-1.5 text-xs font-display uppercase tracking-wider rounded-md px-2.5 py-1 border-2"
                   style={{
-                    color: "#ffa500",
-                    borderColor: "#ffa500",
+                    color: "#d9c4a0",
+                    borderColor: "#d9c4a0",
                     background: "rgba(255, 165, 0, 0.06)",
                   }}
                   aria-label={
@@ -880,7 +880,7 @@ export function Board() {
                 </button>
                 <div
                   className="text-xs font-display uppercase tracking-widest"
-                  style={{ color: "#d4a574" }}
+                  style={{ color: "#a8936d" }}
                 >
                   {placed.length === 0
                     ? "// empty board"
@@ -892,7 +892,7 @@ export function Board() {
                 onClick={handleClear}
                 disabled={placed.length === 0}
                 className="text-xs font-display uppercase tracking-wider disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                style={{ color: "#ff6b1a" }}
+                style={{ color: "#c98152" }}
               >
                 Clear board
               </button>

@@ -1,17 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  /* Orange + Black palette */
-  --bg-deep: #0a0a0a;
-  --bg-mid: #1a1410;
-  --grid: rgba(255, 140, 0, 0.10);
-  --grid-strong: rgba(255, 140, 0, 0.22);
-  --orange-bright: #ff6b1a;
-  --orange-amber: #ffa500;
-  --orange-deep: #d35400;
-  --orange-light: #ffd1a3;
-  --yellow: #ffd700;
-  --foreground: #fff2e0;
+  /* Mahogany + dark rosewood + cream binding */
+  --bg-deep: #1a0e07;
+  --bg-mid: #2e1a0d;
+  --grid: rgba(201, 129, 82, 0.08);
+  --grid-strong: rgba(201, 129, 82, 0.18);
+  --mahogany: #c98152;
+  --cream: #d9c4a0;
+  --tortoise: #8b4524;
+  --gold: #ecd29a;
+  --foreground: #f5e8d4;
 }
 
 @theme inline {
@@ -24,7 +23,7 @@
 
 html {
   background:
-    radial-gradient(ellipse at top, #2a1305 0%, var(--bg-deep) 60%),
+    radial-gradient(ellipse at top, #3a1f0a 0%, var(--bg-deep) 60%),
     var(--bg-deep);
   color: var(--foreground);
 }
@@ -36,7 +35,7 @@ body {
   position: relative;
 }
 
-/* Synthwave perspective grid: two layered backgrounds (vertical + horizontal lines) */
+/* Subtle wood-grain grid */
 body::before {
   content: "";
   position: fixed;
@@ -47,10 +46,10 @@ body::before {
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 40px 40px;
   z-index: 0;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-/* Subtle scanlines */
+/* Subtle scanlines (off when reduced motion is requested) */
 body::after {
   content: "";
   position: fixed;
@@ -77,7 +76,39 @@ body > * {
   font-family: var(--font-vt323), ui-monospace, monospace;
 }
 
-@keyframes neon-pulse {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.15); }
+/* Visible focus ring for keyboard users */
+:where(button, a, [role="tab"], select, input):focus-visible {
+  outline: 2px solid var(--mahogany);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+  width: auto;
+  height: auto;
+  z-index: 100;
+  background: var(--bg-deep);
+  color: var(--mahogany);
+  padding: 8px 12px;
+  border: 2px solid var(--mahogany);
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { display: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }
