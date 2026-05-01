@@ -81,6 +81,16 @@ describe("playTriad", () => {
     expect(called[0]).toBe("C4");
   });
 
+  it("playSequence fires onChordStart for the first item", async () => {
+    triggerAttackRelease.mockClear();
+    const onChordStart = vi.fn();
+    const { playSequence, stopSequence } = await import("./audio");
+    await playSequence([{ triad, startFret: 10 }], onChordStart);
+    // First call happens before await resolves
+    expect(onChordStart).toHaveBeenCalledWith(0);
+    stopSequence();
+  });
+
   it("respects the startFret override (key transposition)", async () => {
     triggerAttackRelease.mockClear();
     const { playTriad } = await import("./audio");

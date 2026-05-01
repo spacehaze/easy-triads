@@ -101,13 +101,17 @@ export function stopSequence(): void {
   stopActivePlayback();
 }
 
-export async function playSequence(items: SequenceItem[]): Promise<void> {
+export async function playSequence(
+  items: SequenceItem[],
+  onChordStart?: (index: number) => void
+): Promise<void> {
   stopSequence();
   if (items.length === 0) return;
   const myToken = ++sequenceToken;
 
   const playAt = async (i: number) => {
     if (myToken !== sequenceToken) return;
+    onChordStart?.(i);
     const item = items[i];
     await playTriad(
       item.triad,

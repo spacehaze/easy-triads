@@ -36,6 +36,7 @@ type Props = {
   onKeyChange?: (key: string) => void;
   onPlaySequence?: () => void;
   isSequencePlaying?: boolean;
+  isPlayingNow?: boolean;
 };
 
 export function TriadCard({
@@ -47,6 +48,7 @@ export function TriadCard({
   onKeyChange,
   onPlaySequence,
   isSequencePlaying,
+  isPlayingNow,
 }: Props) {
   const width = compact ? 180 : 220;
   const boardWidth = width - 40;
@@ -77,12 +79,15 @@ export function TriadCard({
 
   return (
     <div
-      className="relative rounded-xl border-2 select-none overflow-hidden"
+      className="relative rounded-xl border-2 select-none overflow-hidden transition-all duration-200"
       style={{
         width,
         background: "#0f0a05",
         borderColor: accent,
-        boxShadow: `0 0 16px ${accent}66, 0 0 32px ${accent}33, inset 0 0 24px ${accent}11`,
+        boxShadow: isPlayingNow
+          ? `0 0 28px ${accent}, 0 0 56px ${accent}aa, inset 0 0 36px ${accent}44`
+          : `0 0 16px ${accent}66, 0 0 32px ${accent}33, inset 0 0 24px ${accent}11`,
+        transform: isPlayingNow ? "scale(1.04)" : undefined,
       }}
     >
       {!preview && (

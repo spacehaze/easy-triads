@@ -139,12 +139,14 @@ function DraggablePlacedCard({
   onSetKey,
   onPlaySequence,
   isSequencePlaying,
+  isPlayingNow,
 }: {
   placed: PlacedCard;
   onRemove: (id: string) => void;
   onSetKey: (instanceId: string, key: string) => void;
   onPlaySequence?: () => void;
   isSequencePlaying?: boolean;
+  isPlayingNow?: boolean;
 }) {
   const triad = placed.triadId ? getTriad(placed.triadId) : undefined;
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -194,6 +196,7 @@ function DraggablePlacedCard({
             onKeyChange={(key) => onSetKey(placed.instanceId, key)}
             onPlaySequence={onPlaySequence}
             isSequencePlaying={isSequencePlaying}
+            isPlayingNow={isPlayingNow}
           />
         ) : (
           <TheoryCard text={placed.text!} />
@@ -209,6 +212,7 @@ function BoardDropZone({
   onSetKey,
   onTogglePlaySequence,
   playingSequenceId,
+  playingIndex,
   boardRef,
 }: {
   placed: PlacedCard[];
@@ -216,6 +220,7 @@ function BoardDropZone({
   onSetKey: (instanceId: string, key: string) => void;
   onTogglePlaySequence: (sequenceInstanceId: string) => void;
   playingSequenceId: string | null;
+  playingIndex: number | null;
   boardRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: "board" });
@@ -242,6 +247,14 @@ function BoardDropZone({
       {placed.map((p) => {
         const isFirstInSeq =
           p.sequenceNumber === 1 && p.sequenceInstanceId !== undefined;
+        const isThisSequencePlaying =
+          p.sequenceInstanceId !== undefined &&
+          playingSequenceId === p.sequenceInstanceId;
+        const isPlayingNow =
+          isThisSequencePlaying &&
+          playingIndex !== null &&
+          p.sequenceNumber !== undefined &&
+          playingIndex === p.sequenceNumber - 1;
         return (
           <DraggablePlacedCard
             key={p.instanceId}
@@ -253,9 +266,8 @@ function BoardDropZone({
                 ? () => onTogglePlaySequence(p.sequenceInstanceId!)
                 : undefined
             }
-            isSequencePlaying={
-              isFirstInSeq && playingSequenceId === p.sequenceInstanceId
-            }
+            isSequencePlaying={isFirstInSeq && isThisSequencePlaying}
+            isPlayingNow={isPlayingNow}
           />
         );
       })}
@@ -628,6 +640,7 @@ export function Board() {
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"triads" | "sequences" | "theory">("triads");
   const [playingSequenceId, setPlayingSequenceId] = useState<string | null>(null);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const boardRef = useRef<HTMLDivElement | null>(null);
 
   const sensors = useSensors(
@@ -721,6 +734,7 @@ export function Board() {
   const handleClear = () => {
     stopSequence();
     setPlayingSequenceId(null);
+    setPlayingIndex(null);
     setPlaced([]);
   };
 
@@ -736,6 +750,7 @@ export function Board() {
     if (playingSequenceId === sequenceInstanceId) {
       stopSequence();
       setPlayingSequenceId(null);
+      setPlayingIndex(null);
       return;
     }
     const siblings = placed
@@ -752,7 +767,8 @@ export function Board() {
     });
     if (items.length === 0) return;
     setPlayingSequenceId(sequenceInstanceId);
-    void playSequence(items);
+    setPlayingIndex(0);
+    void playSequence(items, (i) => setPlayingIndex(i));
   };
 
   const activeTriad = (() => {
@@ -881,6 +897,7 @@ export function Board() {
             onSetKey={handleSetKey}
             onTogglePlaySequence={handleTogglePlaySequence}
             playingSequenceId={playingSequenceId}
+            playingIndex={playingIndex}
             boardRef={boardRef}
           />
         </div>

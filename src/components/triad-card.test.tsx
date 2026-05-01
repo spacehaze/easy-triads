@@ -163,6 +163,19 @@ describe("TriadCard", () => {
     expect(onPlaySequence).toHaveBeenCalledTimes(1);
   });
 
+  it("applies a scale transform when isPlayingNow is true", () => {
+    const { container, rerender } = render(
+      <TriadCard triad={major123Root} sequenceNumber={1} />
+    );
+    const root = container.querySelector(".rounded-xl") as HTMLElement;
+    expect(root.getAttribute("style")).not.toMatch(/scale\(1\.04\)/);
+
+    rerender(
+      <TriadCard triad={major123Root} sequenceNumber={1} isPlayingNow />
+    );
+    expect(root.getAttribute("style")).toMatch(/scale\(1\.04\)/);
+  });
+
   it("plays the original startFret when no key is selected", async () => {
     const user = userEvent.setup();
     vi.mocked(playTriad).mockClear();
