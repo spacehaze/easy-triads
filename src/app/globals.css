@@ -4,7 +4,7 @@
   /* Mahogany + dark rosewood + cream binding */
   --bg-deep: #1a0e07;
   --bg-mid: #2e1a0d;
-  --grid: rgba(201, 129, 82, 0.08);
+  --grid: rgba(201, 129, 82, 0.04);
   --grid-strong: rgba(201, 129, 82, 0.18);
   --mahogany: #c98152;
   --cream: #d9c4a0;
@@ -59,8 +59,8 @@ body::after {
     to bottom,
     transparent 0,
     transparent 2px,
-    rgba(0, 0, 0, 0.06) 2px,
-    rgba(0, 0, 0, 0.06) 3px
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 3px
   );
   z-index: 1;
   mix-blend-mode: multiply;

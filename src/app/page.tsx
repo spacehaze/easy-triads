@@ -56,42 +56,41 @@ export default function Home() {
       <header
         className="h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between shrink-0 border-b-2"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(201,129,82,0.08) 0%, rgba(26,14,7,0.95) 100%)",
-          borderColor: "#c98152",
-          boxShadow: "0 0 24px rgba(201,129,82,0.4)",
+          background: "rgba(31, 17, 7, 0.92)",
+          borderColor: "#4a2e1a",
         }}
       >
         <div className="flex items-baseline gap-3 min-w-0">
           <h1
-            className="font-display text-2xl sm:text-3xl font-bold tracking-widest uppercase truncate"
+            className="text-2xl sm:text-[22px] font-normal tracking-tight truncate"
             style={{
-              color: "#c98152",
-              textShadow:
-                "0 0 8px #c98152, 0 0 18px rgba(201,129,82,0.6), 0 0 32px rgba(201,129,82,0.3)",
-              letterSpacing: "0.15em",
+              fontFamily: '"Source Serif 4", Georgia, serif',
+              color: "#f5e8d4",
+              letterSpacing: "-0.02em",
             }}
           >
             Easy Triads
           </h1>
           <span
-            className="text-xs hidden md:inline font-display tracking-wider"
-            style={{ color: "#d9c4a0", textShadow: "0 0 6px #d9c4a066" }}
+            className="text-[11px] hidden md:inline font-display tracking-wider"
+            style={{ color: "#a8936d", letterSpacing: "0.04em" }}
           >
-            {"// They are all wrong, forget about them, dedicate 10 mins a day to this site, trust the process"}
+            10 mins a day · trust the process
           </span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           <div
-            className="text-[10px] hidden md:block font-display uppercase tracking-widest"
+            className="text-[10px] hidden md:flex gap-5 font-display uppercase tracking-widest"
             style={{ color: "#a8936d" }}
           >
-            36 shapes · 3 qualities · 4 string sets
+            <span>36 shapes</span>
+            <span>3 qualities</span>
+            <span>4 string sets</span>
           </div>
           <Link
             href="/about"
             className="text-[11px] font-display uppercase tracking-widest hover:brightness-125"
-            style={{ color: "#d9c4a0", textShadow: "0 0 6px #d9c4a066" }}
+            style={{ color: "#d9c4a0" }}
           >
             About
           </Link>
