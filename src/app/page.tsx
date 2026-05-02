@@ -88,6 +88,14 @@ export default function Home() {
             <span>3 qualities</span>
             <span>4 string sets</span>
           </div>
+          <a
+            href="https://ko-fi.com/spacehaze"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[12px] font-display uppercase tracking-widest text-[color:var(--muted)] hover:text-[color:var(--accent)] transition-colors"
+          >
+            Donate
+          </a>
           <ThemeToggle />
           <Link
             href="/about"
