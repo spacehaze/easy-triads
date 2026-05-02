@@ -22,11 +22,11 @@ async function renderBoard() {
 }
 
 describe("Board", () => {
-  it("renders the three tabs", async () => {
+  it("renders the visible tabs (Theory hidden for now)", async () => {
     await renderBoard();
     expect(screen.getByTestId("tab-triads")).toBeInTheDocument();
     expect(screen.getByTestId("tab-sequences")).toBeInTheDocument();
-    expect(screen.getByTestId("tab-theory")).toBeInTheDocument();
+    expect(screen.queryByTestId("tab-theory")).not.toBeInTheDocument();
   });
 
   it("starts on the Triads tab with the card library", async () => {
@@ -41,30 +41,12 @@ describe("Board", () => {
     expect(screen.getByTestId("seq-d-chords")).toBeInTheDocument();
   });
 
-  it("switches to the Theory tab on click", async () => {
-    const user = userEvent.setup();
-    await renderBoard();
-    await user.click(screen.getByTestId("tab-theory"));
-    expect(screen.getByTestId("theory-first-thing")).toBeInTheDocument();
-  });
-
   it("clicking a sequence button adds cards to the board", async () => {
     const user = userEvent.setup();
     await renderBoard();
     await user.click(screen.getByTestId("tab-sequences"));
     await user.click(screen.getByTestId("seq-d-chords"));
     expect(screen.getByText(/8 cards on board/i)).toBeInTheDocument();
-  });
-
-  it("clicking a theory item adds a quote card to the board", async () => {
-    const user = userEvent.setup();
-    await renderBoard();
-    await user.click(screen.getByTestId("tab-theory"));
-    await user.click(screen.getByTestId("theory-first-thing"));
-    expect(screen.getByText(/1 card on board/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/We live on the bottom of air ocean/i)
-    ).toBeInTheDocument();
   });
 
   it("Clear board button empties placed cards", async () => {

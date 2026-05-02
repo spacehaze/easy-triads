@@ -909,7 +909,7 @@ export function Board() {
             borderColor: "#4a2e1a",
           }}
         >
-          {(["theory", "triads", "sequences"] as const).map((t, idx, arr) => {
+          {(["triads", "sequences"] as const).map((t, idx, arr) => {
             const active = activeTab === t;
             return (
               <button
