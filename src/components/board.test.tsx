@@ -31,7 +31,8 @@ describe("Board", () => {
 
   it("starts on the Triads tab with the card library", async () => {
     await renderBoard();
-    expect(screen.getByText("Card Library")).toBeInTheDocument();
+    // Library sidebar shows the quality pills row (Major / Minor / Dim).
+    expect(screen.getByRole("button", { name: "Major" })).toBeInTheDocument();
   });
 
   it("switches to the Sequences tab on click", async () => {

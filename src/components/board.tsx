@@ -342,7 +342,7 @@ function Library({
   width: number;
 }) {
   const [activeQuality, setActiveQuality] = useState<Quality>("major");
-  const [openSet, setOpenSet] = useState<string | null>(null);
+  const [openSet, setOpenSet] = useState<string | null>("2,3,4");
 
   const toggleSet = (key: string) => {
     setOpenSet((prev) => (prev === key ? null : key));
@@ -377,21 +377,7 @@ function Library({
             borderColor: "var(--rule)",
           }}
         >
-        <div className="flex items-start justify-between">
-          <div>
-            <h2
-              className="font-display text-base uppercase tracking-widest"
-              style={{ color: "var(--ink)" }}
-            >
-              Card Library
-            </h2>
-            <p
-              className="text-[10px] mt-0.5 mb-3 font-display tracking-wider"
-              style={{ color: "var(--muted)" }}
-            >
-              {"// drag onto the board"}
-            </p>
-          </div>
+        <div className="flex items-start justify-end mb-3">
           <button
             type="button"
             onClick={onClose}
@@ -960,7 +946,11 @@ export function Board() {
                 className="px-5 py-2.5 text-sm font-display uppercase tracking-widest transition-colors border-b-2"
                 style={
                   active
-                    ? { color: "var(--accent)", borderColor: "var(--accent)" }
+                    ? {
+                        color: "var(--ink)",
+                        background: "var(--card-hi)",
+                        borderColor: "var(--accent)",
+                      }
                     : { color: "var(--muted)", borderColor: "transparent" }
                 }
               >

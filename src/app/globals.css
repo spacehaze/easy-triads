@@ -6,6 +6,7 @@
   --ink-2: #3D3A33;
   --muted: #807D74;
   --rule:  #D9D2C0;
+  --card-hi: #FFFFFF;
   --accent: #C98152;
   --accent-soft: #E8C9BC;
   --watermark-opacity: 0.06;
@@ -17,6 +18,7 @@
   --ink-2: #C8C5BA;
   --muted: #6E6B62;
   --rule:  #2A2A30;
+  --card-hi: #22221F;
   --accent: #C98152;
   --accent-soft: rgba(182,90,60,0.22);
   --watermark-opacity: 0.08;
