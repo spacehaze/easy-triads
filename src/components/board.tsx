@@ -848,6 +848,14 @@ export function Board() {
     setPlaced([]);
   };
 
+  const handleTabChange = (t: "triads" | "sequences") => {
+    if (t !== activeTab) {
+      handleClear();
+    }
+    setActiveTab(t);
+    setLibraryOpen(false);
+  };
+
   const handleAddTheory = (text: string) => {
     setPlaced((prev) => addTheory(prev, text));
   };
@@ -932,10 +940,7 @@ export function Board() {
                 aria-controls={`tab-${t}-panel`}
                 tabIndex={active ? 0 : -1}
                 data-testid={`tab-${t}`}
-                onClick={() => {
-                  setActiveTab(t);
-                  setLibraryOpen(false);
-                }}
+                onClick={() => handleTabChange(t)}
                 onKeyDown={(e) => {
                   let nextIdx: number | null = null;
                   if (e.key === "ArrowRight") nextIdx = (idx + 1) % arr.length;
@@ -946,8 +951,7 @@ export function Board() {
                   if (nextIdx !== null) {
                     e.preventDefault();
                     const nextTab = arr[nextIdx];
-                    setActiveTab(nextTab);
-                    setLibraryOpen(false);
+                    handleTabChange(nextTab);
                     document
                       .getElementById(`tab-${nextTab}-button`)
                       ?.focus();
