@@ -84,7 +84,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ff6b1a",
+  themeColor: "#c98152",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -100,7 +100,12 @@ export default function RootLayout({
       lang="en"
       className={`${orbitron.variable} ${vt323.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

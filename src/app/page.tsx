@@ -97,7 +97,9 @@ export default function Home() {
           </Link>
         </div>
       </header>
-      <Board />
+      <main id="main-content" className="flex flex-col flex-1 min-h-0">
+        <Board />
+      </main>
     </div>
   );
 }

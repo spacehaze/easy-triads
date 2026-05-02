@@ -113,7 +113,7 @@ export default function AboutPage() {
         </Link>
       </header>
 
-      <main className="max-w-5xl mx-auto w-full px-5 sm:px-8 py-10 sm:py-14 space-y-10">
+      <main id="main-content" className="max-w-5xl mx-auto w-full px-5 sm:px-8 py-10 sm:py-14 space-y-10">
         <section>
           <h1
             className="font-display text-4xl sm:text-5xl font-bold uppercase tracking-widest mb-4"

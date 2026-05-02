@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   DndContext,
   DragOverlay,
+  KeyboardSensor,
   PointerSensor,
   useDraggable,
   useDroppable,
@@ -696,11 +697,13 @@ export function Board() {
   const [activeTab, setActiveTab] = useState<"triads" | "sequences" | "theory">("triads");
   const [playingSequenceId, setPlayingSequenceId] = useState<string | null>(null);
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const [announcement, setAnnouncement] = useState<string>("");
   const [sidebarWidth, setSidebarWidth] = useState<number>(SIDEBAR_DEFAULT_WIDTH);
   const boardRef = useRef<HTMLDivElement | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor)
   );
 
   useEffect(() => {
@@ -834,6 +837,7 @@ export function Board() {
       stopSequence();
       setPlayingSequenceId(null);
       setPlayingIndex(null);
+      setAnnouncement("Sequence stopped");
       return;
     }
     const siblings = placed
@@ -852,6 +856,10 @@ export function Board() {
     if (items.length === 0) return;
     setPlayingSequenceId(sequenceInstanceId);
     setPlayingIndex(0);
+    const firstKey = siblings.find((p) => p.selectedKey)?.selectedKey;
+    setAnnouncement(
+      `Playing sequence in ${firstKey ? `key of ${firstKey}` : "default key"} — ${items.length} chords`
+    );
     void playSequence(items, (i) => setPlayingIndex(i));
   };
 
@@ -873,22 +881,53 @@ export function Board() {
     >
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
         <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+        >
+          {announcement}
+        </div>
+        <div
+          role="tablist"
+          aria-label="Sidebar sections"
           className="flex border-b-2 shrink-0"
           style={{
             background: "rgba(31, 17, 7, 0.92)",
             borderColor: "#4a2e1a",
           }}
         >
-          {(["theory", "triads", "sequences"] as const).map((t) => {
+          {(["theory", "triads", "sequences"] as const).map((t, idx, arr) => {
             const active = activeTab === t;
             return (
               <button
                 key={t}
                 type="button"
+                role="tab"
+                id={`tab-${t}-button`}
+                aria-selected={active}
+                aria-controls={`tab-${t}-panel`}
+                tabIndex={active ? 0 : -1}
                 data-testid={`tab-${t}`}
                 onClick={() => {
                   setActiveTab(t);
                   setLibraryOpen(false);
+                }}
+                onKeyDown={(e) => {
+                  let nextIdx: number | null = null;
+                  if (e.key === "ArrowRight") nextIdx = (idx + 1) % arr.length;
+                  else if (e.key === "ArrowLeft")
+                    nextIdx = (idx - 1 + arr.length) % arr.length;
+                  else if (e.key === "Home") nextIdx = 0;
+                  else if (e.key === "End") nextIdx = arr.length - 1;
+                  if (nextIdx !== null) {
+                    e.preventDefault();
+                    const nextTab = arr[nextIdx];
+                    setActiveTab(nextTab);
+                    setLibraryOpen(false);
+                    document
+                      .getElementById(`tab-${nextTab}-button`)
+                      ?.focus();
+                  }
                 }}
                 className="px-5 py-2.5 text-sm font-display uppercase tracking-widest transition-colors border-b-2"
                 style={
@@ -913,7 +952,12 @@ export function Board() {
             );
           })}
         </div>
-        <div className="flex flex-1 min-h-0 relative">
+        <div
+          className="flex flex-1 min-h-0 relative"
+          role="tabpanel"
+          id={`tab-${activeTab}-panel`}
+          aria-labelledby={`tab-${activeTab}-button`}
+        >
           {activeTab === "triads" ? (
             <Library
               open={libraryOpen}
