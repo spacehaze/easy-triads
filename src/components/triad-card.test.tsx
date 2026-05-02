@@ -167,13 +167,13 @@ describe("TriadCard", () => {
     const { container, rerender } = render(
       <TriadCard triad={major123Root} sequenceNumber={1} />
     );
-    const root = container.querySelector(".rounded-xl") as HTMLElement;
-    expect(root.getAttribute("style")).not.toMatch(/scale\(1\.04\)/);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.getAttribute("style")).not.toMatch(/scale\(1\.03\)/);
 
     rerender(
       <TriadCard triad={major123Root} sequenceNumber={1} isPlayingNow />
     );
-    expect(root.getAttribute("style")).toMatch(/scale\(1\.04\)/);
+    expect(root.getAttribute("style")).toMatch(/scale\(1\.03\)/);
   });
 
   it("plays the original startFret when no key is selected", async () => {
