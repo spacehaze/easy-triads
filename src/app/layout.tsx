@@ -26,7 +26,7 @@ const sourceSerif = Source_Serif_4({
   style: ["normal", "italic"],
 });
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem("triads-theme");if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})();`;
+const themeInitScript = `(function(){try{var t=localStorage.getItem("triads-theme");if(t!=="light"&&t!=="dark")t="light";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}})();`;
 
 const SITE_URL = "https://easy-triads.vercel.app";
 const SITE_NAME = "Easy Triads";
@@ -94,7 +94,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#c98152",
-  colorScheme: "dark light",
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
