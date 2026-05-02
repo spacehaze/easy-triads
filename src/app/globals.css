@@ -1,75 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  /* Mahogany + dark rosewood + cream binding */
-  --bg-deep: #1a0e07;
-  --bg-mid: #2e1a0d;
-  --grid: rgba(201, 129, 82, 0.04);
-  --grid-strong: rgba(201, 129, 82, 0.18);
-  --mahogany: #c98152;
-  --cream: #d9c4a0;
-  --tortoise: #8b4524;
-  --gold: #ecd29a;
-  --foreground: #f5e8d4;
+  --paper: #F5EFE0;
+  --ink:   #1A1815;
+  --ink-2: #3D3A33;
+  --muted: #807D74;
+  --rule:  #D9D2C0;
+  --accent: #C98152;
+  --accent-soft: #E8C9BC;
+}
+
+:root[data-theme="dark"] {
+  --paper: #16161A;
+  --ink:   #F4F1E8;
+  --ink-2: #C8C5BA;
+  --muted: #6E6B62;
+  --rule:  #2A2A30;
+  --accent: #C98152;
+  --accent-soft: rgba(182,90,60,0.22);
 }
 
 @theme inline {
-  --color-background: var(--bg-deep);
-  --color-foreground: var(--foreground);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
   --font-sans: var(--font-orbitron);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
   --font-display: var(--font-vt323);
 }
 
 html {
-  background:
-    radial-gradient(ellipse at top, #3a1f0a 0%, var(--bg-deep) 60%),
-    var(--bg-deep);
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 body {
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
   overflow: hidden;
   position: relative;
-}
-
-/* Subtle wood-grain grid */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 40px 40px;
-  z-index: 0;
-  opacity: 0.6;
-}
-
-/* Subtle scanlines (off when reduced motion is requested) */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 3px
-  );
-  z-index: 1;
-  mix-blend-mode: multiply;
-}
-
-/* Make app content sit above grid/scanlines */
-body > * {
-  position: relative;
-  z-index: 2;
 }
 
 .font-display {
@@ -77,8 +47,8 @@ body > * {
 }
 
 /* Visible focus ring for keyboard users */
-:where(button, a, [role="tab"], select, input):focus-visible {
-  outline: 2px solid var(--mahogany);
+:where(button, a, [role="tab"], [role="switch"], select, input):focus-visible {
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -98,15 +68,14 @@ body > * {
   width: auto;
   height: auto;
   z-index: 100;
-  background: var(--bg-deep);
-  color: var(--mahogany);
+  background: var(--paper);
+  color: var(--accent);
   padding: 8px 12px;
-  border: 2px solid var(--mahogany);
+  border: 2px solid var(--accent);
   border-radius: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::after { display: none; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;

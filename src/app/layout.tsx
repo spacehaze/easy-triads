@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Orbitron, VT323 } from "next/font/google";
+import { Geist_Mono, Orbitron, Source_Serif_4, VT323 } from "next/font/google";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -18,6 +18,15 @@ const vt323 = VT323({
   subsets: ["latin"],
   weight: ["400"],
 });
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem("triads-theme");if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})();`;
 
 const SITE_URL = "https://easy-triads.vercel.app";
 const SITE_NAME = "Easy Triads";
@@ -85,7 +94,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#c98152",
-  colorScheme: "dark",
+  colorScheme: "dark light",
   width: "device-width",
   initialScale: 1,
 };
@@ -98,8 +107,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${orbitron.variable} ${vt323.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${orbitron.variable} ${vt323.variable} ${geistMono.variable} ${sourceSerif.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col">
         <a href="#main-content" className="skip-link">
           Skip to main content
