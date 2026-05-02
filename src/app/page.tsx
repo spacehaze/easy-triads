@@ -61,7 +61,7 @@ export default function Home() {
           borderColor: "var(--rule)",
         }}
       >
-        <div className="flex items-baseline gap-3 min-w-0">
+        <div className="flex items-baseline gap-4 min-w-0">
           <h1
             className="text-2xl sm:text-[22px] font-normal tracking-tight truncate"
             style={{
@@ -73,15 +73,15 @@ export default function Home() {
             Easy Triads
           </h1>
           <span
-            className="text-[11px] hidden md:inline font-display tracking-wider"
-            style={{ color: "var(--muted)", letterSpacing: "0.04em" }}
+            className="text-[13px] hidden md:inline tracking-wide"
+            style={{ color: "var(--ink-2)", letterSpacing: "0.025em" }}
           >
             10 mins a day · trust the process
           </span>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-6">
           <div
-            className="text-[10px] hidden md:flex gap-5 font-display uppercase tracking-widest"
+            className="text-[12px] hidden md:flex gap-6 font-display uppercase tracking-widest"
             style={{ color: "var(--muted)" }}
           >
             <span>36 shapes</span>
@@ -91,7 +91,7 @@ export default function Home() {
           <ThemeToggle />
           <Link
             href="/about"
-            className="text-[11px] font-display uppercase tracking-widest hover:brightness-125"
+            className="text-[12px] font-display uppercase tracking-widest hover:brightness-125"
             style={{ color: "var(--ink-2)" }}
           >
             About
