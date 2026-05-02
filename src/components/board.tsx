@@ -278,7 +278,7 @@ function BoardDropZone({
         setNodeRef(node);
         boardRef.current = node;
       }}
-      className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
+      className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-y-auto overflow-x-hidden ${
         isOver ? "border-[#d9c4a0] bg-[#d9c4a0]/5" : "border-[#4a2e1a]"
       }`}
       style={{ background: "rgba(31, 17, 7, 0.4)" }}
