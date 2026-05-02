@@ -100,4 +100,28 @@ describe("playTriad", () => {
     const called = triggerAttackRelease.mock.calls.map((c) => c[0]);
     expect(called[0]).toBe("D4");
   });
+
+  it("playSequence advances to the next item after the chord interval", async () => {
+    triggerAttackRelease.mockClear();
+    vi.useFakeTimers();
+    try {
+      const onChordStart = vi.fn();
+      const { playSequence, stopSequence } = await import("./audio");
+      await playSequence(
+        [
+          { triad, startFret: 8 },
+          { triad, startFret: 10 },
+        ],
+        onChordStart
+      );
+      // Run note-strum timers (1s, 2s) plus the 4s sequence interval so the
+      // setTimeout that fires playAt(1) — and the per-note setTimeouts — execute.
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(onChordStart).toHaveBeenCalledWith(0);
+      expect(onChordStart).toHaveBeenCalledWith(1);
+      stopSequence();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
