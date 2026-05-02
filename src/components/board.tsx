@@ -20,6 +20,7 @@ import {
   type Quality,
   QUALITY_LABEL,
   KEY_FRETS_BY_VARIANT,
+  SEQUENCE_KEYS_BY_VARIANT,
   type SequenceVariant,
 } from "@/lib/triads";
 import { playSequence, stopSequence } from "@/lib/audio";
@@ -129,6 +130,20 @@ const SEQUENCES: Sequence[] = [
 
 function getTriad(id: string): Triad | undefined {
   return TRIAD_BY_ID.get(id);
+}
+
+function describeSequence(seq: Sequence): { title: string; meta: string } {
+  const firstTriad = TRIAD_BY_ID.get(seq.ids[0]);
+  const inv = firstTriad?.inversion;
+  const title =
+    inv === "second"
+      ? "Starts with 2nd inversion chord"
+      : inv === "first"
+      ? "Starts with 1st inversion chord"
+      : "Starts with root position chord";
+  const keys = SEQUENCE_KEYS_BY_VARIANT[seq.variant].join(", ");
+  const meta = `${seq.ids.length} chords · keys of ${keys}`;
+  return { title, meta };
 }
 
 function DraggableLibraryCard({ triad }: { triad: Triad }) {
@@ -498,35 +513,32 @@ function SequencesList({
             borderColor: "var(--rule)",
           }}
         >
-          <div className="flex items-start justify-between">
-            <div>
-              <h2
-                className="font-display text-base uppercase tracking-widest"
-                style={{ color: "var(--ink)" }}
-              >
-                Sequences
-              </h2>
-              <p
-                className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "var(--muted)" }}
-              >
-                {"// click to add to board"}
-              </p>
+          <div className="flex items-center justify-between">
+            <div
+              style={{
+                fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "var(--muted)",
+              }}
+            >
+              Presets · {SEQUENCES.length}
             </div>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
               className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md flex items-center justify-center"
-            style={{ color: "var(--muted)" }}
+              style={{ color: "var(--muted)" }}
             >
               ×
             </button>
           </div>
         </div>
-        <div className="p-3 flex flex-col gap-2">
+        <div className="p-3 flex flex-col" style={{ gap: 10 }}>
           {SEQUENCES.map((seq) => {
-            const firstTriad = TRIAD_BY_ID.get(seq.ids[0]);
+            const { title, meta } = describeSequence(seq);
             return (
               <button
                 key={seq.label}
@@ -536,32 +548,44 @@ function SequencesList({
                   onAdd(seq.ids, seq.variant);
                   onClose();
                 }}
-                className="rounded p-2 transition flex justify-center"
                 style={{
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "14px 16px",
                   border: "1px solid var(--rule)",
-                  background: "var(--paper)",
+                  borderRadius: 4,
+                  background: "var(--card-hi)",
+                  color: "var(--ink)",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5,
                 }}
               >
-                {firstTriad && (
-                  <div
-                    className="overflow-hidden"
-                    style={{ width: 90, height: 100 }}
-                  >
-                    <div
-                      style={{
-                        transform: "scale(0.5)",
-                        transformOrigin: "top left",
-                      }}
-                    >
-                      <TriadCard
-                        triad={firstTriad}
-                        compact
-                        preview
-                        sequenceNumber={1}
-                      />
-                    </div>
-                  </div>
-                )}
+                <div
+                  style={{
+                    fontFamily:
+                      'var(--font-serif), "Source Serif 4", Georgia, serif',
+                    fontSize: 15,
+                    fontWeight: 400,
+                    lineHeight: 1.25,
+                    letterSpacing: "-0.005em",
+                  }}
+                >
+                  {title}
+                </div>
+                <div
+                  style={{
+                    fontFamily:
+                      'ui-monospace, "SF Mono", Menlo, monospace',
+                    fontSize: 10,
+                    letterSpacing: "0.14em",
+                    color: "var(--muted)",
+                    textTransform: "lowercase",
+                  }}
+                >
+                  {meta}
+                </div>
               </button>
             );
           })}
