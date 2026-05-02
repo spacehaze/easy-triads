@@ -108,8 +108,33 @@ export function TriadCard({
               triad,
               fretNumbers ? { startFret: fretNumbers[0] } : undefined
             );
+            // Announce the chord to assistive tech via the live region in Board.
+            const chordName =
+              selectedKey && sequenceNumber
+                ? KEY_PROGRESSIONS_BY_VARIANT[sequenceVariant]?.[selectedKey]?.[
+                    sequenceNumber
+                  ]?.chord
+                : null;
+            const announceText = chordName
+              ? `Playing ${chordName}`
+              : `Playing ${QUALITY_LABEL[triad.quality]} chord on strings ${triad.stringSet.join("-")}`;
+            window.dispatchEvent(
+              new CustomEvent("triad-play", { detail: { text: announceText } })
+            );
           }}
-          aria-label="Play chord"
+          aria-label={
+            (() => {
+              const chordName =
+                selectedKey && sequenceNumber
+                  ? KEY_PROGRESSIONS_BY_VARIANT[sequenceVariant]?.[selectedKey]?.[
+                      sequenceNumber
+                    ]?.chord
+                  : null;
+              return chordName
+                ? `Play ${chordName}`
+                : `Play ${QUALITY_LABEL[triad.quality]} chord on strings ${triad.stringSet.join("-")}`;
+            })()
+          }
           className="absolute bottom-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
           style={{
             background: accent,

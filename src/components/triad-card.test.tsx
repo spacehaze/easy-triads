@@ -31,12 +31,12 @@ describe("TriadCard", () => {
 
   it("renders a play button by default", () => {
     render(<TriadCard triad={major123Root} />);
-    expect(screen.getByLabelText("Play chord")).toBeInTheDocument();
+    expect(screen.getByLabelText(/^Play /)).toBeInTheDocument();
   });
 
   it("hides the play button in preview mode", () => {
     render(<TriadCard triad={major123Root} preview />);
-    expect(screen.queryByLabelText("Play chord")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/^Play /)).not.toBeInTheDocument();
   });
 
   it("shows the KEY dropdown only on the first sequence card with onKeyChange", () => {
@@ -86,7 +86,7 @@ describe("TriadCard", () => {
     // Position 7 (vii°) in key D maps to frets [8, 9, 10, 11] —
     // the play button must override startFret to 8 so audio matches the displayed frets.
     render(<TriadCard triad={dim123Root} sequenceNumber={7} selectedKey="D" />);
-    await user.click(screen.getByLabelText("Play chord"));
+    await user.click(screen.getByLabelText(/^Play /));
     expect(playTriad).toHaveBeenCalledWith(dim123Root, { startFret: 8 });
   });
 
@@ -180,7 +180,7 @@ describe("TriadCard", () => {
     const user = userEvent.setup();
     vi.mocked(playTriad).mockClear();
     render(<TriadCard triad={major123Root} />);
-    await user.click(screen.getByLabelText("Play chord"));
+    await user.click(screen.getByLabelText(/^Play /));
     expect(playTriad).toHaveBeenCalledWith(major123Root, undefined);
   });
 

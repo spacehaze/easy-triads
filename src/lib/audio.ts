@@ -151,7 +151,6 @@ export async function playTriad(
       }
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.warn("Audio playback failed:", err);
   }
 }

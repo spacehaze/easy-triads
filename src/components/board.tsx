@@ -341,7 +341,6 @@ function Library({
   const [activeQuality, setActiveQuality] = useState<Quality>("major");
   const [openSet, setOpenSet] = useState<string | null>(null);
   const accent = QUALITY_COLOR[activeQuality];
-  const accentSoft = QUALITY_COLOR_SOFT[activeQuality];
 
   const toggleSet = (key: string) => {
     setOpenSet((prev) => (prev === key ? null : key));
@@ -411,7 +410,7 @@ function Library({
                 className="flex-1 text-[11px] font-bold uppercase tracking-wider py-1.5 rounded transition-colors"
                 style={
                   active
-                    ? { background: QUALITY_COLOR[q], color: "#ffffff" }
+                    ? { background: QUALITY_COLOR[q], color: "#1f1107" }
                     : { color: QUALITY_COLOR[q], background: QUALITY_COLOR_SOFT[q] }
                 }
               >
@@ -531,7 +530,6 @@ function SequencesList({
         <div className="p-3 flex flex-col gap-2">
           {SEQUENCES.map((seq) => {
             const c = seq.color ?? QUALITY_COLOR[seq.quality];
-            const cs = seq.colorSoft ?? QUALITY_COLOR_SOFT[seq.quality];
             const firstTriad = TRIAD_BY_ID.get(seq.ids[0]);
             return (
               <button
@@ -698,7 +696,18 @@ export function Board() {
   const [playingSequenceId, setPlayingSequenceId] = useState<string | null>(null);
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const [announcement, setAnnouncement] = useState<string>("");
-  const [sidebarWidth, setSidebarWidth] = useState<number>(SIDEBAR_DEFAULT_WIDTH);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
+    if (typeof window === "undefined") return SIDEBAR_DEFAULT_WIDTH;
+    try {
+      const raw = window.localStorage.getItem(SIDEBAR_WIDTH_KEY);
+      if (!raw) return SIDEBAR_DEFAULT_WIDTH;
+      const n = parseInt(raw, 10);
+      if (Number.isNaN(n)) return SIDEBAR_DEFAULT_WIDTH;
+      return Math.max(SIDEBAR_MIN_WIDTH, Math.min(SIDEBAR_MAX_WIDTH, n));
+    } catch {
+      return SIDEBAR_DEFAULT_WIDTH;
+    }
+  });
   const boardRef = useRef<HTMLDivElement | null>(null);
 
   const sensors = useSensors(
@@ -729,24 +738,28 @@ export function Board() {
   }, []);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(SIDEBAR_WIDTH_KEY);
-      if (!raw) return;
-      const n = parseInt(raw, 10);
-      if (!Number.isNaN(n)) {
-        setSidebarWidth(
-          Math.max(SIDEBAR_MIN_WIDTH, Math.min(SIDEBAR_MAX_WIDTH, n))
-        );
-      }
-    } catch {}
-  }, []);
-
-  useEffect(() => {
     if (!hydrated) return;
     try {
       localStorage.setItem(SIDEBAR_WIDTH_KEY, String(sidebarWidth));
     } catch {}
   }, [sidebarWidth, hydrated]);
+
+  // Listen for per-card play events from TriadCard play buttons.
+  // Repeated plays of the same chord need a momentary clear so screen readers
+  // re-announce — we toggle to a different value first.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ text: string }>;
+      const text = ce.detail?.text;
+      if (!text) return;
+      setAnnouncement("");
+      // queueMicrotask makes the empty-string update commit before the new
+      // value, so identical consecutive announcements still re-fire.
+      queueMicrotask(() => setAnnouncement(text));
+    };
+    window.addEventListener("triad-play", handler);
+    return () => window.removeEventListener("triad-play", handler);
+  }, []);
 
   const handleSidebarResize = (dx: number) => {
     setSidebarWidth((prev) =>

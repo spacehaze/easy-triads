@@ -71,7 +71,7 @@ const faqJsonLd = {
 
 export default function AboutPage() {
   return (
-    <article
+    <div
       className="flex flex-col flex-1 overflow-y-auto"
       style={{ color: "#f5e8d4" }}
     >
@@ -308,6 +308,6 @@ export default function AboutPage() {
           </p>
         </section>
       </main>
-    </article>
+    </div>
   );
 }
