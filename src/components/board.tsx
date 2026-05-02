@@ -221,8 +221,8 @@ function DraggablePlacedCard({
           onRemove(placed.instanceId);
         }}
         onPointerDown={(e) => e.stopPropagation()}
-        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#c98152]"
-        style={{ boxShadow: "0 0 8px rgba(201,129,82,0.7)" }}
+        className="absolute -top-2 -right-2 z-10 w-[18px] h-[18px] rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+        style={{ background: "var(--ink)", color: "var(--paper)" }}
         aria-label="Remove card"
       >
         ×
@@ -276,17 +276,22 @@ function BoardDropZone({
         setNodeRef(node);
         boardRef.current = node;
       }}
-      className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-y-auto overflow-x-hidden ${
-        isOver ? "border-[#d9c4a0] bg-[#d9c4a0]/5" : "border-[#4a2e1a]"
-      }`}
-      style={{ background: "rgba(31, 17, 7, 0.4)" }}
+      className="relative flex-1 min-h-[600px] rounded border border-dashed transition-colors overflow-y-auto overflow-x-hidden"
+      style={{
+        background: "var(--paper)",
+        borderColor: isOver ? "var(--accent)" : "var(--rule)",
+      }}
     >
       {placed.length === 0 && (
         <div
-          className="absolute inset-0 flex items-center justify-center text-sm pointer-events-none font-display tracking-wider uppercase"
-          style={{ color: "#a8936d", textShadow: "0 0 8px #a8936d66" }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          style={{
+            color: "var(--muted)",
+            fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
+            fontSize: 12,
+          }}
         >
-          {"// Drag cards from the library to build your study board"}
+          {"// drag cards from the library to start"}
         </div>
       )}
       {placed.map((p) => {
@@ -773,9 +778,12 @@ export function Board() {
   if (!hydrated) {
     return (
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
-        <div className="h-10 border-b-2 border-[#4a2e1a]" />
+        <div className="h-10 border-b" style={{ borderColor: "var(--rule)" }} />
         <div className="flex flex-1">
-          <aside className="hidden md:block w-[220px] shrink-0 border-r-2 border-[#4a2e1a]" />
+          <aside
+            className="hidden md:block w-[220px] shrink-0 border-r"
+            style={{ borderColor: "var(--rule)" }}
+          />
           <div className="flex-1" />
         </div>
       </div>
@@ -948,15 +956,8 @@ export function Board() {
                 className="px-5 py-2.5 text-sm font-display uppercase tracking-widest transition-colors border-b-2"
                 style={
                   active
-                    ? {
-                        color: "#c98152",
-                        borderColor: "#c98152",
-                        textShadow: "0 0 8px #c98152aa",
-                      }
-                    : {
-                        color: "#9c7a5a",
-                        borderColor: "transparent",
-                      }
+                    ? { color: "var(--accent)", borderColor: "var(--accent)" }
+                    : { color: "var(--muted)", borderColor: "transparent" }
                 }
               >
                 {t === "triads"
