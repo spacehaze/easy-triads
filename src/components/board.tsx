@@ -19,8 +19,6 @@ import {
   type Triad,
   type Quality,
   QUALITY_LABEL,
-  QUALITY_COLOR,
-  QUALITY_COLOR_SOFT,
   KEY_FRETS_BY_VARIANT,
   type SequenceVariant,
 } from "@/lib/triads";
@@ -223,8 +221,8 @@ function DraggablePlacedCard({
           onRemove(placed.instanceId);
         }}
         onPointerDown={(e) => e.stopPropagation()}
-        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#c98152]"
-        style={{ boxShadow: "0 0 8px rgba(201,129,82,0.7)" }}
+        className="absolute -top-2 -right-2 z-10 w-[18px] h-[18px] rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+        style={{ background: "var(--ink)", color: "var(--paper)" }}
         aria-label="Remove card"
       >
         ×
@@ -278,17 +276,22 @@ function BoardDropZone({
         setNodeRef(node);
         boardRef.current = node;
       }}
-      className={`relative flex-1 min-h-[600px] rounded-xl border-2 border-dashed transition-colors overflow-y-auto overflow-x-hidden ${
-        isOver ? "border-[#d9c4a0] bg-[#d9c4a0]/5" : "border-[#4a2e1a]"
-      }`}
-      style={{ background: "rgba(31, 17, 7, 0.4)" }}
+      className="relative flex-1 min-h-[600px] rounded border border-dashed transition-colors overflow-y-auto overflow-x-hidden"
+      style={{
+        background: "var(--paper)",
+        borderColor: isOver ? "var(--accent)" : "var(--rule)",
+      }}
     >
       {placed.length === 0 && (
         <div
-          className="absolute inset-0 flex items-center justify-center text-sm pointer-events-none font-display tracking-wider uppercase"
-          style={{ color: "#a8936d", textShadow: "0 0 8px #a8936d66" }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          style={{
+            color: "var(--muted)",
+            fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
+            fontSize: 12,
+          }}
         >
-          {"// Drag cards from the library to build your study board"}
+          {"// drag cards from the library to start"}
         </div>
       )}
       {placed.map((p) => {
@@ -340,7 +343,6 @@ function Library({
 }) {
   const [activeQuality, setActiveQuality] = useState<Quality>("major");
   const [openSet, setOpenSet] = useState<string | null>(null);
-  const accent = QUALITY_COLOR[activeQuality];
 
   const toggleSet = (key: string) => {
     setOpenSet((prev) => (prev === key ? null : key));
@@ -363,29 +365,29 @@ function Library({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(31, 17, 7, 0.92)",
-          borderColor: "#4a2e1a",
+          background: "var(--paper)",
+          borderColor: "var(--rule)",
           ["--sidebar-w" as string]: `${width}px`,
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(31, 17, 7, 0.95)",
-            borderColor: "#4a2e1a",
+            background: "var(--paper)",
+            borderColor: "var(--rule)",
           }}
         >
         <div className="flex items-start justify-between">
           <div>
             <h2
               className="font-display text-base uppercase tracking-widest"
-              style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a088" }}
+              style={{ color: "var(--ink)" }}
             >
               Card Library
             </h2>
             <p
               className="text-[10px] mt-0.5 mb-3 font-display tracking-wider"
-              style={{ color: "#a8936d" }}
+              style={{ color: "var(--muted)" }}
             >
               {"// drag onto the board"}
             </p>
@@ -394,7 +396,8 @@ function Library({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#a8936d] hover:bg-[#a8936d]/20 flex items-center justify-center"
+            className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md flex items-center justify-center"
+            style={{ color: "var(--muted)" }}
           >
             ×
           </button>
@@ -410,8 +413,16 @@ function Library({
                 className="flex-1 text-[11px] font-bold uppercase tracking-wider py-1.5 rounded transition-colors"
                 style={
                   active
-                    ? { background: QUALITY_COLOR[q], color: "#1f1107" }
-                    : { color: QUALITY_COLOR[q], background: QUALITY_COLOR_SOFT[q] }
+                    ? {
+                        background: "var(--accent)",
+                        color: "var(--paper)",
+                        border: "1px solid var(--accent)",
+                      }
+                    : {
+                        background: "transparent",
+                        color: "var(--muted)",
+                        border: "1px solid var(--rule)",
+                      }
                 }
               >
                 {q === "diminished" ? "Dim" : QUALITY_LABEL[q]}
@@ -433,10 +444,9 @@ function Library({
                 onClick={() => toggleSet(ss.key)}
                 className="w-full text-left text-[11px] font-display uppercase tracking-widest px-2 py-1.5 rounded flex items-center justify-between cursor-pointer transition border"
                 style={{
-                  color: accent,
-                  background: "rgba(31, 17, 7, 0.5)",
-                  borderColor: `${accent}55`,
-                  textShadow: `0 0 6px ${accent}66`,
+                  color: isOpen ? "var(--accent)" : "var(--muted)",
+                  background: "transparent",
+                  borderColor: isOpen ? "var(--accent)" : "var(--rule)",
                 }}
                 aria-expanded={isOpen}
               >
@@ -449,7 +459,7 @@ function Library({
                 </span>
               </button>
               {isOpen && (
-                <div className="flex flex-col gap-2 items-center mt-2 mb-2">
+                <div className="flex flex-col gap-3 items-center mt-2 mb-2">
                   {triads.map((triad) => (
                     <DraggableLibraryCard key={triad.id} triad={triad} />
                   ))}
@@ -490,29 +500,29 @@ function SequencesList({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(31, 17, 7, 0.92)",
-          borderColor: "#4a2e1a",
+          background: "var(--paper)",
+          borderColor: "var(--rule)",
           ["--sidebar-w" as string]: `${width}px`,
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(31, 17, 7, 0.95)",
-            borderColor: "#4a2e1a",
+            background: "var(--paper)",
+            borderColor: "var(--rule)",
           }}
         >
           <div className="flex items-start justify-between">
             <div>
               <h2
                 className="font-display text-base uppercase tracking-widest"
-                style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a088" }}
+                style={{ color: "var(--ink)" }}
               >
                 Sequences
               </h2>
               <p
                 className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "#a8936d" }}
+                style={{ color: "var(--muted)" }}
               >
                 {"// click to add to board"}
               </p>
@@ -521,7 +531,8 @@ function SequencesList({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#a8936d] hover:bg-[#a8936d]/20 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md flex items-center justify-center"
+            style={{ color: "var(--muted)" }}
             >
               ×
             </button>
@@ -529,7 +540,6 @@ function SequencesList({
         </div>
         <div className="p-3 flex flex-col gap-2">
           {SEQUENCES.map((seq) => {
-            const c = seq.color ?? QUALITY_COLOR[seq.quality];
             const firstTriad = TRIAD_BY_ID.get(seq.ids[0]);
             return (
               <button
@@ -540,11 +550,10 @@ function SequencesList({
                   onAdd(seq.ids, seq.variant);
                   onClose();
                 }}
-                className="rounded-lg border-2 p-2 transition flex justify-center"
+                className="rounded p-2 transition flex justify-center"
                 style={{
-                  borderColor: c,
-                  background: "rgba(31, 17, 7, 0.6)",
-                  boxShadow: `0 0 10px ${c}66`,
+                  border: "1px solid var(--rule)",
+                  background: "var(--paper)",
                 }}
               >
                 {firstTriad && (
@@ -622,29 +631,29 @@ function TheoryPanel({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{
-          background: "rgba(31, 17, 7, 0.92)",
-          borderColor: "#4a2e1a",
+          background: "var(--paper)",
+          borderColor: "var(--rule)",
           ["--sidebar-w" as string]: `${width}px`,
         }}
       >
         <div
           className="p-4 border-b-2 sticky top-0 z-10"
           style={{
-            background: "rgba(31, 17, 7, 0.95)",
-            borderColor: "#4a2e1a",
+            background: "var(--paper)",
+            borderColor: "var(--rule)",
           }}
         >
           <div className="flex items-start justify-between">
             <div>
               <h2
                 className="font-display text-base uppercase tracking-widest"
-                style={{ color: "#d9c4a0", textShadow: "0 0 8px #d9c4a088" }}
+                style={{ color: "var(--ink)" }}
               >
                 Theory
               </h2>
               <p
                 className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "#a8936d" }}
+                style={{ color: "var(--muted)" }}
               >
                 {"// click to add to board"}
               </p>
@@ -653,7 +662,8 @@ function TheoryPanel({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md text-[#a8936d] hover:bg-[#a8936d]/20 flex items-center justify-center"
+              className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md flex items-center justify-center"
+            style={{ color: "var(--muted)" }}
             >
               ×
             </button>
@@ -669,13 +679,11 @@ function TheoryPanel({
                 onAddTheory(item.text);
                 onClose();
               }}
-              className="w-full text-left text-sm font-display uppercase tracking-widest px-3 py-2.5 rounded-lg border-2 transition"
+              className="w-full text-left text-sm font-display uppercase tracking-widest px-3 py-2.5 rounded transition"
               style={{
-                color: "#ecd29a",
-                borderColor: "#ecd29a",
-                background: "rgba(31, 17, 7, 0.6)",
-                boxShadow: "0 0 10px rgba(255, 228, 0, 0.4)",
-                textShadow: "0 0 6px rgba(255, 228, 0, 0.6)",
+                color: "var(--ink)",
+                border: "1px solid var(--rule)",
+                background: "var(--paper)",
               }}
             >
               {item.title}
@@ -770,9 +778,12 @@ export function Board() {
   if (!hydrated) {
     return (
       <div className="flex flex-col h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] min-h-[500px]">
-        <div className="h-10 border-b-2 border-[#4a2e1a]" />
+        <div className="h-10 border-b" style={{ borderColor: "var(--rule)" }} />
         <div className="flex flex-1">
-          <aside className="hidden md:block w-[220px] shrink-0 border-r-2 border-[#4a2e1a]" />
+          <aside
+            className="hidden md:block w-[220px] shrink-0 border-r"
+            style={{ borderColor: "var(--rule)" }}
+          />
           <div className="flex-1" />
         </div>
       </div>
@@ -905,8 +916,8 @@ export function Board() {
           aria-label="Sidebar sections"
           className="flex border-b-2 shrink-0"
           style={{
-            background: "rgba(31, 17, 7, 0.92)",
-            borderColor: "#4a2e1a",
+            background: "var(--paper)",
+            borderColor: "var(--rule)",
           }}
         >
           {(["triads", "sequences"] as const).map((t, idx, arr) => {
@@ -945,15 +956,8 @@ export function Board() {
                 className="px-5 py-2.5 text-sm font-display uppercase tracking-widest transition-colors border-b-2"
                 style={
                   active
-                    ? {
-                        color: "#c98152",
-                        borderColor: "#c98152",
-                        textShadow: "0 0 8px #c98152aa",
-                      }
-                    : {
-                        color: "#9c7a5a",
-                        borderColor: "transparent",
-                      }
+                    ? { color: "var(--accent)", borderColor: "var(--accent)" }
+                    : { color: "var(--muted)", borderColor: "transparent" }
                 }
               >
                 {t === "triads"
@@ -1022,7 +1026,7 @@ export function Board() {
                 </button>
                 <div
                   className="text-xs font-display uppercase tracking-widest"
-                  style={{ color: "#a8936d" }}
+                  style={{ color: "var(--muted)" }}
                 >
                   {placed.length === 0
                     ? "// empty board"

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Board } from "@/components/board";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const SITE_URL = "https://easy-triads.vercel.app";
 
@@ -54,18 +55,18 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <header
-        className="h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between shrink-0 border-b-2"
+        className="h-14 sm:h-16 px-4 sm:px-6 flex items-center justify-between shrink-0 border-b"
         style={{
-          background: "rgba(31, 17, 7, 0.92)",
-          borderColor: "#4a2e1a",
+          background: "var(--paper)",
+          borderColor: "var(--rule)",
         }}
       >
         <div className="flex items-baseline gap-3 min-w-0">
           <h1
             className="text-2xl sm:text-[22px] font-normal tracking-tight truncate"
             style={{
-              fontFamily: '"Source Serif 4", Georgia, serif',
-              color: "#f5e8d4",
+              fontFamily: 'var(--font-serif), "Source Serif 4", Georgia, serif',
+              color: "var(--ink)",
               letterSpacing: "-0.02em",
             }}
           >
@@ -73,7 +74,7 @@ export default function Home() {
           </h1>
           <span
             className="text-[11px] hidden md:inline font-display tracking-wider"
-            style={{ color: "#a8936d", letterSpacing: "0.04em" }}
+            style={{ color: "var(--muted)", letterSpacing: "0.04em" }}
           >
             10 mins a day · trust the process
           </span>
@@ -81,16 +82,17 @@ export default function Home() {
         <div className="flex items-center gap-5">
           <div
             className="text-[10px] hidden md:flex gap-5 font-display uppercase tracking-widest"
-            style={{ color: "#a8936d" }}
+            style={{ color: "var(--muted)" }}
           >
             <span>36 shapes</span>
             <span>3 qualities</span>
             <span>4 string sets</span>
           </div>
+          <ThemeToggle />
           <Link
             href="/about"
             className="text-[11px] font-display uppercase tracking-widest hover:brightness-125"
-            style={{ color: "#d9c4a0" }}
+            style={{ color: "var(--ink-2)" }}
           >
             About
           </Link>
