@@ -498,27 +498,24 @@ function SequencesList({
             borderColor: "var(--rule)",
           }}
         >
-          <div className="flex items-start justify-between">
-            <div>
-              <h2
-                className="font-display text-base uppercase tracking-widest"
-                style={{ color: "var(--ink)" }}
-              >
-                Sequences
-              </h2>
-              <p
-                className="text-[10px] mt-0.5 font-display tracking-wider"
-                style={{ color: "var(--muted)" }}
-              >
-                {"// click to add to board"}
-              </p>
+          <div className="flex items-center justify-between">
+            <div
+              style={{
+                fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "var(--muted)",
+              }}
+            >
+              Presets · {SEQUENCES.length}
             </div>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
               className="md:hidden -mt-1 -mr-1 w-7 h-7 rounded-md flex items-center justify-center"
-            style={{ color: "var(--muted)" }}
+              style={{ color: "var(--muted)" }}
             >
               ×
             </button>
