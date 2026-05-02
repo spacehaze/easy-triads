@@ -111,7 +111,7 @@ export default function OGImage() {
           {[
             { color: "#c98152", label: "Major" },
             { color: "#d9c4a0", label: "minor" },
-            { color: "#b3582e", label: "dim" },
+            { color: "#c66633", label: "dim" },
           ].map((d) => (
             <div
               key={d.label}

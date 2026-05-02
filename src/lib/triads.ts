@@ -470,7 +470,7 @@ export const QUALITY_LABEL: Record<Quality, string> = {
 export const QUALITY_COLOR: Record<Quality, string> = {
   major: "#c98152",
   minor: "#d9c4a0",
-  diminished: "#b3582e",
+  diminished: "#c66633",
 };
 
 export const QUALITY_COLOR_SOFT: Record<Quality, string> = {

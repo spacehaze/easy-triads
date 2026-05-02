@@ -938,7 +938,7 @@ export function Board() {
                         textShadow: "0 0 8px #c98152aa",
                       }
                     : {
-                        color: "#6b4a30",
+                        color: "#9c7a5a",
                         borderColor: "transparent",
                       }
                 }
