@@ -11,7 +11,11 @@ export type PlacedCard = {
 };
 
 export const CARD_WIDTH = 220;
-export const CARD_HEIGHT = 210;
+export const CARD_HEIGHT = 280;
+
+const CARD_GAP = 20;
+const COL_PITCH = CARD_WIDTH + CARD_GAP; // 240
+const ROW_PITCH = CARD_HEIGHT + CARD_GAP; // 300
 
 /**
  * Add a sequence (preset) of triad cards. Cards in the same sequence share a
@@ -32,8 +36,8 @@ export function addSequence(
     ...ids.map((triadId, i) => ({
       instanceId: `${triadId}-${ts}-${i}`,
       triadId,
-      x: 20 + (i % cols) * 240,
-      y: 20 + (startRow + Math.floor(i / cols)) * 240,
+      x: 20 + (i % cols) * COL_PITCH,
+      y: 20 + (startRow + Math.floor(i / cols)) * ROW_PITCH,
       sequenceNumber: i + 1,
       sequenceInstanceId,
       sequenceVariant: variant,
@@ -55,7 +59,7 @@ export function addTheory(
       instanceId: `theory-${ts}`,
       text,
       x: 20,
-      y: 20 + Math.floor(prev.length / 3) * 240,
+      y: 20 + Math.floor(prev.length / 3) * ROW_PITCH,
     },
   ];
 }

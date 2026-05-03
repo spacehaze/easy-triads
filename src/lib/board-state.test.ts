@@ -39,7 +39,7 @@ describe("addSequence", () => {
     expect(ys.size).toBe(2);
     expect(result[0].x).toBe(20);
     expect(result[3].x).toBe(20 + 3 * 240);
-    expect(result[4].y).toBe(result[0].y + 240);
+    expect(result[4].y).toBe(result[0].y + 300);
   });
 
   it("preserves existing cards", () => {
@@ -155,7 +155,7 @@ describe("moveCard", () => {
       height: 500,
     });
     expect(result[0].x).toBe(500 - 220);
-    expect(result[0].y).toBe(500 - 210);
+    expect(result[0].y).toBe(500 - 280);
   });
 
   it("leaves other cards untouched", () => {
