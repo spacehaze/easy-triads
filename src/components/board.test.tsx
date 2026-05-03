@@ -47,7 +47,7 @@ describe("Board", () => {
     await renderBoard();
     await user.click(screen.getByTestId("tab-sequences"));
     await user.click(screen.getByTestId("seq-d-chords"));
-    expect(screen.getByText(/8 cards on board/i)).toBeInTheDocument();
+    expect(screen.getAllByLabelText("Remove card")).toHaveLength(8);
   });
 
   it("Clear board button empties placed cards", async () => {
@@ -56,7 +56,7 @@ describe("Board", () => {
     await user.click(screen.getByTestId("tab-sequences"));
     await user.click(screen.getByTestId("seq-d-chords"));
     await user.click(screen.getByText(/Clear board/i));
-    expect(screen.getByText(/empty board/i)).toBeInTheDocument();
+    expect(screen.queryAllByLabelText("Remove card")).toHaveLength(0);
   });
 
   it("rehydrates placed cards from localStorage", async () => {
@@ -67,7 +67,7 @@ describe("Board", () => {
       ])
     );
     await renderBoard();
-    expect(screen.getByText(/1 card on board/i)).toBeInTheDocument();
+    expect(screen.getAllByLabelText("Remove card")).toHaveLength(1);
     expect(screen.getByText(/saved quote/)).toBeInTheDocument();
   });
 });
