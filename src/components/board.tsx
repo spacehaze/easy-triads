@@ -513,18 +513,7 @@ function SequencesList({
             borderColor: "var(--rule)",
           }}
         >
-          <div className="flex items-center justify-between">
-            <div
-              style={{
-                fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
-                fontSize: 10,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-              }}
-            >
-              Presets · {SEQUENCES.length}
-            </div>
+          <div className="flex items-center justify-end">
             <button
               type="button"
               onClick={onClose}
@@ -1042,14 +1031,6 @@ export function Board() {
                     ? "Sequences"
                     : "Theory"}
                 </button>
-                <div
-                  className="text-xs font-display uppercase tracking-widest"
-                  style={{ color: "var(--muted)" }}
-                >
-                  {placed.length === 0
-                    ? "// empty board"
-                    : `// ${placed.length} ${placed.length === 1 ? "card" : "cards"} on board`}
-                </div>
               </div>
               <button
                 type="button"

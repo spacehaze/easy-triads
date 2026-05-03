@@ -195,9 +195,9 @@ export function TriadCard({
       <div style={{ height: 1, background: "var(--rule)" }} />
 
       <svg
-        viewBox={`0 0 ${width} ${boardHeight + 26}`}
+        viewBox={`0 0 ${width} ${boardHeight + 36}`}
         width={width}
-        height={boardHeight + 26}
+        height={boardHeight + 36}
         className="block"
         style={{ marginTop: 8 }}
       >
