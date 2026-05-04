@@ -80,14 +80,13 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-6">
-          <div
-            className="text-[12px] hidden md:flex gap-6 font-display uppercase tracking-widest"
-            style={{ color: "var(--muted)" }}
+          <Link
+            href="/store"
+            className="text-[12px] font-display uppercase tracking-widest hover:brightness-125"
+            style={{ color: "var(--ink-2)" }}
           >
-            <span>36 shapes</span>
-            <span>3 qualities</span>
-            <span>4 string sets</span>
-          </div>
+            Store
+          </Link>
           <a
             href="https://ko-fi.com/spacehaze"
             target="_blank"
