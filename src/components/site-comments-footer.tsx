@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Comment = {
   id: string;
@@ -36,7 +37,14 @@ export function SiteCommentsFooter() {
   const [name, setName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+
+  // Track mount so we only call createPortal on the client (avoids SSR portal errors).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   // Fetch comments once on mount.
   useEffect(() => {
@@ -111,7 +119,9 @@ export function SiteCommentsFooter() {
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <>
       {/* Backdrop while open */}
       {open && (
@@ -138,11 +148,13 @@ export function SiteCommentsFooter() {
           background: "var(--paper)",
           borderTop: "1px solid var(--rule)",
           height: open ? SHEET_HEIGHT : PEEK_HEIGHT,
+          minHeight: open ? SHEET_HEIGHT : PEEK_HEIGHT,
           maxHeight: "85vh",
-          transition: "height 200ms ease",
+          transition: "height 200ms ease, min-height 200ms ease",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
+          flexShrink: 0,
         }}
       >
         <button
@@ -479,6 +491,7 @@ export function SiteCommentsFooter() {
           </div>
         )}
       </div>
-    </>
+    </>,
+    document.documentElement
   );
 }
