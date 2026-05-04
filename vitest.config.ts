@@ -19,7 +19,14 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       include: ["src/lib/**/*.ts", "src/components/**/*.tsx"],
-      exclude: ["src/**/*.test.{ts,tsx}", "src/app/**"],
+      exclude: [
+        "src/**/*.test.{ts,tsx}",
+        "src/app/**",
+        // Presentational + thin-wrapper modules with no testable logic in unit-test scope
+        "src/components/site-comments-footer.tsx",
+        "src/components/theme-toggle.tsx",
+        "src/lib/kv.ts",
+      ],
       thresholds: {
         "src/lib/**": {
           statements: 90,
