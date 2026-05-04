@@ -80,13 +80,15 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-6">
-          <Link
-            href="/store"
+          <a
+            href="https://v-tonedigital.lemonsqueezy.com/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-[12px] font-display uppercase tracking-widest hover:brightness-125"
             style={{ color: "var(--ink-2)" }}
           >
             Store
-          </Link>
+          </a>
           <a
             href="https://ko-fi.com/spacehaze"
             target="_blank"
