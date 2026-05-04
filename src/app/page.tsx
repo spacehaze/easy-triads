@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Board } from "@/components/board";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -90,21 +89,14 @@ export default function Home() {
             Store
           </a>
           <a
-            href="https://ko-fi.com/spacehaze"
+            href="https://ko-fi.com/valkononoff"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[12px] font-display uppercase tracking-widest text-[color:var(--muted)] hover:text-[color:var(--accent)] transition-colors"
           >
-            Donate
+            Buy me a coffee!
           </a>
           <ThemeToggle />
-          <Link
-            href="/about"
-            className="text-[12px] font-display uppercase tracking-widest hover:brightness-125"
-            style={{ color: "var(--ink-2)" }}
-          >
-            About
-          </Link>
         </div>
       </header>
       <main id="main-content" className="flex flex-col flex-1 min-h-0">
