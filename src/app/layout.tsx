@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Orbitron, Source_Serif_4, VT323 } from "next/font/google";
 import "./globals.css";
 import { SiteCommentsFooter } from "@/components/site-comments-footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -119,6 +120,7 @@ export default function RootLayout({
         </a>
         {children}
         <SiteCommentsFooter />
+        <Analytics />
       </body>
     </html>
   );
